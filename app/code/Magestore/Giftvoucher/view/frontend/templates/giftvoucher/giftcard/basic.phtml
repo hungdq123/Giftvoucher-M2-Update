@@ -1,0 +1,163 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+// @codingStandardsIgnoreFile
+?>
+<?php $_customerGift = $this->getCustomerGift() ?>
+<?php $_giftCard = $this->getGiftVoucher() ?>
+
+<!--h2 class="sub-title"><?php echo __('Gift Card Code Information') ?></h2-->
+<div class="form-group">
+    <div class="row">
+        <div class="col-xs-6 col-sm-4">
+            <strong><?php echo __('Gift Card Code') ?></strong>
+        </div>
+        <div class="col-xs-6 col-sm-4">
+            <a id="hidden_gift_card_code" href="#" onclick="viewFullGiftCode();
+                    return false;" title="<?php echo __('Gift Card Code') ?>"><?php echo $this->getCodeTxt($_giftCard) ?></a>
+            <input id="full_gift_card_code" type="text" class="input-text" value="<?php echo $_giftCard->getGiftCode() ?>" title="<?php echo __('Gift Card Code') ?>" style="display: none;" onblur="hideGiftCode();" readonly="true" />
+            <script type="text/javascript">
+                require([
+                    "jquery",
+                    "jquery/ui",
+                    "prototype",
+                    "mage/translate"
+                ], function (jQuery) {
+                    viewFullGiftCode = function () {
+                        $('hidden_gift_card_code').hide();
+                        $('full_gift_card_code').show();
+                        $('full_gift_card_code').focus();
+                    }
+                    hideGiftCode = function () {
+                        $('hidden_gift_card_code').show();
+                        $('full_gift_card_code').hide();
+                    }
+                });
+            </script>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-xs-6 col-sm-4">
+            <strong><?php echo __('Balance') ?></strong>
+        </div>
+        <div class="col-xs-6 col-sm-6">
+<?php echo $this->getBalanceFormat($_giftCard) ?>
+        </div>
+    </div>
+</div>
+<?php if ($_giftCard->getDescription()): ?>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-6 col-sm-4">
+                <strong><?php echo __('Description') ?></strong>
+            </div>
+            <div class="col-xs-6 col-sm-6">
+    <?php echo $_giftCard->getDescription() ?>
+            </div>
+        </div>
+    </div>
+<?php endif ?>
+<div class="form-group">
+    <div class="row">
+        <div class="col-xs-6 col-sm-4">
+            <strong><?php echo __('Status') ?></strong>
+        </div>
+        <div class="col-xs-6 col-sm-6">
+<?php echo $this->getStatus($_giftCard) ?>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-xs-6 col-sm-4">
+            <strong><?php echo __('Added Date') ?></strong>
+        </div>
+        <div class="col-xs-6 col-sm-6">
+<?php echo $this->formatDate($_customerGift->getData('added_date'), \IntlDateFormatter::MEDIUM) ?>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="row">
+        <div class="col-xs-6 col-sm-4">
+            <strong><?php echo __('Expired Date') ?></strong>
+        </div>
+        <div class="col-xs-6 col-sm-6">
+<?php
+$expired_date = $_giftCard->getData('expired_at');
+if (!$expired_date) {
+    echo __('Permanent');
+} else {
+    echo $this->formatDate($expired_date, \IntlDateFormatter::MEDIUM);
+}
+?>
+            <?php //echo $this->formatDate($_giftCard->getData('expired_at'), 'medium') ?>
+        </div>
+    </div>
+</div>
+<?php if ($this->checkSendFriendGiftCard($_giftCard)): ?>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-6 col-sm-4">
+                <strong><?php echo __('Comment') ?></strong>
+            </div>
+            <div class="col-xs-6 col-sm-6">
+    <?php echo __('This is your gift to give for %1 (%2)', $_giftCard->getRecipientName(), $_giftCard->getRecipientEmail()) ?>
+            </div>
+        </div>
+    </div>
+    <?php if ($_shipment = $this->getShipmentForGiftCard($_giftCard)): ?>
+        <?php $tracks = $_shipment->getTracksCollection(); ?>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-6 col-sm-4">
+                    <strong><?php echo __('Check Shipping') ?></strong>
+                </div>
+                <div class="col-xs-6 col-sm-6">
+                    <div>
+                        <a href="<?php echo $this->getUrl('sales/order/shipment', array('order_id' => $_shipment->getOrderId())) ?>" title="<?php echo __('View Shipment') ?>"><?php echo __('View Shipment') ?></a>
+                        |
+                        <a href="#" onclick="popWin('<?php echo $this->getHelper('Magento\Shipping\Helper\Data')->getTrackingPopupUrlBySalesModel($_shipment) ?>', 'trackshipment', 'width=800,height=600,top=0,left=0,resizable=yes,scrollbars=yes');
+                                        return false;" title="<?php echo __('Track the shipment') ?>"><?php echo __('Track the shipment') ?></a>
+                    </div>
+                    <div>
+                        <?php if ($_size = $tracks->count()): ?>
+                            <?php echo __('Tracking Number(s):') ?>
+                            <?php
+                            $i = 1;
+                            foreach ($tracks as $track):
+                                ?>
+                                <?php if ($track->isCustom()): ?>
+                                    <?php echo $this->escapeHtml($track->getNumber()) ?>
+                                <?php else: ?>
+                                    <a href="#" onclick="popWin('<?php echo $this->getHelper('Magento\Shipping\Helper\Data')->getTrackingPopupUrlBySalesModel($track) ?>', 'trackorder', 'width=800,height=600,left=0,top=0,resizable=yes,scrollbars=yes')" ><?php echo $this->escapeHtml($track->getNumber()) ?></a>
+                                <?php endif; ?>
+                                <?php if ($i != $_size): ?>, <?php endif; ?>
+                                <?php
+                                $i++;
+                            endforeach;
+                            ?>
+                        <?php endif ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif ?>
+<?php endif ?>
+

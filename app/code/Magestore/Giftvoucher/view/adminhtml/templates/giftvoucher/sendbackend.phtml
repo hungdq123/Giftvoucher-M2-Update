@@ -1,0 +1,273 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php if ($this->isGiftvoucherProduct()): ?>
+    <style type="text/css">
+        #giftvoucher-receiver div{
+            margin-top: 10px;
+        }
+        #giftvoucher-receiver div label{
+            float: left;
+            width: 50%;
+        }
+        #giftvoucher-receiver div #message{
+            clear: both;
+            /*position: absolute;*/
+            width: 150px;
+        }
+        #giftvoucher-receiver div #character_remain{
+            position: relative;
+            top: 0px;
+            left: 230px;
+            margin: 0 !important;
+        }
+        #giftvoucher-receiver .validation-advice{
+            margin-left: 230px;
+        }
+        #admin_giftcard_send{
+            overflow-x: scroll;
+        }
+    </style>
+
+    <?php
+    /**
+     * Admin form to checkout giftcard
+     */
+    ?>
+
+    <?php
+//$this->checkExistGiftProduct();
+    if (!$_code):
+        $_code = 'gifttemplate';
+        $_formData = $this->getFormConfigData();
+        ?>
+        <div class="entry-edit box-left" id="admin_giftcard_send">
+            <div class="entry-edit-head">
+                <h4 class="icon-head"><?php echo $this->__('GiftCard Configration') ?></h4>
+            </div>
+            <fieldset class="np">
+                <?php
+                /**
+                 * Admin form to checkout giftcard
+                 */
+                $templates = Mage::getBlockSingleton('giftvoucher/adminhtml_product_view')->getAvailableTemplate();
+                ?>
+                <script type="text/javascript">
+                    remaining_max = <?php echo $this->messageMaxLen() ?>;
+                    templates = <?php echo Mage::helper('core')->jsonEncode($templates->getData()); ?>;
+                    //                alert(templates[0]);
+                </script>
+                <?php foreach ($templates as $template): ?>
+                    <div id="giftcard-view-id-<?php echo $template->getGiftcardTemplateId() ?>" style="display: none; cursor: pointer;margin: 50px 50px;
+                         zoom: 60%;
+                         -moz-transform: scale(0.6);
+                         -moz-transform-origin: left top;
+                         -moz-transform: scale(0.6);-moz-transform-origin: left top;">
+                         <?php // $template = $templates->getFirstItem();  ?>
+                         <?php
+                         switch ($template->getDesignPattern()) {
+                             case 1:
+                                 include 'template/pattern/left.phtml';
+                                 break;
+                             case 2:
+                                 include 'template/pattern/top.phtml';
+                                 break;
+                             case 3:
+                                 include 'template/pattern/background.phtml';
+                                 break;
+                             default:
+                                 break;
+                         }
+                         ?>
+                    </div>
+                <?php endforeach; ?>
+                <div class="content">
+                    <dl id="<?php echo $_code ?>_container">
+                        <dt class="<?php echo $_code ?>">
+                        <?php if (count($templates)): ?>
+                            <div id="giftcard-template-select" style="margin: 10px 0 10px 0">
+                                <label for="select-gift"><?php echo $this->__('Select template: ') ?></label>
+                                <select id="select-gift" name="giftcard_template_id" onchange="changeTemplate(this, templates);" style="">
+                                    <option value=""><?php echo $this->__('Please select a template') ?></option>
+                                    <?php foreach ($templates as $t): ?>
+                                        <option value="<?php echo $t->getGiftcardTemplateId() ?>"><?php echo $t->getTemplateName() ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <input type="hidden" name="gift_image" id="gift-image">
+                            </div>
+                            <script>
+                                //                    loadGiftCard(templates);
+                            </script>
+                        <?php endif; ?>
+                        </dt>
+                        <dd>
+                            <div class="carousel" id="gift-image-carosel">
+                                <a href="javascript:" class="carousel-control next" rel="next">›</a>
+                                <a href="javascript:" class="carousel-control prev" rel="prev">‹</a>
+                                <div class="gift-middle" id="carousel-wrapper">
+                                    <div class="inner" style="width: 1280px;">
+                                        <?php foreach ($templates as $t): ?>
+                                            <div id="image-for-<?php echo $t->getGiftcardTemplateId() ?>" style="display:none ">
+                                                <?php
+                                                $count = 0;
+                                                switch ($t->getDesignPattern()) {
+                                                    case Magestore_Giftvoucher_Model_Designpattern::PATTERN_LEFT:
+                                                        $type = 'left/';
+                                                        break;
+                                                    case Magestore_Giftvoucher_Model_Designpattern::PATTERN_TOP:
+                                                        $type = 'top/';
+                                                        break;
+                                                    case Magestore_Giftvoucher_Model_Designpattern::PATTERN_CENTER:
+                                                        $type = '';
+                                                        break;
+                                                }
+                                                if ($t->getImages()) {
+                                                    $images = explode(',', $t->getImages());
+                                                    $maxCount = count($images) - 1;
+                                                    foreach ($images as $image) {
+                                                        if ($count % 4 == 0) {
+                                                            echo '<div id="div-bound-' . $t->getGiftcardTemplateId() . '-' . $count . '" style="">';
+                                                        }
+                                                        $image_element = 'gift-image-name-' . $t->getGiftcardTemplateId() . '-' . $count;
+                                                        $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'giftvoucher/template/images/' . $type . '/' . $image;
+//                                            $style = $count == $maxCount ? '' : 'float:left;';
+
+                                                        echo '<div id="div-image-for-' . $t->getGiftcardTemplateId() . '-' . $count . '" style="position:relative;float:left;border: 2px solid white;overflow:hidden">';
+                                                        echo '<img id="image-for-' . $t->getGiftcardTemplateId() . '-' . $count . '" src="' . $url . '" width="78px" height="78px" alt="image giftcard" style="cursor: pointer;border: 1px solid white;" onclick="changeSelectImages(this)" title="' . $image . '">';
+                                                        echo '<div class="egcSwatch-arrow" style="display:none"></div>';
+                                                        echo '</div>';
+                                                        $count+=1;
+                                                        if ($count % 4 == 0 || $count > $maxCount)
+                                                            echo '</div>';
+                                                    }
+                                                }
+                                                ?>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </dd>
+                        <dt class="<?php echo $_code ?>" style="width: 100%;float:left;">
+                        <input type="checkbox" name="<?php echo $_code ?>" id="<?php echo $_code ?>" value="1" onclick="sendFriend(this)" />
+                        <label for="<?php echo $_code ?>" style="font-weight: bold; color: #666;"><?php echo $this->__('Send Gift Card to friend') ?></label>
+                        <script type="text/javascript">
+                        </script>
+                        </dt>
+                        <dd style="float: left;width: 100%">
+                            <div class="giftvoucher-receiver" id="giftvoucher-receiver" style="display: none;">
+                                <div>
+                                    <label for="customer_name"><?php echo $this->__('Sender Name (optional):') ?></label>
+                                    <input type="text" class="input-text" name="customer_name" id="customer_name" value="<?php echo $_formData->getCustomerName() ?>" />
+                                </div>
+                                <div>
+                                    <label for="recipient_name"><?php echo $this->__('Recipient Name:') ?></label>
+                                    <input type="text" class="input-text required-entry" name="recipient_name" id="recipient_name" value="<?php echo $_formData->getRecipientName() ?>" />
+                                </div>
+                                <div>
+                                    <label for="recipient_email"><?php echo $this->__('Recipient Email:') ?></label>
+                                    <input type="text" class="input-text required-entry validate-email" name="recipient_email" id="recipient_email" value="<?php echo $_formData->getRecipientEmail() ?>" />
+                                </div>
+                                <?php if ($this->enablePhysicalMail()): ?>
+                                    <div><label for="recipient_ship"><?php echo $this->__('Send through post office') ?></label>
+                                        <input type="checkbox" value="<?php echo $this->__('Yes') ?>" name="recipient_ship" id="recipient_ship" onclick="shipToFriend(this);" <?php if ($_formData->getRecipientShip()) echo 'checked' ?> />
+                                    </div>   
+
+                                    <p id="postal_address" style="display:none;">
+                                        <label for="recipient_address"><?php echo $this->__('Postal Address:') ?></label><br />
+                                        <textarea name="recipient_address" id="recipient_address"></textarea>
+                                    </p>
+                                    <script type="text/javascript">
+                                        shipToFriend($('recipient_ship'));
+                                    </script>
+                                    </p>
+                                <?php endif ?>
+                                <?php // if ($this->enableCustomMessage()): ?>
+                                <div>
+                                    <label for="message"><?php echo $this->__('Custom message') ?></label>
+
+                                    <textarea name="message" id="message" class="required-entry" onchange="changeRemaining(this);" onkeyup="changeRemaining(this);"><?php echo $_formData->getMessage() ?></textarea>
+                                    <div id="character_remain">
+                                        <small ><?php echo $this->__('Characters Remaining: ') ?><span id="giftvoucher_char_remaining"><?php echo $this->messageMaxLen() ?></span></small>
+                                    </div>
+
+
+                                </div>
+
+                                <?php // endif; ?>
+                                <?php if ($this->enableScheduleSend()): ?>
+                                    <?php echo $this->getLayout()->createBlock('core/html_calendar')->setTemplate('page/js/calendar.phtml')->toHtml() ?>
+                                    <script>
+
+                                    </script>
+                                    <div>
+                                        <label for="day_to_send"><?php echo $this->__('Day To Send:') ?></label>
+                                        <img src="<?php echo Mage::getBaseUrl('skin') ?>/adminhtml/default/default/images/grid-cal.gif" alt="<?php echo $this->__('Select Date') ?>" class="v-middle" id="calendar-day_to_send" />
+                                        <input type="text" class="input-text validate-day-to-send" name="day_to_send" id="day_to_send" value="<?php echo $_formData->getDayToSend() ?>" style="float: left; margin-right: 3px"/>
+
+                                    </div>
+                                    <script type="text/javascript">
+                                        Calendar.setup({
+                                            inputField: "day_to_send",
+                                            ifFormat: "%m/%e/%y",
+                                            showsTime: false,
+                                            button: "calendar-day_to_send",
+                                            align: "Bl",
+                                            singleClick: true
+                                        });
+                                    </script>
+                                <?php endif ?>
+                                <div>
+                                    <label for="notify_success"><?php echo $this->__('Email notification.') ?></label>
+                                    <input type="checkbox" value="<?php echo $this->__('Yes') ?>" name="notify_success" id="email_sender" <?php if ($_formData->getNotifySuccess()) echo 'checked' ?> />
+                                </div>
+
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </fieldset>
+        </div>
+        <script type="text/javascript">
+            customer_name = $('customer_name').value;
+            recipient_name = $('recipient_name').value;
+            recipient_email = $('recipient_email').value;
+            recipient_ship = $('recipient_ship').value;
+            message = $('message').value;
+            day_to_send = $('day_to_send').value;
+            email_sender = $('email_sender').value;
+            carousel = new Carousel('carousel-wrapper', $$('#gift-image-carosel img'), $$('#gift-image-carosel a'), {
+                duration: 0.5,
+                transition: 'sinoidal',
+                visibleSlides: 4,
+                circular: false
+            });
+            Event.observe($("select-gift"), "change", function ()
+            {
+                hideTemplateImages();
+            }
+            );
+            Event.observe(window, "load", function () {
+                hideTemplateImages();
+                sendFriend();
+            });
+        </script>
+    <?php endif; ?>
+<?php endif; ?>

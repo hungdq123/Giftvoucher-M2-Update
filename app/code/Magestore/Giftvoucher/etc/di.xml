@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Giftvoucher
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="giftvoucher_quote_item" type="Magestore\Giftvoucher\Model\Plugin\QuoteItem"/>
+    </type>
+    <!-- Begin - Add pricing price to price pool for product type is giftvoucher -->
+    <virtualType name="Magestore\Giftvoucher\Pricing\Price\Pool" type="Magento\Framework\Pricing\Price\Pool">
+        <arguments>
+            <argument name="prices" xsi:type="array">
+                <item name="wishlist_configured_price" xsi:type="string">Magestore\Giftvoucher\Pricing\ConfiguredPrice\ConfigurableProduct</item>
+            </argument>
+            <argument name="target" xsi:type="object">Magento\Catalog\Pricing\Price\Pool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magestore\Giftvoucher\Pricing\Price\Collection" type="Magento\Framework\Pricing\Price\Collection">
+        <arguments>
+            <argument name="pool" xsi:type="object">Magestore\Giftvoucher\Pricing\Price\Pool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\Pricing\PriceInfo\Factory">
+        <arguments>
+            <argument name="types" xsi:type="array">
+                <item name="giftvoucher" xsi:type="array">
+                    <item name="infoClass" xsi:type="string">Magento\Framework\Pricing\PriceInfo\Base</item>
+                    <item name="prices" xsi:type="string">Magestore\Giftvoucher\Pricing\Price\Collection</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- End - Add pricing price to price pool for product type is giftvoucher -->
+</config>

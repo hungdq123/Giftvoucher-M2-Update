@@ -1,0 +1,75 @@
+
+<script type="text/javascript">
+    require([
+        "jquery",
+        "mage/backend/validation"
+    ], function($){
+        var gift_type = $("select[name='product[gift_type]']");
+        var gift_price_type = $("select[name='product[gift_price_type]']");
+        $( document ).ready(function() {
+            hidesettingGC();
+        });
+        gift_type.change(function(){
+            hidesettingGC();
+        });
+        gift_price_type.change(function(){
+            hidesettingGC();
+        });
+
+        function hidesettingGC(){
+
+            var gift_type = $("select[name='product[gift_type]']");
+            var gift_price_type = $("select[name='product[gift_price_type]']");
+            if(gift_price_type.val() == 1 )
+            {
+                $("input[name='product[gift_price]']").parent('div').parent('div').hide();
+            }
+            else if(gift_price_type.val() == 2 )
+            {
+                $("input[name='product[gift_price]']").parent('div').prev().find('span').text('Gift card price');
+                $("input[name='product[gift_price]']").parent('div').parent('div').show();
+                $("input[name='product[gift_price]']").parent('div').find('span').text('Enter fixed price(s) corresponding to Gift Card value(s).For example: Type of Gift Card value: Dropdown values Gift Card values : 20,30,40 Gift Card price: 15,25,35 So customers only have to pay $25 for a $30 Gift card.');
+                $("input[name='product[gift_price]']").val(0).trigger("change");
+            }
+            else if(gift_price_type.val() == 3 )
+            {
+                $("input[name='product[gift_price]']").parent('div').prev().find('span').text('Percentage');
+                $("input[name='product[gift_price]']").parent('div').parent('div').show();
+                $("input[name='product[gift_price]']").parent('div').find('span').text('Enter percentage(s) of Gift Card value(s) to calculate Gift Card price(s). For example: Type of Gift Card value: Dropdown values Gift Card values: 20,30,40 Percentage: 90,90,90 So customers only have to pay 90% of Gift Card value, $36 for a $40 Gift card for instance.');
+                $("input[name='product[gift_price]']").val(100).trigger("change");
+            }
+            if(gift_type.val() == 1){
+                $("input[name='product[gift_value]']").parent('div').parent('div').parent('div').show();
+                $("input[name='product[gift_from]']").parent('div').parent('div').parent('div').hide();
+                $("input[name='product[gift_to]']").parent('div').parent('div').parent('div').hide();
+                $("input[name='product[gift_dropdown]']").parent('div').parent('div').hide();
+                $("select[name='product[gift_price_type]']").children('option[data-title="Fixed Price"]').show();
+            }
+            else if(gift_type.val() == 2){
+                $("input[name='product[gift_value]']").parent('div').parent('div').parent('div').hide();
+                $("input[name='product[gift_from]']").parent('div').parent('div').parent('div').show();
+                $("input[name='product[gift_to]']").parent('div').parent('div').parent('div').show();
+                $("input[name='product[gift_dropdown]']").parent('div').parent('div').hide();
+                $("select[name='product[gift_price_type]']").children('option[data-title="Fixed Price"]').hide();
+                if (gift_price_type.val() == 1) {
+                    $("input[name='product[gift_price]']").parent('div').parent('div').hide();
+                }
+                if(gift_price_type.val() == 2) {
+                    $("select[name='product[gift_price_type]'] option[value='3']").attr("selected","selected");
+                    $("input[name='product[gift_price]']").parent('div').prev().find('span').text('Percentage');
+                    $("input[name='product[gift_price]']").parent('div').parent('div').show();
+                    $("input[name='product[gift_price]']").parent('div').find('span').text('Enter percentage(s) of Gift Card value(s) to calculate Gift Card price(s). For example: Type of Gift Card value: Dropdown values Gift Card values: 20,30,40 Percentage: 90,90,90 So customers only have to pay 90% of Gift Card value, $36 for a $40 Gift card for instance.');
+                    $("input[name='product[gift_price]']").val(100).trigger("change");
+                }
+            }
+            else if(gift_type.val() == 3){
+                $("input[name='product[gift_value]']").parent('div').parent('div').parent('div').hide();
+                $("input[name='product[gift_from]']").parent('div').parent('div').parent('div').hide();
+                $("input[name='product[gift_to]']").parent('div').parent('div').parent('div').hide();
+                $("input[name='product[gift_dropdown]']").parent('div').parent('div').show();
+                $("select[name='product[gift_price_type]']").children('option[data-title="Fixed Price"]').show();
+            }
+        }
+    });
+</script>
+

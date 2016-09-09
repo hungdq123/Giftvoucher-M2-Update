@@ -1,0 +1,340 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Giftvoucher
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <tab id="magestore" translate="label" sortOrder="0">
+            <label>Magestore Extension</label>
+        </tab>
+        <section id="giftvoucher" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Gift Card</label>
+            <tab>magestore</tab>
+            <resource>Magestore_Giftvoucher::settings</resource>
+            <group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="active" translate="label comment" type="select"  sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Gift Card</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment></comment>
+                </field>
+                <field id="giftcode_configuration_separator" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Gift code</label>
+                    <frontend_model>Magestore\Giftvoucher\Block\Adminhtml\System\Config\Form\Field\Separator</frontend_model>
+                    
+                    <comment></comment>
+                </field>            
+                <field id="pattern" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Gift code pattern</label>
+                    <backend_model>Magestore\Giftvoucher\Model\Validatepattern</backend_model>
+                    <comment><![CDATA[Generate gift codes for Gift Card products. For example:<br/><strong>[A.8] : 8 alpha<br/>[N.4] : 4 numeric<br/>[AN.6] : 6 alphanumeric<br/>GIFT-[A.4]-[AN.6] : GIFT-ADFA-12NF0O</strong>]]></comment>
+                </field>            
+                <field id="showprefix" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>The number of prefixes shown</label>
+                    <comment><![CDATA[The number of gift code's prefixes shown in front-end (This is to avoid code-copying).]]></comment>
+                </field>            
+                <field id="hiddenchar" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Replace hidden characters by</label>
+                    <comment><![CDATA[Hidden characters in gift codes will be replaced by the configured character. X is set as default.]]></comment>
+                </field>            
+                <field id="giftused_configuration_separator" translate="label comment" type="label" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Gift Card usage</label>
+                    <frontend_model>Magestore\Giftvoucher\Block\Adminhtml\System\Config\Form\Field\Separator</frontend_model>
+                    
+                    <comment></comment>
+                </field>            
+                <field id="expire" translate="label comment" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Gift Cards codes expire after</label>
+                    <comment>day(s). Empty or zero is no limitation.</comment>
+                </field>            
+                <field id="enablecredit" translate="label comment" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable customer’s Gift Card credit balance</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If enabled, customers can redeem their gift code for credit balance (View more in Customer Management)</comment>
+                </field>            
+                <field id="credit_condition" translate="label comment" type="select" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow customers to redeem Gift Cards with usage conditions</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment></comment>
+                    <depends>
+                        <field id="enablecredit">1</field>
+                    </depends>
+                </field>            
+                <field id="maximum" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Maximum time(s) to enter gift code incorrectly</label>
+                    <comment>Empty or zero is no limitation.</comment>
+                </field>            
+                <field id="share_card" translate="label comment" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Maximum number of users per gift code</label>
+                    <comment>Empty or zero is no limitation.</comment>
+                </field>            
+                <field id="use_for_ship" translate="label comment" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use Gift Cards for shipping fee</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment></comment>
+                </field>
+                <field id="use_with_coupon" translate="label comment" type="select" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use Gift Cards with coupon codes</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If Yes, customers can use Gift Cards codes and credit balance with system coupon codes to get discount.</comment>
+                </field>
+                <field id="gc_show_check_link" translate="label comment" type="select" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show the link to check Gift Cards codes on website</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment></comment>
+                </field>
+                <field id="show_expiry_date" translate="label comment" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show Gift Card expiry date on website</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment></comment>
+                </field>
+                <field id="gifttax_configuration_separator" translate="label comment" type="select" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Tax configuration</label>
+                    <frontend_model>Magestore\Giftvoucher\Block\Adminhtml\System\Config\Form\Field\Separator</frontend_model>
+                   
+                    <comment></comment>
+                </field>
+                <field id="apply_after_tax" translate="label comment" type="select" sortOrder="17" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Apply Gift Card discount</label>
+                    <source_model>Magestore\Giftvoucher\Model\Aftertax</source_model>
+                    <comment></comment>
+                </field>
+            </group>
+            <group id="interface" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>On Product Page</label>
+                <field id="giftcard_configuration_separator" translate="label comment" type="label"  sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Gift Card value</label>
+                    <frontend_model>Magestore\Giftvoucher\Block\Adminhtml\System\Config\Form\Field\Separator</frontend_model>
+                    
+                    <comment></comment>
+                </field>
+                <field id="amount" translate="label comment" type="textarea" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default Gift Card value</label>
+                    <comment><![CDATA[Examples:<br/><strong>10-1000 </strong>: a range between 10 to 1000<br/><strong>25,75,100 </strong>: a dropdown with values of 25, 75 and 100<br/><strong>100 </strong>: a static value of 100<br/><strong>The base currency is used as currency unit.</strong>]]></comment>
+                </field>            
+                <field id="description" translate="label comment" type="textarea" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Description of Gift Card value</label>
+                    <comment><![CDATA[Generate gift codes for Gift Card products. For example:<br/><strong>[A.8] : 8 alpha<br/>[N.4] : 4 numeric<br/>[AN.6] : 6 alphanumeric<br/>GIFT-[A.4]-[AN.6] : GIFT-ADFA-12NF0O</strong>]]></comment>
+                </field>            
+                <field id="gifttemplate_configuration_separator" translate="label comment" type="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Gift Card template</label>
+                    <frontend_model>Magestore\Giftvoucher\Block\Adminhtml\System\Config\Form\Field\Separator</frontend_model>
+                    
+                    <comment></comment>
+                </field>            
+                <field id="custom_image" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow customers to change the image inserted into template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment></comment>
+                </field>            
+                <field id="upload_max_size" translate="label comment" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Maximum size of image(s) uploaded by customers</label>
+                    <comment>KB</comment>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="custom_image">1</field>
+                    </depends>
+                </field>            
+                <field id="giftinfo_configuration_separator" translate="label comment" type="label" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Gift Card shipping information</label>
+                    <frontend_model>Magestore\Giftvoucher\Block\Adminhtml\System\Config\Form\Field\Separator</frontend_model>
+                    
+                    <comment></comment>
+                </field>            
+                <field id="postoffice" translate="label comment" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow shipping Gift Card</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment></comment>
+                </field>            
+                <field id="postoffice_date" translate="label comment" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Minimum days for store owner to send Gift Card through post office</label>
+                    <comment>day(s)</comment>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="postoffice">1</field>
+                    </depends>
+                </field>            
+                <field id="max" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Message max length</label>
+                    <backend_model>Magestore\Giftvoucher\Model\Validateconfig</backend_model>
+                    <comment>Message max length is 240 characters.</comment>
+                </field>            
+                <field id="schedule" translate="label comment" type="select" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable scheduling Gift Card deliver</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment></comment>
+                </field>
+            </group>
+            <group id="interface_checkout" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>On Shopping Cart Page</label>
+                <field id="show_gift_card" translate="label comment" type="select"  sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show Gift Card box on shopping cart page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If enabled, there will be a Gift Card box for customers to apply gift code right on the shopping cart page</comment>
+                </field>
+                <field id="display" translate="label comment" type="multiselect" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Information displayed on shopping cart page</label>
+                    <source_model>Magestore\Giftvoucher\Model\Displayincart</source_model>
+                    <comment></comment>
+                </field>            
+                <field id="display_image_item" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show Gift Card image as product image in shopping cart </label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment></comment>
+                </field>
+            </group>
+            <group id="interface_payment" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>On Checkout Page</label>
+                <field id="show_gift_card" translate="label comment" type="select"  sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show Gift Card box on Checkout Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If enabled, there will be a Gift Card box for customers to apply gift code right on Checkout Page</comment>
+                </field>
+            </group>
+            <group id="email" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Email Notification</label>
+                <field id="emailgeneral_configuration_separator" translate="label comment" type="label"  sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>General</label>
+                    <frontend_model>Magestore\Giftvoucher\Block\Adminhtml\System\Config\Form\Field\Separator</frontend_model>
+                    
+                    <comment></comment>
+                </field>
+                <field id="enable" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable email notification</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment></comment>
+                </field>            
+                <field id="only_complete" translate="label comment" type="multiselect" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send Gift Card to friend when Gift Card status is</label>
+                    <source_model>Magestore\Giftvoucher\Model\Status</source_model>
+                    <comment></comment>
+                </field>
+                <field id="sender" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sender of email notification</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <comment></comment>
+                </field>            
+                <field id="note" translate="label comment" type="textarea" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Gift Card notes</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Notes will be displayed in Gift Card delivery email.]]></comment>
+                </field>            
+                <field id="send_with_ship" translate="label comment" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send Gift Card copy via email</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment></comment>
+                </field>            
+                <field id="attachment" translate="label comment" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Attach printable PDF files to Emails</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment></comment>
+                </field>            
+                <field id="emailpurchaser_configuration_separator" translate="label comment" type="label" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Notification email sent to purchaser</label>
+                    <frontend_model>Magestore\Giftvoucher\Block\Adminhtml\System\Config\Form\Field\Separator</frontend_model>
+                    
+                    <comment></comment>
+                </field>            
+                <field id="self" translate="label comment" type="select" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send-to-purchaser email template when recipient receives Gift Card</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>            
+                <field id="template_success" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send-to-purchaser email template when recipient receives Gift Card</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>            
+                <field id="emailrecipient_configuration_separator" translate="label comment" type="label" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Notification email sent to recipient</label>
+                    <frontend_model>Magestore\Giftvoucher\Block\Adminhtml\System\Config\Form\Field\Separator</frontend_model>
+                    
+                    <comment></comment>
+                </field>
+                <field id="send_refund" translate="label comment" type="select" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send notification email to recipient when purchaser refunds Gift Card</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment></comment>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send-to-recipient email template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="template_refund" translate="label comment" type="select" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send-to-recipient email template when Gift Card is refunded</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="autosend" translate="label comment" type="select" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Auto-send reminder email before Gift Card expires</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="daybefore" translate="label comment" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Auto-send reminder email before</label>
+                    <comment></comment>
+                </field>
+            </group>
+            <group id="print_voucher" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Gift Card Printout</label>
+                <field id="logo" translate="label comment" type="image"  sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Logo on PDF Printouts</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Image\Pdf</backend_model>
+                    <upload_dir config="system/filesystem/media" scope_info="1">giftvoucher/pdf/logo</upload_dir>
+                    <base_url type="media" scope_info="1">giftvoucher/pdf/logo</base_url>
+                    <comment>Used in PDF and HTML documents.
+Recommended size: 171x63px. 
+Supported format: jpeg, gif, png</comment>
+                </field>
+                <field id="barcode_enable" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show barcode on Gift Card</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment></comment>
+                </field>            
+                <field id="barcode_type" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Type of Barcode</label>
+                    <source_model>Magestore\Giftvoucher\Model\Typeofbarcode</source_model>
+                    <comment></comment>
+                    <depends>
+                        <field id="barcode_enable">1</field>
+                    </depends>
+                </field>
+                <field id="note" translate="label comment" type="textarea" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Gift Card notes</label>
+                    <comment></comment>
+                </field>
+            </group>
+        </section>
+        <section id="sales" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="totals_sort" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="giftvoucher" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Gift Voucher Before Tax</label>
+                </field>
+                <field id="giftcardcredit" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Gift Card Credit Before Tax</label>
+                </field>
+                <field id="giftvoucher_after_tax" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Gift Voucher After Tax</label>
+                </field>
+                <field id="giftcardcredit_after_tax" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Gift Card Credit After Tax</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

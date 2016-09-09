@@ -1,0 +1,54 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<div class="customer-account-giftcard">
+    <!--div class="page-title">
+        <h1><?php echo __('Gift card') ?></h1>
+    </div-->
+    <div class="gift-card">
+        <div class="form-group">
+
+            <div class="form-group">
+                <div class="row">
+                    <?php if ($block->getHelper()->getGeneralConfig('enablecredit')): ?>
+                        <div class="col-xs-12 col-sm-6">
+                            <?php echo __('My credit balance: ') ?><span class="regular-price"><span><?php echo $block->getBalanceAccount() ?></span></span>
+                        </div>
+                    <?php endif; ?>
+                    <div class="col-xs-12 col-sm-6 text-right" style="overflow: hidden">
+                        <button type="button" class="action primary addredeem" onclick="window.location.href = '<?php echo $this->getUrl('giftvoucher/index/addredeem') ?>'">
+                            <?php if ($block->getHelper()->getGeneralConfig('enablecredit')): ?>
+                                <span><?php echo __('Add / Redeem a Gift Card') ?></span>
+                            <?php else: ?>
+                                <span><?php echo __('Add a Gift Card') ?></span>
+                            <?php endif; ?>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <?php if ($block->getHelper()->getGeneralConfig('enablecredit')): ?>
+                <div class="form-group">
+                    <a class="left" style="text-decoration: underline;" href="<?php echo $this->getUrl('giftvoucher/index/history') ?>"><?php echo __('View detail') ?></a>
+                </div>
+            <?php endif; ?>
+        </div>
+        <?php echo $block->getGridHtml() ?>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php $total = $this->getTotal() ?>
+<?php $codesArray = explode(',', $total->getGiftCodes()) ?>
+<?php if (count($codesArray)): ?>
+    <?php
+    $codesDiscountArray = explode(',', $total->getCodesDiscount());
+    $discounts = array_combine($codesArray, $codesDiscountArray);
+    $helper = $block->getHelper();
+    ?>
+    <?php foreach ($discounts as $code => $value): ?>
+        <tr class="giftvoucher-total-code" style="display:none;">
+            <td colspan="<?php echo $this->getColspan(); ?>" style="<?php echo $total->getStyle() ?>" class="a-right">
+                <?php echo $helper->getHiddenCode($code) ?>
+                <a href="<?php echo $this->getUrl('giftvoucher/checkout/removegift', array('code' => $code)) ?>" title="<?php echo __('Remove') ?>">
+                    <img src="<?php echo $this->getViewFileUrl('Magestore_Giftvoucher::images/btn_remove.gif') ?>" alt="<?php echo __('Remove') ?>" style="margin-top:2px;" />
+                </a>
+            </td>
+            <td style="<?php echo $total->getStyle() ?>" class="a-right">
+                <?php echo $this->getCheckoutHelper()->formatPrice(-$value) ?>
+            </td>
+        </tr>
+    <?php endforeach ?>
+
+    <tr class="giftvoucher-total" onclick="toggleTotalCode()">
+        <td colspan="<?php echo $this->getColspan(); ?>" style="<?php echo $total->getStyle() ?>" class="a-right">
+            <?php echo $total->getTitle() ?>
+        </td>   
+        <td style="<?php echo $total->getStyle() ?>" class="a-right">
+            <?php echo $this->getCheckoutHelper()->formatPrice($total->getValue()) ?>
+        </td>
+    </tr>
+<?php endif; ?>

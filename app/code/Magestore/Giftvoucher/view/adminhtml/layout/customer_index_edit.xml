@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!--<referenceContainer name="admin.scope.col.wrap" htmlClass="admin__old" />  ToDo UI: remove this wrapper with old styles removal. The class name "admin__old" is for tests only, we shouldn't use it in any way--> 
+        <referenceContainer name="content">
+            <referenceBlock name="customer_form">
+                <block class="Magestore\Giftvoucher\Block\Adminhtml\Customer\Tab\Credit" name="customer_edit_tab_credit" >
+                    <arguments>
+                        <argument name="tab_label" xsi:type="string">giftcard_credit</argument>
+                        <argument name="sort_order" xsi:type="number">11</argument>
+                    </arguments>
+                </block>
+            </referenceBlock>
+            <!--<uiComponent name="customer_form"/>-->
+        </referenceContainer>
+    </body>
+</page>

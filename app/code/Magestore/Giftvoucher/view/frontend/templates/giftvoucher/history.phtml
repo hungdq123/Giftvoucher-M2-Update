@@ -1,0 +1,45 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+?>
+<div class="customer-account-giftcard">
+    <!--div class="page-title">
+        <h1><?php echo __('My Gift Card Credit') ?></h1>
+    </div-->
+    <div class="gift-card">
+        <div class="form-group">
+            <h2 class="sub-title"><?php echo __('Balance') ?></h2>
+            <span><?php echo __('Your current balance is: ') ?>
+                <span class="regular-price"><?php echo $this->getBalanceAccount() ?></span>
+            </span>
+        </div>
+        <div class="form-group">
+            <h2 class="sub-title"><?php echo __('Redeem a Gift Card') ?></h2>
+            <?php echo __('Have a Gift Card? %1 to redeem it', '<a href="' . $this->getUrl('giftvoucher/index/addredeem') . '">' . __('Click here') . '</a>'); ?>
+        </div>
+        <div class="form-group">
+            <h2 class="sub-title"><?php echo __('Balance History'); ?></h2>
+        </div>
+        <?php echo $this->getGridHtml() ?>
+        <div class="form-group">
+            <p class="back-link">
+                <a href="<?php echo $this->getUrl('giftvoucher/index/index') ?>">
+                    <small>« </small><?php echo __('Back') ?>
+                </a>
+            </p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,325 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+$barcode = $block->getHelper()->getGeneralConfig('barcode_enable');
+$barcode_type = $block->getHelper()->getGeneralConfig('barcode_type');
+$url_barcode = '';
+if ($barcode) {
+    if ($barcode_type == 'code128') {
+        $url_barcode = $this->getStoreManager()->getStore()
+            ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA)
+            . 'giftvoucher/template/barcode/default.png';
+    } else {
+        $url_barcode = $this->getStoreManager()->getStore()
+            ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA)
+            . 'giftvoucher/template/barcode/qr.png';
+    }
+}
+if (!$template->getStyleColor()) {
+    $template->setStyleColor('orange');
+}
+if (!$template->getTextColor()) {
+    $template->setTextColor('#2f2f2f');
+}
+
+if ($template->getNotes()) {
+    $notes = $template->getNotes();
+} else {
+    $notes = $block->getSingleton('Magestore\Giftvoucher\Model\Giftvoucher')->getPrintNotes();
+}
+
+if ($template->getImages()) {
+    $image = explode(',', $template->getImages());
+    $image = $image[0];
+} else {
+    $image = 'default.png';
+}
+$image = $this->getStoreManager()->getStore()
+    ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA)
+    . 'giftvoucher/template/images/' . $image;
+if ($block->getHelper()->getStoreConfig('giftvoucher/print_voucher/logo')) {
+    $logo = $this->getStoreManager()->getStore()
+        ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA)
+        . 'giftvoucher/pdf/logo/' . $block->getHelper()->getStoreConfig('giftvoucher/print_voucher/logo');
+} else {
+    $logo = $this->getDefaultPrintLogo();
+}
+?>
+<style>
+    .giftcard-text-color{
+        color: <?php echo $template->getTextColor() ?>
+    }
+    .giftcard-style-color{
+        color: <?php echo $template->getStyleColor() ?>
+    }
+</style>
+<div id="giftcard-template-back">
+    <div class="giftcard-template-content" style="display:none"></div>
+    <div class="giftcard-change-image-background-popup giftcard-change-image" 
+        style="background-size: 600px 365px; background-image: url(<?php echo $image ?>);">          
+        <?php if ($logo): ?>
+            <div class="giftcard-logo">
+                <img src="<?php echo $logo ?>"/>
+            </div>
+        <?php endif; ?>           
+        <div class = "title-value giftcard-logo-background">
+            <div class="giftcard-style-color giftcard-title"><?php echo $template->getCaption() ?></div>
+            <div class="giftcard-value-color">
+                <div style="line-height: 54px;">
+                    <span class="giftcard-text-color"><?php echo __('Value') ?></span>
+                    <span class="giftcard-style-color giftcard-price-change">$100.00</span>
+                </div>
+            </div>
+        </div>
+        <div class="from-to-barcode-background">
+            <div class="from-to">
+                <div class="giftcard-form">
+                    <label class="giftcard-text-color" for="giftcard-from"><?php echo __('From') ?>:</label>
+                    <span class="giftcard-style-color giftcard-send-from" id='giftcard-from' >&nbsp;<?php echo $this->getCustomerSession()->isLoggedIn() ? $this->getCustomerSession()->getCustomer()->getFirstname() : ''; ?></span>
+                </div>
+                <div class="giftcard-to" style="">
+                    <label class="giftcard-text-color" for="giftcard-to"><?php echo __('To') ?>: </label>
+                    <span class="giftcard-style-color giftcard-send-to" id='giftcard-to'>&nbsp;</span>
+                </div>
+            </div>
+            <div class="giftcard-barcode">                
+                <?php if ($url_barcode != ''): ?>
+                    <div class="giftcard-number">                
+                        <span class="giftcard-style-color" style="">GIFT-XXXX-XXXX</span>
+                    </div>
+                    <span class="barcode"><img src="<?php echo $url_barcode ?>" /></span>
+                <?php else: ?>
+                    <div class="giftcard-number">                
+                        <span class="giftcard-style-color" style="">GIFT-XXXX-XXXX</span>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="giftcard-box-background">
+            <div class="giftcard-text-box"><pre class="giftcard-text-color giftcard-custom-message"><?php echo __('Write message here ...') ?></pre></div>
+        </div>
+        <div class="giftcard-note-background">
+            <div class="form-note">
+                <p class="giftcard-text-color"><?php echo $notes; ?></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+<style>    
+    #giftcard-template-back .giftcard-template-content{display: none; height: 0px} 
+    .title-value.giftcard-logo-background {
+        float: left;
+        width: 100%;
+        background: url('<?php echo $this->getViewFileUrl('Magestore_Giftvoucher::images/bkg-title.png'); ?>');
+        height: 50px;   
+        background-size: 100%;       
+    } 
+    .giftcard-logo-background .giftcard-value-color {
+        float: right;  
+        width: 205px;
+        background: url('<?php echo $this->getViewFileUrl('Magestore_Giftvoucher::images/bkg-value.png'); ?>');
+        height: 50px;   
+        background-size: 100%;
+        text-align: right;
+        padding-right: 15px;
+    }
+    .from-to-barcode-background{
+        float: left;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .giftcard-change-image-background-popup .giftcard-logo {
+        float: left;   
+        height: 84px;
+        margin-left: 15px;
+    }
+    .giftcard-change-image-background-popup .giftcard-logo img {      
+        margin-bottom: 15px;       
+        border-radius: 0px 0px 5px 5px;
+        max-height: 70px;
+        float: left;        
+    }
+    .giftcard-logo-background .giftcard-text-color {              
+        font-size: 12px;        
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 600;
+    }
+    .giftcard-logo-background .giftcard-style-color.giftcard-price-change {              
+        font-size: 26px;       
+        font-family: 'Open Sans', sans-serif;
+        font-weight: bold;
+        float: right;
+        margin-left: 15px;
+        margin-top: -3px;
+    }        
+    .giftcard-logo-background .giftcard-title {
+        float: left;
+        font-size: 20px;
+        font-family: 'Open Sans', sans-serif;
+        margin-left: 15px;
+        padding-top: 15px;
+        font-weight: 600;
+    }   
+    .from-to-barcode-background .from-to {
+        font-size: 16px; 
+        font-family: 'Open Sans', sans-serif;
+        float: left;       
+        margin-left: 15px;       
+    }
+    .from-to-barcode-background .from-to .giftcard-form{       
+        float: left; 
+        text-align: left;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }       
+    .from-to-barcode-background .from-to .giftcard-to {
+        float: left; 
+        text-align: left;        
+        clear: both;
+    }
+    .giftcard-text {
+        height: 90px;
+    }
+    .from-to-barcode-background span img {
+        height: 40px;
+        max-width: 100%;
+    }
+    .from-to-barcode-background .from-to .giftcard-text-color {       
+        font-family: 'Open Sans', sans-serif;   
+        font-size: 16px;
+        font-weight: 600;
+    }   
+    .from-to-barcode-background .from-to .giftcard-style-color{
+        font-size: 16px;
+        font-family: 'Open Sans', sans-serif;        
+    }    
+    .giftcard-box-background{
+        overflow: hidden;
+        width: 95%; 
+        margin-left: 15px;
+        float: left;
+    } 
+    .giftcard-box-background .giftcard-text-box{
+        background: #fff;
+        border-radius: 5px;      
+        padding: 0; 
+        padding-bottom: 16px; 
+        padding-top: 3px;               
+        vertical-align: middle;
+        width: 100%;
+    }
+    .giftcard-box-background .giftcard-text-color.giftcard-custom-message{
+        margin: 0;
+        white-space: pre-wrap; 
+        max-height: 85px; 
+        overflow: hidden;
+        font-size: 11px;
+        font-family: 'Open Sans', sans-serif;
+        padding: 0px 5px;
+        //color: black !important;
+    }  
+    .from-to-barcode-background .giftcard-barcode{       
+        float: right;    
+        margin-right: 15px;
+    }
+    .from-to-barcode-background .giftcard-barcode .giftcard-style-color{
+        //color: orange;
+        font-weight: bold;
+        font-size:15px; 
+        font-family: 'Open Sans', sans-serif;
+    }
+    .from-to-barcode-background .giftcard-barcode .giftcard-style-color{
+        font-size: 14px; 
+        line-height: 30px;
+        //color: orange; 
+        font-weight: bold; 
+        font-family: 'Open Sans', sans-serif;
+        font-style: italic;
+    }
+    .giftcard-note-background{       
+        // margin-top: 8px;       
+        float:left;
+        box-sizing: content-box;
+        overflow: hidden;
+        text-align: center;
+        vertical-align: middle;
+        margin-top: 10px;
+        height: 30px
+    }
+    .giftcard-note-background .form-note{
+        width: 100%; 
+        margin: 0 auto;        
+    }
+    .giftcard-note-background .giftcard-text-color{
+        font-size: 12px;
+        line-height: 15px;
+        margin: 0;      
+        font-family: 'Open Sans', sans-serif;
+        text-align: left;  
+        padding: 0 15px;
+    }           
+    #giftcard-template-back {
+        overflow:hidden; 
+        max-height: 550px;
+        font-size: 14px;
+        width: 600px;
+        height: 365px;
+    }
+    #giftcard-template-back .giftcard-change-image-background-popup{
+        width: 100%;  
+        height: 365px;
+    }    
+    .giftcard-box-background .giftcard-text-box {
+        height: 75px;
+    }
+    giftcard-box-background {
+        width: 93% !important; 
+        height: 95px; 
+        padding: 5px 3%; 
+        margin-top: 0px !important;
+        box-sizing: content-box;
+        float: left;
+    }
+    .from-to-barcode-background .giftcard-number{
+        float: right;
+        text-align: right;
+        width: 100%;
+    }    
+    .from-to-barcode-background .giftcard-barcode span.barcode  {       
+        float: right;               
+    }   
+
+    /*****template 03 width devices*******/    
+    .giftcard-change-image-background-popup img#img-type-background{
+        position: relative;
+        top: 0;
+        z-index: 10;
+        left:0;         
+    }
+    #giftcard-template-back img#img-type-background{width: 100%}
+    #giftcard-preview-template img#img-type-background{width: 100%}    
+    #giftcard-preview-template #giftcard-preview-template-content .giftcard-change-image-background-popup.giftcard-change-image{
+        width: 100% !important; 
+        top: 0%;
+        position: absolute;
+    }
+</style>

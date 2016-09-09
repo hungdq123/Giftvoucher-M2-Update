@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Giftvoucher
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/Event/etc/events.xsd">
+    <event name="sales_quote_collect_totals_before">
+        <observer name="giftvoucher_collect_totals_before" instance="Magestore\Giftvoucher\Observer\CollectTotalsBeforeObserver"/>
+    </event>
+    <event name="sales_order_invoice_save_after">
+        <observer name="giftvoucher_invoice_save_after" instance="Magestore\Giftvoucher\Observer\InvoiceSaveAfterObserver"/>
+    </event>
+    <event name="sales_order_creditmemo_save_after">
+        <observer name="giftvoucher_creditmemo_save_after" instance="Magestore\Giftvoucher\Observer\CreditmemoSaveAfterObserver"/>
+    </event>
+    <event name="sales_order_load_after">
+        <observer name="giftvouchers_order_load_after" instance="Magestore\Giftvoucher\Observer\OrderLoadAfterObserver"/>
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="giftvoucher_order_save_after" instance="Magestore\Giftvoucher\Observer\Backend\OrderSaveAfterObserver"/>
+    </event>
+    <event name="adminhtml_sales_order_creditmemo_register_before">
+        <observer name="giftcard_creditmemo_register_before" instance="Magestore\Giftvoucher\Observer\CreditmemoRegisterBeforeObserver"/>
+    </event>
+    <event name="checkout_cart_product_add_after">
+        <observer name="giftvoucher_cart_product_add_after" instance="Magestore\Giftvoucher\Observer\ProductAddAfterObserver"/>
+    </event>
+    <event name="sales_shipment_item_save_after">
+        <observer name="sales_shipment_item_save_after" instance="Magestore\Giftvoucher\Observer\UpdateShippedGiftCardObserver"/>
+    </event>
+</config>

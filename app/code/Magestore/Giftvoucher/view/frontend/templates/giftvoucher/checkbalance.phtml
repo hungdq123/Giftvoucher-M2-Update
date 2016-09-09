@@ -1,0 +1,97 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<div class="page-title">
+    <h1><?php echo __('Check Gift card information') ?></h1>
+</div>
+<div class="gift-card">
+    <?php echo $block->getLayout()->getMessagesBlock()->getGroupedHtml() ?>
+    <form action="<?php echo $this->getFormActionUrl() ?>" method="post" id="giftvoucher_form" class="gift-card">
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div  id="giftvoucher-check-balance">
+                        <fieldset class="fieldset checkgiftcard">
+                            <div class="field required form-group">
+                                <label for="giftvoucher_code" class="label"><?php echo __('Enter your gift code') ?></label>
+                                <input type="text" title="<?php echo __('Gift card code') ?>" class="input-text required-entry form-control" id="giftvoucher_code" name="code" value="<?php //echo $this->getCodeTxt()  ?>" <?php if (!$this->getGiftvoucherHelper()->isAvailableToCheckCode()) echo 'disabled="true"' ?> />
+                            </div>
+                        </fieldset>
+                        <div class="actions-toolbar">
+                            <button type="submit" class="action submit primary" <?php if (!$this->getGiftvoucherHelper()->isAvailableToCheckCode()) echo 'disabled="true"' ?> ><span><span><?php echo __('Check Gift Card') ?></span></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+        require([
+            'jquery',
+            'mage/mage'
+        ], function ($) {
+            var dataForm = $('#giftvoucher_form');
+            dataForm.mage('validation', {
+            }).find('input:text').attr('autocomplete', 'off');
+
+        });
+    </script>
+    <?php $giftVoucher = $this->getGiftVoucher() ?>
+    <?php if ($giftVoucher): ?>
+        <h2 class="sub-title"><?php echo __('Result') ?></h2>
+        <div class="form-group">
+            <div id="giftvoucher-result">
+                <div class="field">
+                    <label for="result_giftvoucher_code" style="display:inline-block; width: 180px; padding-right: 10px;"><?php echo __('Gift card code:') ?></label>
+                    <span id="result_giftvoucher_code"><strong><?php echo $this->getCodeTxt() ?></strong></span>
+                </div>
+                <div class="field">
+                    <label for="balance" style="display:inline-block; width: 180px; padding-right: 10px;"><?php echo __('Balance') ?>: </label>
+                    <span id="balance"><strong><?php echo $this->getBalanceFormat($giftVoucher) ?></strong></span>
+                </div>
+                <?php if ($giftVoucher->getDescription()): ?>
+                    <div class="field">
+                        <label for="description" style="display:inline-block; width: 180px; padding-right: 10px;"><?php echo __('Description') ?>: </label>
+                        <span id="description" style="width:70%"><?php echo $giftVoucher->getDescription() ?></span>
+                    </div>
+                <?php endif; ?>
+                <div class="field">
+                    <label for="status" style="display:inline-block; width: 180px; padding-right: 10px;"><?php echo __('Status') ?>: </label>
+                    <span id="status"><?php echo $this->getStatus($giftVoucher) ?></span>
+                </div>
+                <?php if ($expiredAt = $giftVoucher->getExpiredAt()): ?>
+                    <div class="field">
+                        <label for="expired_at" style="display:inline-block; width: 180px; padding-right: 10px;"><?php echo __('Expired at') ?>: </label>
+                        <span id="expired_at"><?php echo $this->formatDate($expiredAt) ?></span>
+                    </div>
+                <?php endif ?>
+            </div>
+        </div>
+    <?php endif ?>
+</div>
+<style>
+    .page-title-wrapper{
+        display: none;
+    }
+    #giftvoucher-result .field{
+        display: flex;
+    }
+</style>

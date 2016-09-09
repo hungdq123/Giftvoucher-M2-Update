@@ -1,0 +1,4 @@
+history_amount,balance,status,customer_name,order_increment_id,recipient_name,created_at,expired_at,store_id,currency,customer_id,customer_email,recipient_email,recipient_address,message,gift_code
+25,25,active,Nguyen Dac Doan,100000031,,12/6/2011 4:07,12/5/2012 0:00,1,USD,2,doan.1988@yahoo.com,,,,
+100,100,active,Nguyen Dac Doan,100000030,Doanh,12/6/2011 3:20,6/11/2012 3:20,1,USD,2,doan.1988@yahoo.com,doanhbk@yahoo.com,"Nguyen Dac Doan\n\nNew York\n\n\n\n\nNew York,  New York, 1000\nUnited States\nT: 123456789\n",Custom message,
+25,500,pending,Nguyen Dac Doan,100000007,Doanh,8/29/2011 9:14,8/28/2012 0:00,1,USD,2,dacdoan_88@yahoo.com,doanh@oss.com.vn,"Nguyen Dac Doan\nOSS\nTran Dai Nghia\n\n\n\n\nHa Noi,  084\nVietnam\nT: 123456789\n",Happy birth day!,

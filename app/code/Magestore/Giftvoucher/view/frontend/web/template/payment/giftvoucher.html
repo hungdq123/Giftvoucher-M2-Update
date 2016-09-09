@@ -1,0 +1,173 @@
+<!-- ko if: allGiftvoucherData()['showGiftForm'] -->
+<!-- ko ifnot: allGiftvoucherData()['purchaseGiftcard']['allGiftcard'] -->
+    <dl id="giftvoucher_container" class="gift-card" >
+        <!-- ko if: allGiftvoucherData()['purchaseGiftcard']['countGiftcard'] -->
+            <ul class="form-group">
+                <li class="message">
+                    <ul class="notice-msg">
+                        <li>
+                            <span data-bind="text: $t('Gift Cards cannot be used to purchase Gift Card products')"></span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        <!-- /ko -->
+        <!-- ko if: allGiftvoucherData()['enableCredit'] -->
+            <!-- ko if: allGiftvoucherData()['customerCredit'] -->
+                <dt class="giftvoucher_credit form-group">
+                    <input type="checkbox" name="payment[giftvoucher_credit]" id="giftvoucher_credit" data-bind="checked: useGiftCredit, click: changeUseGiftCredit" />
+                    <label for="giftvoucher_credit" style="font-weight: bold; color: #666;">
+                        <!-- ko text: $t('Use Gift Card credit to check out ' )--><!-- /ko -->
+                        <span class="price" data-bind="text: allGiftvoucherData()['customerCreditFormated']"></span>
+                    </label>
+                    <p id="giftvoucher_credit_ajaxload" style="display:none; font-weight: normal; font-style: italic;">
+                        <img class="v-middle"
+                             data-bind="attr:{alt: $t('Loading...'),title: $t('Loading...'), src: $t(allGiftvoucherData()['allImages']['opc-ajax-loader'])} " />
+                        <!-- ko text: $t('Loading...' )--><!-- /ko -->
+                    </p>
+                </dt>
+                <dd class="form-group giftvoucher_credit" data-bind="if: useGiftCredit">
+                    <ul id="payment_form_giftvoucher_credit">
+                        <li id="gift_credit_message"></li>
+                        <li class="giftvoucher-discount-code">
+                            <strong>
+                                <!-- ko text: $t('You are using' )--><!-- /ko -->
+                                <span>
+                                    <span class="using_credit" style="cursor: pointer;" title="Edit" data-bind="ifnot: showCreditInput, click: showCreditInput">
+                                        <a href="#" onclick="return false;"><span data-bind="text: allGiftvoucherData()['usingAmount']"></span></a>
+                                        <img class="ajax-loader v-middle" 
+                                            data-bind="attr:{alt: $t('Edit'), src: $t(allGiftvoucherData()['allImages']['btn_edit'])} " />
+                                    </span>
+                                    <span class="credit_input" data-bind="if: showCreditInput">
+                                        <input class="input-text" type="text" style="width: 68px;" 
+                                            data-bind="event: {keypress: enterUpdateCreditInput}, value: allGiftvoucherData()['useGiftcreditAmount'], attr:{alt: $t('Apply'), title: $t('Credit')}"/>
+                                        <img 
+                                            data-bind="attr:{alt: $t('Apply'), title: $t('Apply'), src: $t(allGiftvoucherData()['allImages']['i_msg-success'])}, click: updateCreditInput"
+                                            class="v-middle"  style="cursor: pointer;" />
+                                    </span>
+                                </span>
+                            </strong>
+                        </li>
+                    </ul>
+                </dd>
+            <!-- /ko -->
+        <!-- /ko -->
+        <dt class="form-group giftvoucher">
+            <input type="checkbox" name="payment[giftvoucher]" id="giftvoucher" data-bind="checked: useGiftVoucher, click: changeUseGiftvoucher" />
+            <label for="giftvoucher" style="font-weight: bold; color: #666;">
+                <!-- ko text: $t('Use Gift Card to check out' )--><!-- /ko -->
+            </label>
+            <p id="giftvoucher_ajaxload" style="display:none; font-weight: normal; font-style: italic;">
+                <img class="v-middle"
+                    data-bind="attr:{alt: $t('Loading...'),title: $t('Loading...'), src: $t(allGiftvoucherData()['allImages']['opc-ajax-loader'])} " />
+                <!-- ko text: $t('Loading...' )--><!-- /ko -->
+            </p>
+        </dt>
+        <dd class="giftvoucher" data-bind="if: useGiftVoucher">
+            <ul  id="payment_form_giftvoucher">
+                <!-- ko if: countGiftcard()>0 -->
+                    <li class="giftvoucher-discount-code form-group" >
+                        <ul data-bind="foreach: giftcards">
+                            <li>
+                                <strong data-bind="attr:{id: $t(code+'_remove')}" >
+                                    <!-- ko text: $t(hiddenCode)--><!-- /ko -->
+                                    <!-- ko text: $t('(')--><!-- /ko -->
+                                    <span>
+                                        <span class="giftcard_change" style="cursor: pointer;" 
+                                              data-bind="click: $parent.showGiftCardInput.bind($data, $index), attr:{id: $t('giftcard_change_'+$index.call()),title: $t('Edit')}">
+                                            <a class="giftcard-amount" href="#" onclick="return false;">
+                                                <span class="price" data-bind="text: discount"></span>
+                                            </a>
+                                            <img class="ajax-loader v-middle"
+                                                data-bind="attr:{alt: $t('Edit'), src: $t($parent.allGiftvoucherData()['allImages']['btn_edit'])}" />
+                                        </span>
+                                        <span class="giftcard_input" style="display: none;" data-bind="attr:{id: $t('giftcard_input_'+$index.call())}">
+                                            <input class="input-text" type="text"
+                                                data-bind="value: value, attr:{title: $t('Gift Card Amount')} "
+                                                style="width: 68px;" data-bind="event: {keypress: $parent.enterUpdateCreditInput}" />
+                                            <img class="apply v-middle" style="cursor: pointer;"
+                                                data-bind="click: $parent.updateGiftCardInput.bind($data, $index, $parent), attr:{id: $t('apply_code_'+$index.call()), alt: $t('Apply'), title: $t('Apply'), src: $t($parent.allGiftvoucherData()['allImages']['i_msg-success'])}" />
+                                            <img class="ajax-loader v-middle" style="display: none;"
+                                                data-bind="attr:{id: $t('ajax_loader_'+$index.call()), alt: $t('Apply...'), title: $t('Apply...'),src: $t($parent.allGiftvoucherData()['allImages']['opc-ajax-loader'])}" />
+                                        </span>
+                                    </span>
+                                    <!-- ko text: $t(')')--><!-- /ko -->
+                                </strong>
+                                <button type="button" data-bind="click: $parent.removeGiftVoucher.bind($data, code, $parent), attr:{id: $t(code), title: $t('Remove')}">
+                                    <input type="hidden" data-bind="value: removeUrl" />
+                                    <img style="margin-top: 2px;" 
+                                        data-bind="attr:{alt: $t('Remove...'),src: $t($parent.allGiftvoucherData()['allImages']['btn_remove'])}" />
+                                </button>
+                                <span data-bind="attr:{id: $t(code+'_ajax')}" style="display:none;">
+                                    <img class="v-middle"
+                                        data-bind="attr:{alt: $t('Removing Gift Card \"'+hiddenCode+'\" ...'), title: $t('Removing Gift Card \"'+code+'\" ...'), src: $t($parent.allGiftvoucherData()['allImages']['opc-ajax-loader'])}" />
+                                    <!-- ko text: $t('Removing Gift Card \"'+hiddenCode+'\"...')--><!-- /ko -->
+                                </span>
+                            </li>
+                        </ul>
+                    </li>
+                <!-- /ko -->
+               <!-- ko if: allGiftvoucherData()['isPassed'] -->
+                    <li id="giftvoucher_message" class="form-group">
+                        <ul class="success-msg">
+                            <li data-bind="text: $t('Your order’s grand total is zero now. No need to add any more Gift code.')"></li>
+                        </ul>
+                    </li>
+                    <div id="giftvoucher_cache_url" style="display:none;" data-bind="text: allGiftvoucherData()['addGiftVoucherUrl']"></div>
+                <!-- /ko -->
+                <!-- ko ifnot: allGiftvoucherData()['isPassed'] -->
+                    
+                    <li id="giftvoucher-custom-code" class="form-group">
+                        <div class="row"><div class="col-xs-6">
+                        <label for="giftvoucher_code" data-bind="text: $t('Enter your gift code')"></label>
+                        <!-- ko if: allGiftvoucherData()['isAvailableToAddCode'] -->
+                            <input type="text" class="form-control input-text" id="giftvoucher_code" name="payment[gift_code]"
+                                data-bind="attr:{title: $t('Gift Card Code')}, textInput: giftcardCode"/>
+                        <!-- /ko -->
+                        <!-- ko ifnot: allGiftvoucherData()['isAvailableToAddCode'] -->
+                            <input type="text" class="form-control input-text" id="giftvoucher_code" name="payment[gift_code]"
+                                data-bind="attr:{title: $t('Gift Card Code')}, textInput: giftcardCode" disabled="true" />
+                        <!-- /ko -->
+                        </div></div>
+                    </li>
+                    <!-- ko if: countExistedGiftcards()>0 -->
+                        <li class="form-group">
+                            <div class="row"><div class="col-xs-6">
+                            <label for="giftvoucher_existed_code" data-bind="text: $t('or select an existing Gift Card code')"></label>
+                                <select data-bind="foreach: existedGiftcards, selectedOptions: selectedGiftcardCode, attr:{title: $t('Existed Gift Card Code')}" class="form-control input-select" id="giftvoucher_existed_code" name="payment[existed_gift_code]">
+                                    <!-- ko ifnot: $index -->
+                                        <option value="" data-bind="text: $t('-- Please Select --')"></option>
+                                    <!-- /ko -->
+                                    <option data-bind="value: gift_code, text: hidden_code+' ('+balance+')'"></option>
+                                </select>
+                            </div></div>
+                        </li>
+                    <!-- /ko -->
+                    <li style="color: #eb340a;padding-left: 5px;font-size: 11px;font-weight: bold;line-height: 13px; display:none" id="giftcard_notice_1" data-bind="text: $t('Please enter your code')"></li>
+                    <li style="color: #eb340a;padding-left: 5px;font-size: 11px;font-weight: bold;line-height: 13px; display:none" id="giftcard_notice_2" data-bind="text: $t('Please enter or chose your code')"></li>
+                    <li>
+                        <!-- ko text: allGiftvoucherData()['customerIsLogin'] ? $t('To manage your Gift Card, please click ') : $t('To check your Gift card information, please click ')--><!-- /ko -->
+                        <a target="_blank" data-bind="text: $t('here'), attr:{href: allGiftvoucherData()['customerIsLogin'] ? allGiftvoucherData()['manageGiftcard'] : allGiftvoucherData()['checkGiftcard']}"></a>
+                    </li>
+                    <li>
+                        <div class="input-box">
+                            <button type="button" class="button" id="giftvoucher_add" data-bind="click: addGiftVoucher">
+                                <div id="giftvoucher_cache_url" style="display:none;" data-bind="text: allGiftvoucherData()['addGiftVoucherUrl']"></div>
+                                <input type="hidden" data-bind="value: allGiftvoucherData()['addGiftVoucherUrl']" />
+                                <span><span data-bind="text: $t('Add Gift Card')"></span></span>
+                            </button>
+                            <span id="giftvoucher_wait" style="display:none;">
+                                <img class="v-middle"
+                                    data-bind="attr:{alt: $t('Adding Gift Card...'), title: $t('Adding Gift Card...'), src: $t(allGiftvoucherData()['allImages']['opc-ajax-loader'])}" />
+                                <!-- ko text: $t('Adding Gift Card...')--><!-- /ko -->
+                            </span>
+                            <input type="hidden" class="" id="giftvoucher_passed" />
+                        </div>
+                    </li>
+                <!-- /ko -->
+                <p></p>
+            </ul>
+        </dd>
+    </dl>
+<!-- /ko -->
+<!-- /ko -->

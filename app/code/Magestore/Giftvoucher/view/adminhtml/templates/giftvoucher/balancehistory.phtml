@@ -1,0 +1,26 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+?>
+<div class="entry-edit">
+    <fieldset id="grop_fields" class="fieldset admin__fieldset">   
+        <legend class="legend">
+            <span><?php echo __('Balance History') ?></span>
+        </legend>   
+        <?php echo $this->getLayout()
+            ->createBlock('Magestore\Giftvoucher\Block\Adminhtml\Customer\Tab\History')->toHtml(); ?>
+    </fieldset>
+</div>

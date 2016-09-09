@@ -1,0 +1,205 @@
+
+/**/
+#fileupload{
+    display:block;
+}
+#fileupload li a{
+    font-size: 12px;
+}
+.fileupload-buttonbar {
+	margin-bottom: 10px;
+}
+.gift-files {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+        display:inline-block;
+}
+.gift-files li {
+	display:inline-block;
+	float: left;
+	margin: 0 10px 10px 0 !important;
+	width: 100px;
+	height: 100px;
+	background: #ECECEC;
+        
+        
+}
+.gift-files li .preview {
+	display: block;
+	height: 100px;
+        
+}
+.template-upload .preview {
+	background: url('../img/upload.png') no-repeat center;
+}
+.gift-files li .actions {
+	position: absolute;
+	/*margin-top: -22px;*/
+	width: 100px;
+	height: 22px;
+	/*background: rgba(0, 0, 0, 0.52);*/
+	padding-top: 1px;
+	/*display: none;*/
+	text-align: center;
+	font-size: 13px;
+}
+.gift-files li:hover > .actions {
+	display: block;
+}
+.gift-files .actions i {
+	color: #fff !important;
+	cursor: pointer;
+	opacity: 0.8;
+}
+.gift-files .actions i:hover {
+	opacity: 1;
+}
+.gift-files img {
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+.gift-files .progress {
+	position: relative;
+	margin: -20px 3px 0 3px;
+	height: 14px;
+}
+.gift-files .label {
+	display: inline-block;
+	margin: 30px 0 0 20px;
+}
+.gift-files .description {
+	display: none;
+}
+#crop img {
+	max-width: 536px;
+	max-height: 402px;
+}
+#webcamModal .modal-dialog {
+	transform: none !important;
+}
+#cropModal .loading , #webcamModal .loading{
+	background: url('../img/ajax-loader.gif');
+	height: 11px;
+	width: 16px;
+	display: none;
+	margin-right: 10px;
+}
+#webcamModal .save,
+#webcamModal .new {
+	display: none;
+}
+.alert.upload-max {
+	padding: 7px 10px;
+	display: none;
+}
+.gift-files .filetype {
+
+}
+
+.imgareaselect-border1, .imgareaselect-border2,
+.imgareaselect-border3, .imgareaselect-border4 {
+    filter: alpha(opacity=50);
+	opacity: 0.5;
+}
+.imgareaselect-border1 {
+	border: solid 1px #000;
+}
+
+.imgareaselect-border2 {
+	border: dashed 1px #fff;
+}
+.imgareaselect-handle {
+    background-color: #fff;
+    border: solid 1px #000;
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+}
+.imgareaselect-outer {
+    background-color: #000;
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+}
+
+@media screen and (min-width: 768px) {
+	#uploadModal .modal-dialog {
+		width: 772px;
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+}
+#uploadModal .modal-body {
+	padding-right: 10px;
+}
+
+.fileupload-processing .loading-files {
+	background: url('../img/ajax-loader.gif') center no-repeat;
+	height: 15px;
+	margin-top: -15px;
+}
+
+#gift-image-carosel {
+    background-color: #E8F0FF;
+    border: 1px solid #AAC8FF;
+    width: 458px;
+    height: 128px;
+    margin-top: 15px;
+}
+
+#gift-image-carosel .middle {
+    float: left;
+    width: 512px;
+    height: 150px;
+}
+
+#gift-image-carosel .inner img {
+    float: left;
+}
+
+#gift-image-carosel .carousel-control {
+    float: left;
+    width: 20px;
+    height: 128px;
+    background-color: #AAC8FF;
+    text-align: center;
+    text-decoration: none;    
+    font-size: 36px;
+    line-height: 120px;
+}
+
+#gift-image-carosel a.next {
+    float: right;
+}
+
+#gift-image-carosel a:hover {
+    color: #000;
+}
+
+#tab-2 ul li {
+    display: block;
+    padding-bottom: 5px;
+}
+#carousel-wrapper {
+    width: 418px;
+    height: 500px;
+    overflow: hidden;
+}
+#carousel-content {
+    width: 2500px;
+}
+#carousel-content .slide {
+    float: left;
+    width: 500px;
+    height: 500px;
+}
+#images_fieldset .hor-scroll{
+    overflow: hidden !important;
+}
+.image-actions a{
+    font-size: 12px !important;
+}
+#gifttemplate_form{
+    position:relative;
+    overflow-x: scroll;
+}

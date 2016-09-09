@@ -1,0 +1,100 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php $_giftCard = $this->getGiftVoucher() ?>
+<?php
+$helper = $this->getHelper();
+?>
+
+<!--div class="page-title">
+    <h1><?php echo __('Email Gift Card to Friend') ?></h1>
+</div-->
+<div class="gift-card">
+    <?php echo $this->getChildHtml('giftvoucher.basic') ?>
+
+    <form id="email-giftcard-tofriend" method="post" action="<?php echo $this->getUrl('*/*/sendEmail') ?>">
+        <h2 class="sub-title"><?php echo __('Email to a Friend') ?></h2>
+        <div class="form-group">
+            <input name="giftcard_id" type="hidden" value="<?php echo $_giftCard->getId() ?>" />
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                    <label class="required" for="recipient_name"><?php echo __('Name') ?><em>*</em></label>
+                    <input type="text" class="input-text required-entry form-control" value="<?php echo $_giftCard->getRecipientName() ?>" id="recipient_name" name="recipient_name" />
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    <label class="required" for="recipient_email"><?php echo __('Email Address') ?><em>*</em></label>
+                    <input type="text" class="input-text required-entry form-control validate-email" value="<?php echo $_giftCard->getRecipientEmail() ?>" id="recipient_email" name="recipient_email" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="message"><?php echo __('Message') ?></label>
+            <textarea name="message" onchange="changeRemaining(this);" onkeyup="changeRemaining(this);" class="input-text form-control" id="message" cols="3" rows="3"><?php echo $_giftCard->getMessage() ?></textarea>
+            <small><?php echo __('Characters Remaining: ') ?><span id="giftvoucher_char_remaining"><?php echo $block->messageMaxLen() ?></span></small>
+        </div>
+        <div class="form-group" id="giftvoucher-email-form-action" data-hasrequired="<?php echo __('* Required Fields') ?>">
+            <div class="row">
+                <div class="col-xs-6 text-left">
+                    <a href="#" onclick="setLocation('<?php echo $this->getUrl('*/*/index') ?>');
+                        return false;">
+                        <small>« </small>
+                        <?php echo __('Back') ?>
+                    </a>
+                </div>
+                <div class="col-xs-6 text-right">
+                    <!--label class="required"><em> * </em>Required Fields</label-->
+                    <button type="submit" class="button">
+                        <span>
+                            <span><?php echo __('Send to Friend') ?></span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    var giftmedia = new Array('giftcard-template-back', 'giftcard-template-top', 'giftcard-template-left');
+    require([
+        "jquery",
+        "mage/mage",
+        "prototype"
+    ], function ($) {
+        var dataForm = jQuery('#email-giftcard-tofriend');
+        dataForm.mage('validation', {
+        });
+        var remaining_max = <?php echo $this->messageMaxLen() ?>;
+        jQuery('#giftvoucher_char_remaining').html(remaining_max - jQuery('#message').attr('value').length);
+        changeRemaining = function (el) {
+            if (el.value.length > remaining_max) {
+                el.value = el.value.substring(0, remaining_max);
+            }
+            // el.value = el.value.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+            jQuery('#giftvoucher_char_remaining').html(remaining_max - el.value.length);
+            //for (i = 0; i < 3; i++)
+            //    if ($(giftmedia[i]))
+            //        $(giftmedia[i]).down('.giftcard-custom-message').innerHTML = el.value.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+        }
+    });
+    //var emailGiftcardTofriendForm = new VarienForm('email-giftcard-tofriend',true);
+</script>

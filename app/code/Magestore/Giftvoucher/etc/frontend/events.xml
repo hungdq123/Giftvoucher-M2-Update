@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Giftvoucher
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../lib/internal/Magento/Framework/Event/etc/events.xsd">
+    <event name="controller_action_predispatch_checkout_cart_index">
+        <observer name="checkout_cart_index_action" instance="Magestore\Giftvoucher\Observer\Frontend\CartIndexActionObserver" />
+    </event>
+    <event name="controller_action_predispatch_checkout_cart_couponPost">
+        <observer name="checkout_cart_couponPost_action" instance="Magestore\Giftvoucher\Observer\Frontend\CouponPostActionObserver" />
+    </event>
+    <event name="sales_quote_collect_totals_after">
+        <observer name="quote_collect_totals_after" instance="Magestore\Giftvoucher\Observer\Frontend\CollectTotalsAfterObserver" />
+    </event>
+    <event name="controller_action_predispatch_multishipping">
+        <observer name="predispatch_checkout_index_index" instance="Magestore\Giftvoucher\Observer\Frontend\PredispatchCheckoutObserver" />
+    </event>
+    <event name="controller_action_predispatch_checkout_index_index">
+        <observer name="checkout_cart_couponPost_action" instance="Magestore\Giftvoucher\Observer\Frontend\PredispatchCheckoutObserver" />
+    </event>
+    <event name="controller_action_predispatch_onestepcheckout_index_index">
+        <observer name="checkout_cart_couponPost_action" instance="Magestore\Giftvoucher\Observer\Frontend\PredispatchCheckoutObserver" />
+    </event>
+    <event name="core_layout_render_element">
+        <observer name="core_layout_render_element" instance="Magestore\Giftvoucher\Observer\Frontend\GiftcardPaymentMethodObserver" />
+    </event>
+</config>

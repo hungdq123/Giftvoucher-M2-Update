@@ -1,0 +1,210 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 15-08-2014, 09:33:08
+    Author     : MSI
+*/
+/*---Detail Template 3---*/
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:600italic,300,700,400,600);
+    #giftcard-template-back .giftcard-template-content{display: none; height: 0px} 
+    .title-value.giftcard-logo-background {
+        float: left;
+        width: 100%;
+        background: url('giftvoucher/bkg-title.png') no-repeat;
+        height: 50px;   
+       background-size: 100%;       
+    } 
+    .giftcard-logo-background .giftcard-value-color {
+        float: right;  
+        width: 194px;
+        background: url('giftvoucher/bkg-value.png') no-repeat;
+        height: 50px;   
+        background-size: 100% 100%;
+        text-align: right;
+        padding-right: 15px;
+        line-height: 48px;
+    }
+    .from-to-barcode-background{
+        float: left;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    .giftcard-change-image-background-popup .giftcard-logo {
+        float: left;   
+        height: 84px;
+        margin-left: 15px;
+    }
+    .giftcard-change-image-background-popup .giftcard-logo img {      
+        margin-bottom: 15px;       
+        border-radius: 0px 0px 5px 5px;
+        max-height: 70px;
+        float: left;        
+    }
+    .giftcard-logo-background .giftcard-text-color {           
+        font-size: 12px;        
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 600;
+        padding-right: 10px;
+    }
+  .giftcard-logo-background .giftcard-style-color.giftcard-price-change {              
+        font-size: 26px;
+        margin-top: 6px;       
+    } 
+    .giftcard-logo-background .giftcard-style-color.giftcard-price-change .price {
+         font-family: 'Open Sans', sans-serif;
+        font-weight: bold;
+        float: right;
+        line-height: 52px;
+    }
+   
+    .giftcard-logo-background .giftcard-title {
+        float: left;
+        font-size: 20px;
+        font-family: 'Open Sans', sans-serif;
+        margin-left: 15px;
+        padding-top: 9px;
+        font-weight: 600;
+    }   
+    .from-to-barcode-background .from-to {
+       font-size: 16px; 
+       font-family: 'Open Sans', sans-serif;
+        float: left;       
+        margin-left: 15px;       
+    }
+    .from-to-barcode-background .from-to .giftcard-form{       
+        float: left; 
+        text-align: left;
+         margin-top: 10px;
+    }       
+    .from-to-barcode-background .from-to .giftcard-to {
+        float: left; 
+        text-align: left;        
+        clear: both;
+    }
+    .giftcard-text {
+        height: 90px;
+    }
+    .from-to-barcode-background span img {
+        height: 40px;
+        max-width: 100%;
+    }
+   .from-to-barcode-background .from-to .giftcard-text-color {       
+        font-family: 'Open Sans', sans-serif;   
+        font-size: 16px;
+        font-weight: 600;
+    }   
+    .from-to-barcode-background .from-to .giftcard-style-color{
+        font-size: 16px;
+        font-family: 'Open Sans', sans-serif;        
+    }    
+    .giftcard-box-background{
+        overflow: hidden;
+        width: 95%; 
+        margin: 0 auto;  
+    } 
+    .giftcard-box-background .giftcard-text-box{
+        background: #fff;
+        border-radius: 5px;
+        border:1px solid #cccccc; 
+        padding: 0; 
+        padding-bottom: 16px; 
+        padding-top: 3px;         
+        display:table-cell;
+        vertical-align: middle;
+    }
+    .giftcard-box-background .giftcard-text-color.giftcard-custom-message{
+        margin: 0;
+        white-space: pre-wrap; 
+        max-height: 85px; 
+        overflow: hidden;
+        font-size: 11px;
+        font-family: 'Open Sans', sans-serif;
+        padding: 0px 5px;
+        color: black !important;
+    }  
+   .from-to-barcode-background .giftcard-barcode{       
+        float: right;    
+        margin-right: 15px;
+    }
+    .from-to-barcode-background .giftcard-barcode .giftcard-style-color{
+        color: orange;
+        font-weight: bold;
+        font-size:15px; 
+       font-family: 'Open Sans', sans-serif;
+    }
+    .from-to-barcode-background .giftcard-barcode .giftcard-style-color{
+        font-size: 14px; 
+        line-height: 30px;
+        color: orange; 
+        font-weight: bold; 
+        font-family: 'Open Sans', sans-serif;
+        font-style: italic;
+    }
+    .giftcard-note-background{       
+       // margin-top: 8px;       
+        float:left;
+        box-sizing: content-box;
+        overflow: hidden;
+        text-align: center;
+        vertical-align: middle;
+        margin-top: 10px;
+        height: 30px
+    }
+    .giftcard-note-background .form-note{
+        width: 100%; 
+        margin: 0 auto;        
+    }
+    .giftcard-note-background .giftcard-text-color{
+        font-size: 12px;
+        line-height: 15px;
+        margin: 0;      
+        font-family: 'Open Sans', sans-serif;
+        text-align: left;  
+         padding: 0 15px;
+         font-weight: 600;
+    }           
+    #giftcard-template-back {width: 100% ;float: left; position: relative}
+    #giftcard-template-back .giftcard-change-image-background-popup{
+        width: 100%;
+        position: absolute;
+        top: 0%;
+    }    
+    .giftcard-box-background .giftcard-text-box {
+        display: inherit !important; 
+        background-size: 100% !important; 
+        width: 100% !important;
+        height: 98px;
+    }
+    giftcard-box-background {
+        width: 93% !important; 
+        height: 95px; 
+        padding: 5px 3%; 
+        margin-top: 0px !important;
+        box-sizing: content-box;
+        float: left;
+    }
+    .from-to-barcode-background .giftcard-number{
+        float: right;
+        text-align: right;        
+    }    
+    .from-to-barcode-background .giftcard-barcode span.barcode  {       
+        float: right;               
+    }   
+      
+    /*****template 03 width devices*******/    
+    .giftcard-change-image-background-popup img#img-type-background{
+        position: relative;
+        top: 0;
+        z-index: 10;
+        left:0;         
+    }
+    #giftcard-template-back img#img-type-background{width: 100%}
+    #giftcard-preview-template img#img-type-background{width: 100%}    
+    #giftcard-preview-template #giftcard-preview-template-content .giftcard-change-image-background-popup.giftcard-change-image{
+        width: 100% !important; 
+        top: 0%;
+        position: absolute;
+    }

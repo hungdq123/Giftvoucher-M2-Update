@@ -1,0 +1,49 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php if ($this->getIsShow()): ?>
+    <p>
+        <label for="creditmemo_giftcard_refund">
+            <?php if ($this->getCustomer() && $this->isEnableCredit()): ?>
+                <?php echo __('Refund to customer\'s Gift Card credit balance') ?>
+            <?php else: ?>
+                <?php echo __('Refund to customer gift card code used to check out') ?>
+            <?php endif ?>
+        </label>
+        <input type="text" name="creditmemo[giftcard_refund]" value="<?php echo $this->getMaxAmount() ?>" id="creditmemo_giftcard_refund" class="input-text not-nagetive-amount" style="width: 60px; text-align: right;" onchange="updateChangeGiftCardAmount(this)" />
+    </p>
+    <script type="text/javascript">
+        function updateChangeGiftCardAmount(el) {
+            if (isNaN(parseFloat(el.value))) {
+                el.value = 0;
+                return true;
+            }
+            if (parseFloat(el.value) < 0) {
+                el.value = 0;
+                return true;
+            }
+            if (parseFloat(el.value) > <?php echo $this->getMaxAmount() ? $this->getMaxAmount() : '0' ?>) {
+                el.value = <?php echo $this->getMaxAmount() ? $this->getMaxAmount() : '0' ?>;
+                return true;
+            }
+        }
+    </script>
+<?php endif ?>
+

@@ -1,0 +1,27 @@
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!-- ko if: isDisplayed() -->
+<tr class="totals discount">
+    <th class="mark" scope="row">
+        <span class="title" data-bind="text: $t(_('Gift Card Credit'))"></span>
+    </th>
+    <td class="amount">
+        <span class="price" data-bind="text: getValue(), attr: {'data-th': $t(_('Gift Card Credit')) }"></span>
+    </td>
+</tr>
+<!-- /ko -->
+<!-- ko if: isDisplayedCard() -->
+<tr class="totals discount">
+    <th class="mark" scope="row">
+        <span class="title" data-bind="text: $t(_('Gift Card'))"></span>
+    </th>
+    <td class="amount">
+        <span class="price" data-bind="text: getValueCard(), attr: {'data-th': $t(_('Gift Card')) }"></span>
+    </td>
+</tr>
+<!-- /ko -->
+

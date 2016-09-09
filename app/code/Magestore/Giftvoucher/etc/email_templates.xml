@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Giftvoucher
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Email/etc/email_templates.xsd">
+    <template id="giftvoucher_email_self" label="Send to purchaser" file="giftvoucher/self.html" type="html" module="Magestore_Giftvoucher" area="frontend"/>
+    <template id="giftvoucher_email_template" label="Send Gift Card to friend" file="giftvoucher/gift.html" type="html" module="Magestore_Giftvoucher" area="frontend"/>
+    <template id="giftvoucher_email_template_refund" label="Send message refund Gift Card to friend" file="giftvoucher/gift_refund.html" type="html" module="Magestore_Giftvoucher" area="frontend"/>
+    <template id="giftvoucher_email_template_success" label="Send message to sender when Gift Card is sent to friend" file="giftvoucher/self_success.html" type="html" module="Magestore_Giftvoucher" area="frontend"/>
+</config>

@@ -1,0 +1,24 @@
+<?php $_product = $block->getProduct(); ?>
+<?php if ($_product->getTypeId() == 'giftvoucher' && $block->contentCondition()) : ?>
+    <div onmouseout="hiddenGiftcarDescription()" onmouseover="showGiftcarDescription()">
+        <a id="giftvoucher-view-condition" ><?php echo __('View usage conditions of this Gift Card') ?></a>
+        <div id="giftvoucher-tooltip" style="display:none;">
+            <?php echo $block->contentCondition() ?>
+        </div>
+    </div>    
+<?php endif; ?>
+<script>
+    require([
+        "jquery",
+        "jquery/ui",
+        "prototype",
+        "mage/translate"
+    ], function () {
+        showGiftcarDescription = function () {
+            $('giftvoucher-tooltip').show();
+        }
+        hiddenGiftcarDescription = function () {
+            $('giftvoucher-tooltip').hide();
+        }
+    })
+</script>

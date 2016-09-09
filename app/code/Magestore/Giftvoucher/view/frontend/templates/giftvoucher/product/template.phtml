@@ -1,0 +1,353 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php $product = $block->getProduct(); ?>
+<?php if ($product->getTypeId() == 'giftvoucher'): ?>
+    <?php $templates = $block->getAvailableTemplate(); ?>
+    <?php $_formData = $block->getLayout()->getBlockSingleton('Magestore\Giftvoucher\Block\Product\View')->getFormConfigData(); ?>
+    <?php $enableCustomDesign = $block->getGiftvoucherHelper()->getInterfaceConfig('custom_image'); ?>
+    <?php if (count($templates)): ?>
+        <script>
+            var image_old;
+            var image_count;
+            var template_show_id;
+            var template_id;
+            var urlUploadImage = '';
+            var giftcard_prev = 0;
+            var giftcard_next = 4;
+        </script>
+        <div class="form-group">
+            <?php if (count($templates) == 1): ?>
+                <label for="giftcard_template_select" ><?php echo __('Choose an image ') ?></label>
+            <?php else: ?>
+                <label for="giftcard_template_select" ><?php echo __('Select a template ') ?></label>
+            <?php endif; ?>
+            <select  id="giftcard_template_select" name="giftcard_template_id" class="giftvoucher_custom_option select form-control <?php if (count($templates) == 1) echo 'hide'; ?>"  onchange="changeTemplate(this);">
+
+                <?php foreach ($templates as $template): ?>
+                    <option value="<?php echo $template['giftcard_template_id'] ?>" <?php if ($_formData->getGiftcardTemplateId() == $template['giftcard_template_id']) echo 'selected' ?>><?php echo $template['template_name'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <input class="giftvoucher_custom_option" type="hidden" name="giftcard_template_image" id="giftcard-template-images" value="<?php echo $_formData->getGiftcardTemplateImage() ? $_formData->getGiftcardTemplateImage() : '0' ?>" />
+        <div class="col-xs-12" style="padding: 0 30px;">
+            <a id="giftcard-template-prev" class="giftcard-template-control" href="javascript:void(0);" onclick="giftcardPrevImage();">&nbsp;</a>
+            <div id="giftcard-template-show-images" class="form-group">
+                <?php foreach ($templates as $template): ?>
+                    <?php
+                    $count = 0;
+                    if (!$template['images'])
+                        $template['images'] = 'default.png'; //07.01
+                    if ($template['images']) {
+                        $images = explode(',', $template['images']);
+                        $maxCount = count($images) - 1;
+                        if ($template['design_pattern'] == \Magestore\Giftvoucher\Model\Designpattern::PATTERN_TOP) {
+                            $image_url_position = 'top/';
+                            $image_type_show_width = '68';
+                            $image_type_show_height = '18';
+                            $image_type_show_padding = '16px';
+                            $image_show_height = 'auto';
+                        } elseif ($template['design_pattern'] == \Magestore\Giftvoucher\Model\Designpattern::PATTERN_CENTER) {
+                            $image_url_position = '';
+                            $image_type_show_width = '68';
+                            $image_type_show_height = '50';
+                            $image_type_show_padding = '0';
+                            $image_show_height = '53px';
+                        } else {
+                            $image_url_position = 'left/';
+                            $image_type_show_width = 'auto';
+                            $image_type_show_height = '50';
+                            $image_type_show_padding = '0';
+                            $image_show_height = '53px';
+                        }
+                        ?>
+                        <div class="images-for-slide" id="image-for-<?php echo $template['giftcard_template_id'] ?>" style="display:none;width:<?php echo count($images) * 70 ?>px">
+                            <?php foreach ($images as $image) : ?>
+                                <?php $url = $block->getStoreManager()->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/template/images/' . $image_url_position . $image; ?>
+                                <div class="image-template"  id="div-image-for-<?php echo $template['giftcard_template_id']; ?>-<?php echo $count ?>" style="position:relative; float: left;border: 2px solid transparent; width: 70px; height: 55px; text-align: center;cursor: pointer;" onclick="changeSelectImages('<?php echo $count ?>')">
+                                    <img id="image-for-<?php echo $template['giftcard_template_id'] ?>-<?php echo $count ?>" src="<?php echo $url ?>" width='<?php echo $image_type_show_width ?>' height='<?php echo $image_type_show_height ?>' alt="image giftcard" style="height:<?php echo $image_show_height ?>; display:inline; border: 1px solid transparent; margin-top: <?php echo $image_type_show_padding ?>"/>
+                                    <div class="egcSwatch-arrow" style="display:none"></div>
+                                </div>
+                                <?php $count++; ?>
+                            <?php endforeach ?>
+                        <?php } ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <a id="giftcard-template-next" class="giftcard-template-control" href="javascript:void(0);"  onclick="giftcardNextImage();">&nbsp;</a>
+        </div>
+        <div id="giftcard-template-upload-images" class="form-group <?php if (!$enableCustomDesign) echo 'hide'; ?>">
+            <?php echo $block->getChildHtml('giftcard.uploadimage') ?>
+        </div>
+        <script>
+            var offset = 0;
+            var url_image_position;
+            var templates = <?php echo $block->getJsonEncode()->encode($templates) ?>;
+            var design_top = '<?php echo \Magestore\Giftvoucher\Model\Designpattern::PATTERN_TOP ?>';
+            var design_left = '<?php echo \Magestore\Giftvoucher\Model\Designpattern::PATTERN_LEFT ?>';
+            var design_back = '<?php echo \Magestore\Giftvoucher\Model\Designpattern::PATTERN_CENTER ?>';
+        <?php if ($_formData->getGiftcardUseCustomImage()): ?>
+                var image_form_data_name = '<?php echo $_formData->getGiftcardTemplateImage() ?>';
+        <?php endif; ?>
+            require([
+                "jquery",
+                "jquery/ui",
+                "prototype",
+                "mage/translate"
+            ], function () {
+
+
+                /**
+                 * change select template
+                 */
+
+                changeTemplate = function (el) {
+                    template_id = getTemplateById(el.value);
+                    if (typeof template_show_id != 'undefined')
+                        $(template_show_id).hide();
+                    if (templates[template_id].design_pattern == design_top)
+                        template_show_id = 'giftcard-template-top';
+                    else if (templates[template_id].design_pattern == design_left)
+                        template_show_id = 'giftcard-template-left';
+                    else
+                        template_show_id = 'giftcard-template-back';
+                    $(template_show_id).show();
+
+                    templateShow = templates[template_id];
+                    $(template_show_id).down('.giftcard-title').innerHTML = templateShow.caption;
+
+                    if ($('giftcard-notes-top'))
+                        $('giftcard-notes-top').hide();
+                    if ($('giftcard-notes-left'))
+                        $('giftcard-notes-left').hide();
+                    if ($('giftcard-notes-center'))
+                        $('giftcard-notes-center').hide();
+                    if (templateShow.design_pattern == design_top) {
+                        url_image_position = 'top/';
+                        if ($('giftcard-notes-top'))
+                            $('giftcard-notes-top').show();
+                    }
+                    else if (templateShow.design_pattern == design_back) {
+                        url_image_position = '';
+                        if ($('giftcard-notes-center'))
+                            $('giftcard-notes-center').show();
+                    }
+                    else {
+                        url_image_position = 'left/';
+                        if ($('giftcard-notes-left'))
+                            $('giftcard-notes-left').show();
+                    }
+
+                    if (templateShow.background_img)
+                        background_img = '<?php echo $block->getStoreManager()->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/template/background/'; ?>' + url_image_position + templateShow.background_img;
+                    else
+                        background_img = '<?php echo $block->getStoreManager()->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/template/background/'; ?>' + url_image_position + 'default.png';
+                    if (templateShow.style_color)
+                        style_color = templateShow.style_color;
+                    else
+                        style_color = 'orange';
+                    if (templateShow.text_color)
+                        text_color = templateShow.text_color;
+                    else
+                        text_color = '#2f2f2f';
+
+                    $(template_show_id).down('.giftcard-template-content').style.backgroundImage = 'url(' + background_img + ')';
+                    if (templates[template_id].notes)
+                        $(template_show_id).down('p.giftcard-text-color').innerHTML = templates[template_id].notes;
+                    else
+                        $(template_show_id).down('p.giftcard-text-color').innerHTML = '<?php echo $block->getObjectManager()->get('Magestore\Giftvoucher\Model\Giftvoucher')->getPrintNotes(); ?>';
+
+                    $$('#' + template_show_id + ' .giftcard-style-color').each(function (el) {
+                        el.style.color = style_color;
+                    });
+                    $$('#' + template_show_id + ' .giftcard-text-color').each(function (el) {
+                        el.style.color = text_color;
+                    });
+
+                    if (typeof image_for_old != 'undefined')
+                        $(image_for_old).hide();
+                    image_for_old = 'image-for-' + templates[template_id].giftcard_template_id;
+
+                    if (typeof image_form_data === 'undefined') {
+                        if ($(image_for_old))
+                            $(image_for_old).show();
+                        else
+                            delete image_for_old;
+                    }
+                    if (urlUploadImage === '') {
+                        if (typeof image_form_data !== 'undefined') {
+                            changeSelectImages(image_form_data);
+                            delete image_form_data;
+                        } else {
+                            if (typeof image_form_data_name !== 'undefined') {
+                                urlUploadImage = '<?php echo $block->getStoreManager()->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . "tmp/giftvoucher/images/"; ?>' + image_form_data_name;
+                                image_upload_name = image_form_data_name;
+                                $('image-for-custom').src = urlUploadImage;
+                                changeImageDesignAgain($('image-for-custom'));
+                                delete image_form_data_name;
+                            } else {
+        <?php if ($block->isInConfigurePage()): ?>
+                                    if ($('giftcard-template-images').value) {
+                                        images_arr = templates[template_id].images.split(',');
+                                        images_arr_id = images_arr.indexOf($('giftcard-template-images').value);
+                                        if (images_arr_id < 0)
+                                            images_arr_id = 0;
+                                    } else {
+                                        images_arr_id = 0;
+                                    }
+        <?php else: ?>
+                                    images_arr_id = 0;
+        <?php endif; ?>
+                                changeSelectImages(images_arr_id);
+                            }
+                        }
+                    }
+                    resetPosition();
+                    offset = 0;
+                }
+                getTemplateById = function (id) {
+                    for (i = 0; i < templates.length; i++) {
+                        if (templates[i].giftcard_template_id == id)
+                            return i;
+                    }
+                    return 0;
+                }
+
+                /**
+                 * Change select picture
+                 */
+                changeSelectImages = function (image_id) {
+                    if (typeof image_old != 'undefined') {
+                        $('div-' + image_old).removeClassName('gift-active');
+                        $('div-' + image_old).down('.egcSwatch-arrow').hide();
+                    }
+                    if (typeof urlUploadImage != 'undefined') {
+                        $('div-image-for-custom').down('.egcSwatch-arrow').hide();
+                        $('div-image-for-custom').removeClassName('gift-active');
+                    }
+                    if ($('image-for-' + templates[template_id].giftcard_template_id + '-' + image_id)) {
+                        image_old = 'image-for-' + templates[template_id].giftcard_template_id + '-' + image_id;
+                        $('div-' + image_old).addClassName('gift-active');
+
+                        $('div-image-for-' + templates[template_id].giftcard_template_id + '-' + image_id).down('.egcSwatch-arrow').show();
+                        image = $(image_old).src;
+
+                        $(template_show_id).down('.giftcard-change-image').style.backgroundImage = 'url(' + image + ')';
+
+                        images_tmp = templates[template_id].images;
+                        if (images_tmp != null) {
+                            images_tmp = images_tmp.split(',');
+                            $('giftcard-template-images').value = images_tmp[image_id];
+                        }
+                        urlUploadImage = '';
+                    }
+                    $('giftcard-use-custom-image').value = '0';
+                }
+                /**
+                 * Apply template
+                 */
+                chooseTemplate = function () {
+                    changeSelectImages(image_count);
+                    winPopupPreview.hide()
+
+                }
+
+                calculationPosition = function () {
+                    var images = $$('.images-for-slide');
+                    var grand_width = $('giftcard-template-show-images').getWidth();
+                    var number_image = Math.floor(grand_width / 70) - 1;
+                    var number_margin = grand_width % 70;
+                    var number_margin_element = number_margin / (number_image + 1);
+                    images.each(function (el) {
+                        var list_element = $$('#' + el.id + ' .image-template');
+                        el.style.width = list_element.length * 70 + 'px';
+                        list_element.each(function (img) {
+                            img.style.marginRight = 0;
+                        });
+                        if (list_element[number_image] != null) {
+                            for (var i = 0; i <= list_element.length - 1; i++) {
+                                list_element[i].style.marginRight = number_margin_element + 'px';
+                            }
+                            el.style.width = el.getWidth() + number_margin_element * list_element.length + 'px';
+                        }
+                    });
+                }
+                calculationPosition();
+                giftcardPrevImage = function () {
+                    var parent_width = $('giftcard-template-show-images').getWidth();
+                    if (offset > 0) {
+                        offset--;
+                        jQuery('#image-for-' + templates[template_id].giftcard_template_id).animate({
+                            left: '-' + offset * 100 + '%',
+                            duration: 0.5,
+                        }, 500);
+                    }
+                    changStatusPrev(offset > 0);
+                    var parent_width = $('giftcard-template-show-images').getWidth();
+                    var child_width = $('image-for-' + templates[template_id].giftcard_template_id).getWidth();
+                    changStatusNext(child_width > parent_width && (child_width - parent_width * (offset + 1)) > 0);
+                }
+
+                giftcardNextImage = function () {
+                    var parent_width = $('giftcard-template-show-images').getWidth();
+                    var child_width = $('image-for-' + templates[template_id].giftcard_template_id).getWidth();
+                    if (child_width > parent_width) {
+                        var condition = child_width - parent_width * (offset + 1);
+                        if (condition > 0) {
+                            offset++;
+                            jQuery('#image-for-' + templates[template_id].giftcard_template_id).animate({
+                                left: '-' + offset * 100 + '%',
+                                duration: 0.5,
+                            }, 500);
+                        } else {
+
+                        }
+                    }
+                    changStatusPrev(offset > 0);
+                    changStatusNext(child_width > parent_width && (child_width - parent_width * (offset + 1)) > 0);
+                }
+                resetPosition = function () {
+                    var images_list = $$('.gift-card div.images-for-slide');
+                    images_list.each(function (el) {
+                        el.style.left = 0;
+                    });
+                    changStatusPrev(false);
+                    changStatusNext($('giftcard-template-show-images').getWidth() < $('image-for-' + templates[template_id].giftcard_template_id).getWidth());
+                }
+                changStatusPrev = function (condition) {
+                    if (condition) {
+                        $('giftcard-template-prev').removeClassName('disabled');
+
+                    } else {
+                        $('giftcard-template-prev').addClassName('disabled');
+                    }
+                }
+                changStatusNext = function (condition) {
+                    if (condition) {
+                        $('giftcard-template-next').removeClassName('disabled');
+
+                    } else {
+                        $('giftcard-template-next').addClassName('disabled');
+                    }
+                }
+            })
+        </script>
+    <?php endif; ?>
+<?php endif; ?>

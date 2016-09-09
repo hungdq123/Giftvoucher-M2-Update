@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Giftvoucher
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/Object/etc/fieldset.xsd">
+    <scope id="global">
+        <fieldset id="sales_convert_quote_address">
+            <field name="base_use_gift_credit_amount">
+                <aspect name="to_order" />
+            </field>
+            <field name="use_gift_credit_amount">
+                <aspect name="to_order" />
+            </field>
+            <field name="gift_codes">
+                <aspect name="to_order" />
+            </field>
+        </fieldset>
+        <fieldset id="sales_convert_quote">
+            <field name="gift_codes">
+                <aspect name="to_order" />
+            </field>
+        </fieldset>
+        <fieldset id="sales_convert_quote_item">
+            <field name="use_gift_credit_amount">
+                <aspect name="to_order_item" />
+            </field>
+            <field name="base_use_gift_credit_amount">
+                <aspect name="to_order_item" />
+            </field>
+        </fieldset>        
+          
+    </scope>
+</config>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Giftvoucher
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/layout_generic.xsd">
+    <referenceBlock name="render.product.prices">
+        <arguments>
+            <argument name="giftvoucher" xsi:type="array">
+                <item name="prices" xsi:type="array">
+                    <item name="final_price" xsi:type="array">
+                        <item name="render_class" xsi:type="string">Magestore\Giftvoucher\Pricing\Render\FinalPriceBox</item>
+                        <item name="render_template" xsi:type="string">Magestore_Giftvoucher::product/price.phtml</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </referenceBlock>
+</layout>

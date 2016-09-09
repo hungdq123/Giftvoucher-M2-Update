@@ -1,0 +1,150 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php $_giftCard = $this->getGiftVoucher(); ?>
+<?php $_history = $this->getGiftCardHistory($_giftCard) ?>
+
+<!--div class="page-title">
+    <h1><?php echo __('Gift Card Code Details') ?></h1>
+</div-->
+<div class="gift-card">
+    <?php echo $this->getChildHtml('giftvoucher.basic') ?>
+
+    <?php if (count($_history)): ?>
+        <div class="page-title">
+            <h3 class="sub-title"><?php echo __('History') ?></h3>
+        </div>
+        <div class="table-responsive form-group">
+            <table class="table table-bordered table-striped" id="giftcard_history_table">
+                <thead>
+                    <tr>
+                        <th><strong><strong></strong><?php echo __('Action') ?></strong></th>
+                        <th><strong><?php echo __('Balance') ?></strong></th>
+                        <th><strong><?php echo __('Date') ?></strong></th>
+                        <th><strong><?php echo __('Balance Change') ?></strong></th>
+                        <th><strong><?php echo __('Order') ?></strong></th>
+                        <th><strong><?php echo __('Comments') ?></strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($_history as $_item): ?>
+                        <tr>
+                            <td>
+                                <span class="item-hidden"><?php echo __('Action') ?></span>
+                                <span class="item-detail"><?php echo $this->getActionName($_item) ?></span>
+                            </td>
+                            <td>
+                                <span class="item-hidden"><?php echo __('Balance') ?></span>
+                                <span class="item-detail">
+                                    <?php if (is_null($_item->getBalance())): ?>
+                                        <?php echo __('N/A') ?>
+                                    <?php else: ?>
+                                        <?php echo $this->getBalanceFormat($_item) ?>
+                                    <?php endif ?>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="item-hidden"><?php echo __('Date') ?></span>
+                                <span class="item-detail"><?php echo $this->formatDate($_item->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?></span>
+                            </td>
+                            <td>
+                                <span class="item-hidden"><?php echo __('Balance Change') ?></span>
+                                <span class="item-detail"><?php echo $this->getAmountFormat($_item) ?></span>
+                            </td>
+                            <td>
+                                <span class="item-hidden"><?php echo __('Order') ?></span>
+                                <span class="item-detail">
+                                    <?php if ($_item->getOrderIncrementId()): ?>
+                                        <a href="<?php echo $this->getUrl('sales/order/view', array('order_id' => $_item->getOrderId())) ?>" title="<?php echo __('View Order') ?>"><?php echo $_item->getOrderIncrementId() ?></a>
+                                    <?php else: ?>
+                                        <?php echo __('N/A') ?>
+                                    <?php endif ?>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="item-hidden"><?php echo __('Comments') ?></span>
+                                <span class="item-detail">
+                                    <?php
+                                    //Hai.Tran
+                                    if ($_item->getCustomerId() == $this->getSingleton('Magento\Customer\Model\Session')->getCustomerId()) {
+                                        echo $_item->getComments();
+                                    } else {
+                                        $email_history = $_item->getCustomerEmail();
+                                        if ($email_history) {
+                                            echo $_item->getExtraContent() . ' (' . $email_history . ')';
+                                        } else {
+                                            echo $_item->getExtraContent() != null ? $_item->getExtraContent() : $_item->getComments();
+                                        }
+                                    }
+                                    ?>
+                                </span>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+        </div>
+        <script type="text/javascript">
+            decorateTable('giftcard_history_table');
+        </script>
+    <?php endif ?>
+
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-4">
+                <p class="back-link">
+                    <a href="#" onclick="window.location.href = '<?php echo $this->getUrl('*/*/index') ?>';
+                        return false;">
+                        <small>« </small><?php echo __('Back') ?>
+                    </a>
+                </p>
+            </div>
+            <div class="col-xs-8 text-right">
+                <?php if ($this->checkSendFriendGiftCard($_giftCard)): ?>
+                    <button type="button" class="button" onclick="window.location.href = '<?php echo $this->getUrl('*/*/email', array('id' => $this->getCustomerGift()->getId())) ?>'">
+                        <span>
+                            <span><?php echo __('Email to Friend') ?></span>
+                        </span>
+                    </button>
+                <?php endif ?>
+                <?php
+                if ($_giftCard->getStatus() == \Magestore\Giftvoucher\Model\Status::STATUS_ACTIVE && $this->getHelper()->getGeneralConfig('enablecredit')
+                ):
+                    ?>
+                    <button type="button" class="button" onclick="redeemGiftCard()">
+                        <span>
+                            <span><?php echo __('Redeem') ?></span>
+                        </span>
+                    </button>
+                    <script type="text/javascript">
+                        function redeemGiftCard() {
+                            if (confirm('<?php echo __('Are you sure?') ?>')) {
+                                setLocation('<?php echo $this->getUrl('*/*/redeem', array('giftvouchercode' => $_giftCard->getGiftCode())) ?>');
+                            }
+                        }
+                    </script>
+                <?php endif ?>
+            </div>
+        </div>
+    </div>
+
+</div>

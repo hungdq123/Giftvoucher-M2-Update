@@ -1,0 +1,93 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php $helper = $block->getHelper(); ?>
+<div class="gift-card">
+    <form id="addredeem-giftvoucher-code" method="post" action="<?php echo $block->getFormActionUrl() ?>">
+        <fieldset class="fieldset info">
+            <?php echo $block->getBlockHtml('formkey') ?>
+            <?php if ($block->getHelper()->getGeneralConfig('enablecredit')): ?>
+                        <!--span><?php echo __('Add / Redeem a Gift Card') ?></span-->
+                <legend class="legend"><span><?php echo __('Add / Redeem a Gift Card') ?></span></legend><br>
+            <?php else: ?>
+                <!--span><?php echo __('Add a Gift Card') ?></span-->
+                <legend class="legend"><span><?php echo __('Add a Gift Card to your list') ?></span></legend><br>
+            <?php endif; ?>
+
+            <div class="field giftvouchercode required">
+                <label class="label" for="email"><span><?php echo __('Enter Gift Card Code') ?></span></label>
+                <div class="control">
+                    <input name="giftvouchercode" id="gift-voucher-code" value="" title="<?php echo __('Enter Gift Card Code') ?>>" class="input-text required-entry form-control" type="text">
+                </div>
+            </div>
+        </fieldset>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <?php if ($helper->getGeneralConfig('enablecredit')): ?>
+                    <button id="giftvoucher-redeem-button" class="action save primary" title="<?php echo __('Redeem Gift Card') ?>"><span><?php echo __('Redeem Gift Card') ?></span></button>
+                <?php endif; ?>
+                <button id="giftvoucher-addlist-button" type="submit" title="<?php echo __('Add To Your List') ?>" class="action primary"><span><?php echo __('Add To Your List') ?></span></button>
+            </div>
+            <!--div class="secondary">
+                <a class="action back" href="<?php echo $this->getUrl('giftvoucher/index/index') ?>"><span><?php echo __('Go back') ?></span></a>
+            </div-->
+            <div class="form-group" style="clear: both;padding: 10px 0">
+                <p class="back-link"><a href="<?php echo $this->getUrl('giftvoucher/index/index') ?>"><small>« </small><?php echo __('Back') ?></a></p>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    require([
+        "jquery",
+        "mage/mage"
+    ], function ($) {
+        var dataForm = $('#addredeem-giftvoucher-code');
+        dataForm.mage('validation', {
+        });
+        $('#giftvoucher-redeem-button').click(function () {
+            $('#addredeem-giftvoucher-code').attr('action', '<?php echo $this->getUrl("giftvoucher/index/redeem") ?>');
+            /*if($('#gift-voucher-code') && $('#gift-voucher-code').attr('value')){
+             window.location.href = '<?php echo $this->getUrl("giftvoucher/index/redeem") ?>'+ 'giftvouchercode/' + $('#gift-voucher-code').attr('value');
+             return false;
+             }else{
+             alert('Please fill the gift code.');
+             }*/
+            $('#addredeem-giftvoucher-code').submit();
+        });
+        $('#giftvoucher-addlist-button').click(function () {
+            $('#addredeem-giftvoucher-code').attr('action', '<?php echo $this->getUrl("giftvoucher/index/addlist") ?>');
+            $('#addredeem-giftvoucher-code').submit();
+        });
+        var redeemGiftCard = function () {
+
+        };
+    });
+
+    /*var dataForm = new VarienForm('addredeem-giftvoucher-code', true);
+     function redeemgiftcard() {
+     var clForm = new VarienForm('addredeem-giftvoucher-code', true);
+     if (clForm.validator.validate() == false) {
+     return false;
+     }
+     setLocation('<?php echo $this->getUrl("giftvoucher/index/redeem") ?>' + 'giftvouchercode/' + $('gift-voucher-code').value);
+     }*/
+    //]]>
+</script>

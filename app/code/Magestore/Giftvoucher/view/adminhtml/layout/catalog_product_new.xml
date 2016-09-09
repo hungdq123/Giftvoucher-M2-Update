@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<!--<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">-->
+    <!--<body>-->
+        <!--<referenceBlock name="product_tabs">-->
+            <!--<block class="Magestore\Giftvoucher\Block\Adminhtml\Product\Tab\Conditions" name="giftvoucher_product_tab_conditions"/>-->
+            <!--<block class="Magestore\Giftvoucher\Block\Adminhtml\Product\Tab\Actions" name="giftvoucher_product_tab_actions"/>-->
+            <!--<block class="Magestore\Giftvoucher\Block\Adminhtml\Product\Edit\Tab\Welcome" name="product.welcome" as="custom-tab" >-->
+                <!--<action method="addTab">-->
+                    <!--<argument name="name" xsi:type="string">giftcard_conditions</argument>-->
+                    <!--<argument name="block" xsi:type="string">giftvoucher_product_tab_conditions</argument>-->
+                <!--</action>-->
+                <!--<action method="addTab">-->
+                    <!--<argument name="name" xsi:type="string">giftcard_actions</argument>-->
+                    <!--<argument name="block" xsi:type="string">giftvoucher_product_tab_actions</argument>-->
+                <!--</action>-->
+            <!--</block>-->
+        <!--</referenceBlock>-->
+    <!--</body>-->
+<!--</page>-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<body>
+    <referenceBlock name="product_tabs">
+        <block class="Magestore\Giftvoucher\Block\Adminhtml\Product\Tab\Conditions" name="giftvoucher_product_tab_conditions"/>
+        <block class="Magestore\Giftvoucher\Block\Adminhtml\Product\Tab\Actions" name="giftvoucher_product_tab_actions"/>
+        <action method="addTab">
+            <argument name="name" xsi:type="string">giftcard_conditions</argument>
+            <argument name="block" xsi:type="string">giftvoucher_product_tab_conditions</argument>
+        </action>
+        <action method="addTab">
+            <argument name="name" xsi:type="string">giftcard_actions</argument>
+            <argument name="block" xsi:type="string">giftvoucher_product_tab_actions</argument>
+        </action>
+    </referenceBlock>
+    <referenceBlock name="product_form">
+        <block class="Magestore\Giftvoucher\Block\Adminhtml\Product\Edit\Tab\Welcome" name="product.welcome" as="custom-tab" >
+            <arguments>
+                <argument name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true"></item>
+                    <item name="collapsible" xsi:type="boolean">true</item>
+                    <item name="opened" xsi:type="boolean">true</item>
+                    <item name="sortOrder" xsi:type="string">200</item>
+                    <item name="canShow" xsi:type="boolean">true</item>
+                    <item name="componentType" xsi:type="string">fieldset</item>
+                </argument>
+            </arguments>
+        </block>
+    </referenceBlock>
+</body>
+</page>

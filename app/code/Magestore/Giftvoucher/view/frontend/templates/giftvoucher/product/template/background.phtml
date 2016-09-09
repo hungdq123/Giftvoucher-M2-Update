@@ -1,0 +1,107 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+//field expire date
+$helper = $this->helper('Magestore\Giftvoucher\Helper\Data');
+$timeLife = $helper->getGeneralConfig('expire');
+$timeSite = date("m/d/Y", $helper->getObjectManager()->get('Magento\Framework\Stdlib\DateTime\DateTime')->timestamp(time()));
+$expire_day = date('m/d/Y', strtotime($timeSite . '+' . $timeLife . ' days'));
+//end
+$barcode = $helper->getGeneralConfig('barcode_enable');
+$barcode_type = $helper->getGeneralConfig('barcode_type');
+$url_barcode = '';
+if ($barcode) {
+    if ($barcode_type == 'code128') {
+        $url_barcode = $helper->getStoreManager()->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/template/barcode/default.png';
+    } else {
+        $url_barcode = $helper->getStoreManager()->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/template/barcode/qr.png';
+    }
+}
+if ($helper->getGeneralConfig('logo')) {
+    $logo = $helper->getStoreManager()->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/pdf/logo/' . $helper->getGeneralConfig('logo');
+} else {
+    $logo = $this->getViewFileUrl('images/magento-logo.svg');
+}
+?>
+<div id="giftcard-template-back" style="/*display:none*/">
+    <div class="giftcard-template-content" style= "display:none"></div>
+    <div class="giftcard-change-image-background-popup giftcard-change-image" style="background-size: 600px 365px; background-image: url(<?php echo $helper->getStoreManager()->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/template/images/default.png' ?>);">          
+        <div class = "giftcard-logo"><img src = "<?php echo $logo ?>"/></div>
+        <div class="expire-day expire-day-top" id = "expire-day-background" style="font-size: 10px; float: right; margin-top: 5px;margin-right: 5px; color: white; font-weight: bold; "></div> 
+        <div class = "title-value giftcard-logo-background">
+            <div class="giftcard-style-color giftcard-title"><?php echo __('Giftcard Title') ?></div>
+            <div class="giftcard-value-color">
+                <span class="giftcard-style-color"><?php echo __('Value') ?></span>
+                <span class="giftcard-style-color giftcard-price-change">$100.00</span>
+            </div>
+        </div>
+        <div class= "from-to-barcode-background">
+            <div class = "from-to">
+                <div class = "giftcard-form">
+                    <label class="giftcard-text-color" for="giftcard-from"><?php echo __('From') ?>:</label>
+                    <span class="giftcard-style-color giftcard-send-from" id='giftcard-from' >&nbsp;<?php echo $helper->getCustomerSession()->isLoggedIn() ? $this->helper('Magento\Customer\Helper\View')->getCustomerName($helper->getCustomerSession()->getCustomerData()) : ''; ?></span>
+                </div>
+                <div class = "giftcard-to" style="">
+                    <label class="giftcard-text-color" for="giftcard-to"><?php echo __('To') ?>: </label>
+                    <span class="giftcard-style-color giftcard-send-to" id='giftcard-to'>&nbsp;</span>
+                </div>
+            </div>
+            <div class ="giftcard-barcode">                
+                <?php if ($url_barcode != ''): ?>
+                    <div class="giftcard-number">                
+                        <span class="giftcard-style-color" style="">GIFT-XXXX-XXXX</span>
+                    </div>
+                    <span class = "barcode"><img src="<?php echo $url_barcode ?>" /></span>
+                <?php else: ?>
+                    <div class="giftcard-number">                
+                        <span class="giftcard-style-color" style="">GIFT-XXXX-XXXX</span>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class = "giftcard-box-background">
+            <div class = "giftcard-text-box"><pre class="giftcard-text-color giftcard-custom-message"></pre></div>
+        </div>
+        <div class = "giftcard-note-background">
+            <div class = "form-note">
+                <p class="giftcard-text-color"><?php echo $helper->getObjectManager()->get('Magestore\Giftvoucher\Model\Giftvoucher')->getPrintNotes(); ?></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    require([
+        'jquery',
+        'mage/mage'
+    ], function ($) {
+        var d = new Date();
+        var check = <?php echo ($helper->getGeneralConfig('show_expiry_date') && $timeLife) ? $timeLife : 0 ?>;
+        if (check != 0)
+        {
+            d.setDate(d.getDate() + check);
+            var month = d.getMonth() + 1;
+            var day = d.getDate();
+            var year = d.getFullYear();
+            document.getElementById("expire-day-background").innerHTML = "<?php echo __('Expired: ') ?>" + month + "/" + day + "/" + year;
+        }
+    });
+</script>

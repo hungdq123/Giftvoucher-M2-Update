@@ -1,0 +1,184 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+$_product = $block->getProduct();
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$templates = $block->getLayout()->getBlockSingleton('Magestore\Giftvoucher\Block\Product\View')->getAvailableTemplate();
+if (count($templates)):
+    ?>
+    <div class="giftcard-product-media" id="giftcard-product-media">
+        <div class = "background-popup" style="cursor: pointer; -moz-transform-origin: left top;" onclick="getPreview()">
+            <?php include 'template/background.phtml'; ?>
+        </div>
+        <div class = "top-popup" style="cursor: pointer;-moz-transform-origin: left top;" onclick="getPreview()">
+            <?php include 'template/top.phtml'; ?>
+        </div>
+        <div class = "left-popup" style="cursor: pointer; -moz-transform-origin: left top;" onclick="getPreview()">
+            <?php include 'template/left.phtml'; ?>
+        </div>
+    </div>
+    <div id="giftcard-preview-template" style="display: none; width: 100%; ">
+        <div id="giftcard-preview-template-content"></div>
+    </div>
+    <script>
+        require([
+            "jquery",
+            "jquery/ui",
+            "prototype",
+            "mage/translate"
+        ], function (jQuery) {
+            $('giftcard-template-back').hide();
+            $('giftcard-template-top').hide();
+            $('giftcard-template-left').hide();
+            var body = $$('body.catalog-product-view')[0];
+            if (body)
+                body.insert('<div id="popup-giftcard"style="display:none;"><a href="javascript:void(0);" id="close-popup-giftcard" onclick="closePopupGift()">&nbsp;</a></div><div id="bg-fade" style="display:none;"></div>');
+            window.getPreview = function getPreview() {
+                //var isMobile = navigator.userAgent.match(/iPhone|iPod/i) || navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Opera Mini/i) || navigator.userAgent.match(/IEMobile/i);
+                var windownWidth = window.innerWidth;
+                if (windownWidth > 800) {
+                    var wrapper = $$('.page-wrapper')[0];
+                    var popup_height = wrapper.getHeight();
+                    $('bg-fade').setStyle({
+                        height: popup_height + 'px'
+                    });
+                    var giftcard = $('giftcard-product-media');
+                    var html = giftcard.innerHTML;
+                    $('popup-giftcard').innerHTML = '<a href="javascript:void(0);" id="close-popup-giftcard" onclick="closePopupGift()">&nbsp;</a>' + html;
+                    $('popup-giftcard').show();
+                    $('bg-fade').show();
+                }
+            }
+            $('bg-fade').observe('click', function () {
+                this.hide();
+                $('popup-giftcard').hide();
+                $('popup-giftcard').innerHTML = '<a href="javascript:void(0);" id="close-popup-giftcard" onclick="closePopupGift()">&nbsp;</a>';
+            });
+            window.closePopupGift = function closePopupGift() {
+                $('popup-giftcard').hide();
+                $('bg-fade').hide();
+                // $('popup-giftcard').innerHTML = '<a href="javascript:void(0);" id="close-popup-giftcard">&nbsp;</a>';
+            }
+
+        })
+    </script>
+    <?php
+else:
+    ?>
+    <?php if ($_product->getImage() != 'no_selection' && $_product->getImage()): ?>
+        <p class="product-image product-image-zoom">
+            <?php
+            $_img = '<img id="image" src="' . $block->helper('Magento\Catalog\Helper\Image')->init($_product, 'image') . '" alt="' . $block->escapeHtml($block->getImageLabel()) . '" title="' . $block->escapeHtml($block->getImageLabel()) . '" />';
+            echo $_helper->productAttribute($_product, $_img, 'image');
+            ?>
+        </p>
+        <p class="zoom-notice" id="track_hint"><?php echo __('Double click on above image to view full picture') ?></p>
+        <div class="zoom">
+            <img id="zoom_out" src="<?php echo $block->getSkinUrl('images/slider_btn_zoom_out.gif') ?>" alt="<?php echo __('Zoom Out') ?>" title="<?php echo __('Zoom Out') ?>" class="btn-zoom-out" />
+            <div id="track">
+                <div id="handle"></div>
+            </div>
+            <img id="zoom_in" src="<?php echo $block->getSkinUrl('images/slider_btn_zoom_in.gif') ?>" alt="<?php echo __('Zoom In') ?>" title="<?php echo __('Zoom In') ?>" class="btn-zoom-in" />
+        </div>
+    <?php else: ?>
+        <p class="product-image">
+            <?php
+            $_img = '<img src="' . $block->helper('Magento\Catalog\Helper\Image')->init($_product, 'image')->resize(265) . '" alt="' . $block->escapeHtml($block->getImageLabel()) . '" title="' . $block->escapeHtml($block->getImageLabel()) . '" />';
+            echo $_helper->productAttribute($_product, $_img, 'image');
+            ?>
+        </p>
+    <?php endif; ?>
+    <?php if (count($block->getGalleryImages()) > 0): ?>
+        <div class="more-views">
+            <h2><?php echo __('More Views') ?></h2>
+            <ul>
+                <?php foreach ($block->getGalleryImages() as $_image): ?>
+                    <li>
+                        <a href="#" onclick="popWin('<?php echo $block->getGalleryUrl($_image) ?>', 'gallery', 'width=300,height=300,left=0,top=0,location=no,status=yes,scrollbars=yes,resizable=yes');
+                                                return false;" title="<?php echo $block->escapeHtml($_image->getLabel()) ?>"><img src="<?php echo $block->helper('Magento\Catalog\Helper\Image')->init($block->getProduct(), 'thumbnail', $_image->getFile())->resize(56); ?>" width="56" height="56" alt="<?php echo $block->escapeHtml($_image->getLabel()) ?>" /></a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+<?php
+endif;
+?>
+<script>
+    require([
+        "jquery",
+        "jquery/ui",
+        "prototype",
+        "mage/translate"
+    ], function (jQuery) {
+        var productImgBox = $$('.product-img-box');
+        if (productImgBox.length > 0) {
+            var widthImageMedia = productImgBox[0].getLayout().get('width');
+            $$('.product-img-box')[0].setStyle({'height': 'auto', 'overflow': 'visible'});
+        } else {
+            var widthImageMedia = $('giftcard-product-media').parentNode.getWidth();
+        }
+
+        var widthImageGC = 600;
+        var heightImageGC = $('giftcard-product-media').getHeight();
+
+        window.zoomStyle = function zoomStyle(productImgBox_Width, widthImageGC) {
+            var ratio = productImgBox_Width / widthImageGC;
+            var newHeight = heightImageGC * ratio;
+            if (navigator.userAgent.indexOf("Firefox") > 0)
+                $('giftcard-product-media').setStyle({'transform': 'scale(' + ratio + ')', });
+            else if (navigator.userAgent.indexOf("Safari") > 0)
+                $('giftcard-product-media').setStyle({'-webkit-transform': 'scale(' + ratio + ')'});
+            else
+                $('giftcard-product-media').setStyle({'zoom': ratio});
+
+            $('giftcard-product-media').setStyle({'height': newHeight + 'px'});
+
+            if (window.innerWidth <= 800) {
+                if ($('giftcard-preview-button-add'))
+                    $('giftcard-preview-button-add').hide();
+            } else {
+                if ($('giftcard-preview-button-add'))
+                    $('giftcard-preview-button-add').show();
+            }
+        }
+
+        zoomStyle(widthImageMedia, widthImageGC);
+
+        window.onresize = function resize() {
+            var windownWidth = window.innerWidth;
+            var productImgBox = $$('.product-img-box');
+            if (productImgBox.length > 0) {
+                var productImgBox_Width = $$('.product-img-box')[0].getLayout().get('width');
+            } else {
+                productImgBox_Width = $('giftcard-product-media').parentNode.getWidth();
+            }
+            zoomStyle(productImgBox_Width, widthImageGC);
+            calculationPosition();
+            offset = 0;
+            resetPosition();
+            if (windownWidth <= 800) {
+                closePopupGift();
+            }
+        }
+    })
+</script>
+

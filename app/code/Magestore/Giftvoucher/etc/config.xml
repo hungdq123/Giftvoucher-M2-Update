@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Giftvoucher
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <default>
+        <giftvoucher>
+            <general>
+                <active>1</active>
+                <pattern><![CDATA[[N.4]-[AN.5]-[A.4]]]></pattern>
+                <showprefix>4</showprefix>
+                <hiddenchar>X</hiddenchar>
+                <status>1</status>
+                <expire_orderstatus>canceled,closed</expire_orderstatus>
+                <expire>365</expire>
+                <enablecredit>1</enablecredit>
+                <enablecredit>1</enablecredit>
+                <credit_condition>1</credit_condition>
+                <online_refund>1</online_refund>
+                <refund_orderstatus>canceled,closed</refund_orderstatus>
+                <auto_shipping>0</auto_shipping>
+                <maximum>5</maximum>
+                <use_for_ship>0</use_for_ship>
+                <use_with_coupon>1</use_with_coupon>
+                <show_expiry_date>1</show_expiry_date>
+                <apply_after_tax>1</apply_after_tax>
+                <gc_show_check_link>0</gc_show_check_link>
+            </general>
+            <interface>
+                <amount>25,75,100</amount>
+                <description>The value of Gift card</description>
+                <postoffice>1</postoffice>
+                <custom_image>1</custom_image>
+                <upload_max_size>500</upload_max_size>
+                <postoffice_date>0</postoffice_date>
+                <max>220</max>
+                <schedule>1</schedule>
+            </interface>
+            <interface_checkout>
+                <display_image_item>1</display_image_item>
+                <show_gift_card>1</show_gift_card>
+                <display>amount,giftcard_template_id,recipient_name,recipient_email,recipient_ship,recipient_address,message,day_to_send</display>
+            </interface_checkout>
+            <interface_payment>
+                <show_gift_card>1</show_gift_card>                
+            </interface_payment>
+            <email>
+                <enable>1</enable>
+                <sender>general</sender>
+                <note><![CDATA[Please note that: Converting to cash is not allowed. You can use the Gift card code or redeem it to credit balance to pay for your order at <a href="{store_url}" title="{store_name}">{store_url}</a>.]]>
+                </note>
+                <attachment>0</attachment>
+                <self>giftvoucher_email_self</self>
+                <only_complete>2,4,5</only_complete>
+                <send_with_ship>1</send_with_ship>
+                <send_refund>1</send_refund>
+                <template>giftvoucher_email_template</template>
+                <template_refund>giftvoucher_email_template_refund</template_refund>
+                <template_success>giftvoucher_email_template_success</template_success>
+                <autosend>1</autosend>
+                <daybefore>7</daybefore>
+            </email>
+            <print_voucher>
+                <barcode_enable>1</barcode_enable>
+                <barcode_type>code128</barcode_type>
+                <logo>default/logo_print.png</logo>
+                <note><![CDATA[Converting to cash is not allowed. You can use the gift card code or redeem it to pay for your order at {store_url}.]]></note>
+            </print_voucher>
+        </giftvoucher>
+        <sales>
+            <totals_sort>
+                <giftvoucher>33</giftvoucher>
+                <giftcardcredit>34</giftcardcredit>
+                <giftvoucher_after_tax>60</giftvoucher_after_tax>
+                <giftcardcredit_after_tax>70</giftcardcredit_after_tax>
+            </totals_sort>
+        </sales>
+    </default>
+</config>

@@ -1,0 +1,231 @@
+/* 
+    Document   : reupdate.css
+    Created on : Aug 14, 2014, 2:27:31 PM
+    Author     : Billy
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/****************************Template 02 _ top*************************************/
+
+	#giftcard-template-top{
+            overflow:hidden; 
+            max-height: 550px;
+            font-size: 14px;
+            width: 100%;
+            height: 365px;
+        }
+	#giftcard-template-top .giftcard-template-content{
+            margin-left:0px;
+            padding: 0;
+            position: relative;
+        }
+	#giftcard-template-top .giftcard-template-content-top, .giftcard-change-image-temp2{
+            height: 190px; 
+            background-color: #FFFFFF;
+            background-position: center; 
+            background-repeat: no-repeat; 
+            background-size: 100% 100%;
+        }
+	#giftcard-template-top .giftcard-template-content-temp2{          
+            padding-top: 0px;          
+            background-repeat: repeat;
+            background-size: 100%
+        }	
+        .logo-title.logo-title-top {
+            padding-left: 15px;
+            float: left;  
+             height: 84px;
+        }
+	.logo-title.logo-title-top img{                     
+           float: left;                
+           border-radius: 0px 0px 5px 5px;
+           max-height: 70px;
+           background-position: 15px 0px !important;          
+        }
+        .name-value-top{
+            float: left;
+            width: 100%;
+            background: url('giftvoucher/bkg-title.png') no-repeat;
+            background-size: 103% 105%;
+            margin-top: 55px;            
+            height: 50px;
+            position: absolute;
+            bottom: 0;
+        }
+	.name-value-top .giftcard-title{
+           float: left;
+            font-size: 20px;
+            font-family: 'Open Sans', sans-serif;
+            margin-left: 15px;
+            line-height: 48px;
+            font-weight: 600;
+        }
+	#giftcard-template-top .giftcard-value{           
+            float: right;                        
+             width: 218px;
+             background: url('giftvoucher/bkg-value.png') no-repeat;
+             height: 50px;   
+               background-size: 100% 100%; 
+        }
+	.name-value-top .giftcard-value .giftcard-text-color{
+            float: left;
+            font-size: 12px;            
+            padding-top: 20px;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 600;
+        }
+	.name-value-top .giftcard-value .giftcard-price-change { 
+            float: right;
+            margin-left: 15px;
+            font-size: 26px;           
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+        }
+        .name-value-top .value-price span {           
+            margin-right: 5px;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 12px;
+            margin-top: -3px;
+        }
+        .name-value-top .giftcard-value .giftcard-price-change .price {            
+            margin-right: 10px;
+            font-size: 26px;
+            font-family: 'Open Sans', sans-serif;
+        }       
+	.giftcard-date-top{
+            width: 59%;             
+            float:left;
+            padding-top: 10px;           
+        }
+	 .giftcard-date-top .giftcard-from-to{          
+            float: left;
+            font-size: 16px;             
+            color: #636363 !important;            
+            font-family: 'Open Sans', sans-serif;
+            margin-left: 15px;
+        }
+	.giftcard-date-top .giftcard-from-to .giftcard-from{           
+          float: left;
+           max-height: 25px;
+        }
+	.giftcard-date-top .giftcard-from-to .giftcard-text-color,
+        .giftcard-date-top .giftcard-from-to .giftcard-style-color{          
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;         
+        }  
+        .giftcard-information {
+            float: left;
+            clear: both;
+            width: 342px; 
+            margin-top: 8px;
+            margin-left: 15px;
+        }
+        .giftcard-date-top .giftcard-barcode {
+            float: right;
+            text-align: right;
+            padding-right: 15px;            
+        }
+        .giftcard-date-top span.giftcard-barcode img {  
+            max-width: 100%;
+            float: right;
+            height: 40px;
+        }
+        .giftcard-date-top .giftcard-barcode {
+            padding-right: 15px;
+            margin-top: -10px;
+        }
+	.giftcard-date-top .giftcard-from-to .giftcard-style-color{
+            color: orange;
+            font-size: 16px
+        }
+	.giftcard-date-top .giftcard-to{           
+            margin-left:0px; 
+            max-height: 25px; 
+            float:left; 
+            clear:both;
+        }		
+	.giftcard-date-top .giftcard-number .giftcard-style-color{
+            color: orange; 
+            font-weight: bold; 
+            font-family: 'Open Sans', sans-serif;
+            font-style: italic;
+            line-height: 30px;
+        }	
+        .name-value-top .value-price{
+            float: right;
+            line-height: 55px;
+        }	
+	.giftcard-date-top .giftcard-message{
+            padding: 6px;
+            padding-bottom: 14px; 
+            padding-top: 3px; 
+            height: 93px;
+            vertical-align: middle; 
+            background: #fff; 
+            border-radius: 5px; 
+            border:1px solid #cecece;       
+        }
+        .barcode-note .giftcard-code{
+            float: right;
+            margin-right: 15px;
+        }
+        .barcode-note .barcode{
+            text-align: right;
+            float: right;
+            width: 158px; 
+            height: 40px;
+        }
+
+        .barcode-note .barcode img{
+            height: 40px; 
+            max-width: 100%;
+            float: right;
+        }
+	.giftcard-date-top .giftcard-custom-message{
+            margin: 0; 
+            white-space: pre-wrap;  
+            max-height: 85px; 
+            overflow: hidden; 
+            font-size: 11px;
+        }	
+	.barcode-note .giftcard-note{
+            margin-top: 5px;
+            float: right;
+            width: 215px;
+            text-align: right;           
+            overflow: hidden;
+            height: 87px;
+            position: absolute;
+            bottom: 10px;
+        }
+	.barcode-note .giftcard-note .giftcard-text-color{
+            font-size: 12px;            
+            margin: 0px;           
+            font-family: 'Open Sans', sans-serif;
+           font-weight: 600;
+        }
+         
+	#giftcard-template-top .giftcard-template-content-top.giftcard-change-image-temp2{width:100% !important; position: relative;}	
+	#giftcard-template-top .giftcard-template-content{
+            width:100%; 
+            background-size:100% auto !important;
+            float: left;   
+            height: 175px;           
+        }
+	#giftcard-template-top .giftcard-title-top{
+            width:100%;
+            position: relative;
+        }
+        .hidden-giftcard-content-temp2 .giftcard-barcode-value {height: 30px !important}
+	#giftcard-template-top .title{width:60% !important;}		
+	#giftcard-template-top .barcode-note{
+            width: 230px;
+            float: right;
+            margin-top: 5px;
+            position: relative;
+            height: 170px;
+        }	
+	#giftcard-template-top .giftcard-value-bottom {display: none}	
+

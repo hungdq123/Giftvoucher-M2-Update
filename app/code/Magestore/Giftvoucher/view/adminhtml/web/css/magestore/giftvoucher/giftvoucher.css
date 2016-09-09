@@ -1,0 +1,84 @@
+/**
+* Giftvoucher 
+*/
+.input-text.validation-failed,.input-select.validation-failed
+{
+    border-color: red;
+}
+#gift-image-carosel {
+    background-color: #E8F0FF;
+    border: 1px solid #AAC8FF;
+    width: 378px;
+    height: 84px;
+    /*margin-top: 15px;*/
+}
+
+#gift-image-carosel .gift-middle {
+    float: left;
+    width: 338px;
+    height: 84px;
+}
+
+#gift-image-carosel .inner img {
+    float: left;
+}
+
+#gift-image-carosel a {
+    float: left;
+    width: 20px;
+    height: 84px;
+    background-color: #AAC8FF;
+    text-align: center;
+    text-decoration: none;    
+    font-size: 36px;
+    line-height: 80px;
+    color: blue;
+}
+
+#gift-image-carosel a.next {
+    float: right;
+}
+
+#gift-image-carosel a:hover {
+    color: #000;
+}
+
+#tab-2 ul li {
+    display: block;
+    padding-bottom: 5px;
+}
+#carousel-wrapper {
+    width: 500px;
+    height: 500px;
+    overflow: hidden;
+}
+#carousel-content {
+    width: 2500px;
+}
+#carousel-content .slide {
+    float: left;
+    width: 500px;
+    height: 500px;
+}
+.gift-active{
+    border: 2px solid rgb(228,121,17) !important;
+}
+div.egcSwatch-arrow {
+/*    display: none;*/
+    position: absolute;
+    height: 11px;
+    top: -2px;
+    left: 1px;
+    width: 100%;
+    background-position: center top;
+    background-repeat: no-repeat;
+    clear: both;
+/*    z-index: 10;*/
+    background-image: url(giftvoucher/down-arrow.png);
+}
+#giftcard-template-show-images:hover #giftcard-template-next{
+    background-image: url(giftvoucher/arrow-slide-right.png);
+}
+#giftcard-template-show-images:hover #giftcard-template-prev{
+    background-image: url(giftvoucher/arrow-slide-left.png);
+}

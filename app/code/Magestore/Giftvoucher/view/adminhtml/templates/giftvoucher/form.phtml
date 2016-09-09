@@ -1,0 +1,178 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php $_code = 'giftvoucher' ?>
+<?php $helper = $this->helper('Magestore\Giftvoucher\Helper\Data'); ?>
+<?php $_giftCards = $this->getExistedGiftCard() ?>
+<?php $store = $this->getStore(); ?>
+<?php $items = $this->getItems(); ?>
+<?php $count = $this->getCountItems(); ?>
+<div class="admin__field field-giftcard-coupon" id="admin_giftcard_coupon">
+    <label class="admin__field-label">
+        <span><?php echo __('Gift Card') ?></span>
+    </label>
+
+    <div class="admin__field-control">
+        <?php if ($helper->getGeneralConfig('active', $this->getStoreId()) && $count > 0): ?>
+            <div style="margin-left: 20px;"><?php echo __('Gift Cards cannot be used to purchase Gift Card products') ?></div>
+        <?php endif; ?>
+        <div class="content" style="<?php if (count($items) == $count) echo 'display:none;' ?>">
+            <dl id="<?php echo $_code ?>_container">
+                <?php if ($helper->getGeneralConfig('enablecredit', $this->getStoreId())): ?>
+                    <?php if ($_customerCredit = $this->getCustomerCredit()): ?>
+                        <dt class="<?php echo $_code ?>_credit">
+                        <input type="checkbox" name="<?php echo $_code ?>_credit" id="<?php echo $_code ?>_credit"<?php if ($this->getUseGiftCredit()): ?> checked="checked"<?php endif ?> value="1" onclick="showCartCreditInput(this)" />
+                        <label for="<?php echo $_code ?>_credit" style="font-weight: bold; color: #666;"><?php echo __('Use customer\'s Gift Card credit to check out (%1)', $this->formatBalance($_customerCredit, true)) ?></label>
+                        </dt>
+                        <dd class="<?php echo $_code ?>_credit"<?php if (!$this->getUseGiftCredit()): ?> style="display:none;"<?php endif ?>>
+                            <div>
+                                <label>
+                                    <?php echo __('Enter customer\'s Gift Card credit amount to pay for this order') ?>
+                                </label>
+                                <div class="input-box">
+                                    <input class="input-text" id="credit_amount" type="text" value="<?php echo $this->getUseGiftCreditAmount() ?>" title="<?php echo __('Credit') ?>" name="credit_amount" style="width: 200px;" />
+                                </div>
+                            </div>
+                        <li style="color: #eb340a;padding-left: 5px;font-size: 11px;font-weight: bold;line-height: 13px; display:none" id="giftcredit_notice"><?php echo __('Please change amount') ?></li>
+                        <br />
+                        </dd>
+                    <?php endif ?>
+                <?php endif ?>
+                <dt class="<?php echo $_code ?>">
+                <input type="checkbox" name="<?php echo $_code ?>" id="<?php echo $_code ?>"<?php if ($this->getUseGiftVoucher()): ?> checked="checked"<?php endif ?> value="1" onclick="showCartGiftCardInput(this)" />
+                <label for="<?php echo $_code ?>" style="font-weight: bold; color: #666;"><?php echo __('Use Gift Card to check out') ?></label>
+                </dt>
+                <dd class="<?php echo $_code ?>"<?php if (!$this->getUseGiftVoucher()): ?> style="display: none;"<?php endif ?>>
+                    <ul class="form-list" id="payment_form_<?php echo $_code ?>">
+                        <?php $discounts = $this->getGiftVoucherDiscount() ?>
+                        <?php if (count($discounts)): ?>
+                            <li class="giftvoucher-discount-code">
+                                <ul>
+                                    <?php foreach ($discounts as $code => $discount): ?>
+                                        <li>
+                                            <label for="<?php echo $code ?>" style="font-weight: bold;">
+                                                <?php echo $code ?>
+                                                (<span class="giftcard_change" onclick="showGiftCardAmountInput(this);
+                                                                return false;" style="cursor: pointer;" title="<?php echo __('Edit') ?>"><a class="giftcard-amount" href="#" onclick="return false;"><?php echo $helper->getCheckoutHelper()->formatPrice($discount) ?></a></span><input class="input-text" type="text" value="<?php echo round($discount, 2) ?>" title="<?php echo __('Gift Card Amount') ?>" style="width: 88px; display: none;" disabled="disabled" name="giftcodes[<?php echo $code ?>]" />)
+                                            </label>
+                                            [<a href="#" onclick="removeGiftVoucher('<?php echo $this->getUrl('giftvoucheradmin/checkout/removegift', array('code' => $code)) ?>');
+                                                            return false;" title="<?php echo __('Remove') ?>"><?php echo __('Remove') ?></a>]
+                                        </li>
+                                    <?php endforeach ?>
+                                </ul>
+                            </li>
+                        <?php endif ?>
+
+                        <div id="<?php echo $_code ?>_message">
+                        </div>
+                        <div id="giftvoucher-custom-code">
+                            <label for="<?php echo $_code ?>_code"><?php echo __('Enter a new Gift Card code') ?></label>
+                            <div class="input-box">
+                                <input type="text" title="<?php echo __('Gift Card Code') ?>" class="input-text" id="<?php echo $_code ?>_code" name="giftvoucher_code" style="width: 200px;" />
+                            </div>
+                        </div>
+                        <?php if (count($_giftCards)): ?>
+                            <li>
+                                <label for="<?php echo $_code ?>_existed_code"><?php echo __('Select from customer\'s Gift Card code(s)') ?></label>
+                                <div class="input-box">
+                                    <select title="<?php echo __('Customer Gift Card Code') ?>" class="input-select" id="<?php echo $_code ?>_existed_code" name="existed_giftvoucher_code" style="width: 205px;">
+                                        <option value=""><?php echo __('-- Please Select --') ?></option>
+                                        <?php foreach ($_giftCards as $_giftCard): ?>
+                                            <option value="<?php echo $_giftCard['gift_code'] ?>"><?php echo $_giftCard['gift_code'] ?> (<?php echo $_giftCard['balance'] ?>)</option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                            </li>
+                        <?php endif ?>
+                    </ul>
+                    <ul>
+                        <li style="color: #eb340a;padding-left: 5px;font-size: 11px;font-weight: bold;line-height: 13px; display:none" id="giftcard_notice_1"><?php echo __('Please enter your code') ?></li>
+                        <li style="color: #eb340a;padding-left: 5px;font-size: 11px;font-weight: bold;line-height: 13px; display:none" id="giftcard_notice_2"><?php echo __('Please enter or chose your code') ?></li>
+                    </ul>
+                </dd>
+                <dt>
+                </dt>
+                <dd>
+                    <div class="input-box" style="margin-top: 10px;">
+                        <button type="button" class="scalable" onclick="applyGiftCardForm('<?php echo $this->getUrl('giftvoucheradmin/checkout/giftcardpost') ?>');">
+                            <span><?php echo __('Apply Gift Card') ?></span>
+                        </button>
+                    </div>                        
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    require([
+        "jquery",
+        "jquery/ui"
+    ], function ($) {
+        if ($('#giftvoucher'))
+            $('#giftvoucher').click(function () {
+                var giftvoucher_checked = false;
+                var credit_checked = false;
+                giftvoucher_checked = $('#giftvoucher').is(":checked");
+                if ($('#giftvoucher_credit'))
+                    credit_checked = $('#giftvoucher_credit').is(":checked");
+                if (!giftvoucher_checked) {
+                    update_balance_giftvoucher(giftvoucher_checked, credit_checked);
+                }
+            });
+
+        var using_credit = <?php echo $helper->getCheckoutSession()->getUseGiftCreditAmount() ?>;
+        if ($('#giftvoucher_credit'))
+            $('#giftvoucher_credit').click(function () {
+                var giftvoucher_checked = false;
+                var credit_checked = false;
+                if ($('#giftvoucher'))
+                    giftvoucher_checked = $('#giftvoucher').is(":checked");
+                credit_checked = $('#giftvoucher_credit').is(":checked");
+                if (!credit_checked && using_credit != 0) {
+                    update_balance_giftvoucher(giftvoucher_checked, credit_checked);
+                }
+            });
+
+        function update_balance_giftvoucher(giftvoucher_checked, credit_checked)
+        {
+            var elements = $('#giftvoucher_container').select('input', 'select', 'textarea');
+            var url = '<?php echo $this->getUrl('giftvoucheradmin/checkout/removediscount') ?>';
+            elements.push($('[name="form_key"]')[0]);
+//        var params = elements.serialize();
+            new Ajax.Request(url, {
+                method: 'post',
+                postBody: '',
+                parameters: {'giftvoucher': giftvoucher_checked, 'giftvoucher_credit': credit_checked},
+                onException: '',
+                onComplete: function (response) {
+                    if (response.responseText.isJSON()) {
+                        if (order) {
+                            order.loadArea(['items', 'shipping_method', 'totals', 'billing_method'], true, {reset_shipping: true});
+                        }
+                    }
+                }
+            });
+        }
+        Event.observe(window, 'load', function () {
+            var data = {};
+            order.loadArea(['totals'], true, data);
+        });
+    });
+</script>

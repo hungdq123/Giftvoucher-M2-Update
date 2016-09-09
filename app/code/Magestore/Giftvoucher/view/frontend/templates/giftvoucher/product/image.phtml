@@ -1,0 +1,25 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+?>
+<?php /* @var $block \Magento\Catalog\Block\Product\Image */ ?>
+
+<img class="photo image"
+        <?php echo $block->getAddAttribute(); ?>
+        src="<?php //echo $block->getProductImageView()->getUrl()  ?>"
+        width="<?php echo $block->getProductImageView()->getWidth(); ?>"
+        height="<?php echo $block->getProductImageView()->getHeight(); ?>"
+        alt="<?php echo $block->stripTags($block->getProductImageView()->getLabel(), null, true) ?>" />

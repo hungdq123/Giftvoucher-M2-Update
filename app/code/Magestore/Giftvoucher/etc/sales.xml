@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Giftvoucher
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Sales/etc/sales.xsd">
+    <section name="quote">
+        <group name="totals">
+            <item name="giftcardcredit" instance="Magestore\Giftvoucher\Model\Total\Quote\Giftcardcredit" sort_order="410"/>
+             <item name="giftcardcreditaftertax" instance="Magestore\Giftvoucher\Model\Total\Quote\Giftcardcreditaftertax" sort_order="600"/>
+            <item name="giftvoucher" instance="Magestore\Giftvoucher\Model\Total\Quote\Giftvoucher" sort_order="420"/>
+            <item name="giftvoucheraftertax" instance="Magestore\Giftvoucher\Model\Total\Quote\Giftvoucheraftertax" sort_order="610"/>
+        </group>
+    </section>
+    <section name="order_invoice">
+        <group name="totals">
+            <item name="giftvoucher" instance="Magestore\Giftvoucher\Model\Total\Order\Invoice\Giftvoucher" sort_order="360"/>
+        </group>
+    </section>
+    <section name="order_creditmemo">
+        <group name="totals">
+            <item name="giftvoucher" instance="Magestore\Giftvoucher\Model\Total\Order\Creditmemo\Giftvoucher" sort_order="410"/>
+        </group>
+    </section>
+    <order>
+        <available_product_type name="giftvoucher"/>
+    </order>
+</config>

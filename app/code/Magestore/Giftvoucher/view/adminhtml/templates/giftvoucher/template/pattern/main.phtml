@@ -1,0 +1,38 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+
+$template = $this->getGiftTemplate();
+switch ($template->getDesignPattern()) {
+    case Magestore_Giftvoucher_Model_Designpattern::PATTERN_LEFT:
+        include 'left.phtml';
+        break;
+    case Magestore_Giftvoucher_Model_Designpattern::PATTERN_TOP:
+        include 'top.phtml';
+        break;
+    case Magestore_Giftvoucher_Model_Designpattern::PATTERN_CENTER:
+        include 'background.phtml';
+        break;
+    default:
+        break;
+}
+
+?>

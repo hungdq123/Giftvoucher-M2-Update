@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Giftvoucher
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Backend/etc/menu.xsd">
+    <menu>
+        <add id="Magestore_Giftvoucher::giftcard" title="Giftvoucher" module="Magestore_Giftvoucher" sortOrder="40" resource="Magestore_Giftvoucher::giftvoucher"/>
+        <add id="Magestore_Giftvoucher::giftvoucher" title="Manage Gift Codes" module="Magestore_Giftvoucher" sortOrder="1"
+            parent="Magestore_Giftvoucher::giftcard" action="giftvoucheradmin/giftvoucher" resource="Magestore_Giftvoucher::giftvoucher"/>
+        <add id="Magestore_Giftvoucher::giftproduct" title="Manage Gift Card Products" module="Magestore_Giftvoucher" sortOrder="2"
+            parent="Magestore_Giftvoucher::giftcard" action="giftvoucheradmin/giftproduct/" resource="Magestore_Giftvoucher::giftproduct"/>
+        <add id="Magestore_Giftvoucher::generategiftcard" title="Generate Gift Codes" module="Magestore_Giftvoucher" sortOrder="3"
+            parent="Magestore_Giftvoucher::giftcard" action="giftvoucheradmin/generategiftcard/" resource="Magestore_Giftvoucher::generategiftcard"/>
+        <add id="Magestore_Giftvoucher::gifttemplate" title="Manage Gift Card Templates" module="Magestore_Giftvoucher" sortOrder="4"
+            parent="Magestore_Giftvoucher::giftcard" action="giftvoucheradmin/gifttemplate/" resource="Magestore_Giftvoucher::gifttemplate"/>
+        <add id="Magestore_Giftvoucher::gifthistory" title="History" module="Magestore_Giftvoucher" sortOrder="5"
+            parent="Magestore_Giftvoucher::giftcard" action="giftvoucheradmin/gifthistory/" resource="Magestore_Giftvoucher::gifthistory"/>
+        <add id="Magestore_Giftvoucher::settings" title="Settings" module="Magestore_Giftvoucher" sortOrder="6"
+            parent="Magestore_Giftvoucher::giftcard" action="adminhtml/system_config/edit/section/giftvoucher" resource="Magestore_Giftvoucher::settings"/>
+    </menu>
+</config>

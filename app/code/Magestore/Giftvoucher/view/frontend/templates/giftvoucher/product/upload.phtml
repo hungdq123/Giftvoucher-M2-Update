@@ -1,0 +1,153 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+$helper = $this->helper('Magestore\Giftvoucher\Helper\Data');
+$customerSession = $block->getObjectManager()->get('Magento\Customer\Model\Session');
+?>
+<label><?php echo __('Or upload your photo') ?>
+    <small style="font-size: 90%;font-weight: normal;" id="<?php echo $block->getHtmlId() ?>" class="uploader">
+
+        <span>&nbsp; (
+            <?php echo __('Recommended size: ') ?>
+            <span id="giftcard-notes-top" style="display: none">600x190</span>
+            <span id="giftcard-notes-center" style="display: none">600x365</span>
+            <span id="giftcard-notes-left" style="display: none">250x365</span>. <?php echo __('&nbsp;&nbsp;Support gif, jpg, png files. Max file supported: %1 KB', $helper->getInterfaceConfig('upload_max_size')) ?>
+            )
+        </span>
+
+    </small>
+</label><br/>
+<div id="eventsupload">Upload</div>
+
+<div id="div-image-for-custom" style="position:relative; float: left;border: 2px solid white;display: none; clear: both; margin: 10px 0px 5px 15px;">
+    <img id="image-for-custom" src="" width="68" height="56" alt="image giftcard" style="cursor: pointer;border: 1px solid white;" onclick="changeImageDesignAgain(this)">
+    <div class="egcSwatch-arrow" style="display: none"></div>
+</div>
+<input class="giftvoucher_custom_option" type="hidden" name="giftcard_use_custom_image" id='giftcard-use-custom-image' value="0" />
+<script type="text/javascript">
+    maxUploadFileSizeInBytes = '<?php echo $this->getFileSizeService()->getUploadMaxSize() ?>';//512000;
+    maxUploadFileSize = '<?php echo $block->getDataMaxSize() ?>';
+    image_upload_name = '';
+</script>
+<script type="text/javascript">
+<?php if ($customerSession->getGiftcardCustomUploadImage() && file_exists($block->getBaseDir() . str_replace("/", DS, strstr($customerSession->getGiftcardCustomUploadImage(), '/media')))): ?>
+        urlUploadImage = '<?php echo $customerSession->getGiftcardCustomUploadImage() ?>';
+        image_upload_name = '<?php echo $customerSession->getGiftcardCustomUploadImageName() ?>';
+        $('image-for-custom').src = urlUploadImage;
+        $('div-image-for-custom').show();
+        urlUploadImage = '';
+        //changeImageDesign();
+<?php endif; ?>
+</script> 
+<script type="text/javascript">
+    require([
+        "jquery",
+        "jquery/ui",
+        "magestore/uploadfile",
+        "magestore/jqueryform"
+    ], function () {
+        var upImg = jQuery.noConflict();
+        upImg(document).ready(function () {
+            upImg("#eventsupload").uploadFile({
+                id: "giftcard_custom_uploadimage",
+                url: "<?php echo $block->getUrl("giftvoucher/index/uploadImageAjax") ?>",
+                multiple: false,
+                allowedTypes: "png,gif,jpg,jpeg",
+                maxFileSize: maxUploadFileSize,
+                showDone: false,
+                fileName: "templateimage",
+                onSubmit: function (files)
+                {
+                    upImg("#eventsmessage").html(upImg("#eventsmessage").html() + "<br/>Submitting:" + JSON.stringify(files));
+                },
+                onSuccess: function (files, data, xhr)
+                {
+                    upImg("#eventsmessage").html(upImg("#eventsmessage").html() + "<br/>Success for: " + JSON.stringify(data));
+                    var json_data = upImg.parseJSON(data);
+                    urlUploadImage = json_data['url'];
+                    image_upload_name = json_data['file'];
+                    upImg('#image-for-custom').attr('src', urlUploadImage);
+                    upImg('div-image-for-custom').show();
+                    changeImageDesign();
+                    upImg('.ajax-file-upload-statusbar').delay(1000).fadeOut(500);
+
+                },
+                afterUploadAll: function ()
+                {
+                    upImg("#eventsmessage").html(upImg("#eventsmessage").html() + "<br/>All files are uploaded");
+
+                },
+                onError: function (files, status, errMsg)
+                {
+                    upImg("#eventsmessage").html(upImg("#eventsmessage").html() + "<br/>Error for: " + JSON.stringify(files));
+                }
+            });
+
+        });
+
+    })
+</script>
+
+<script type="text/javascript">
+    require([
+        "jquery",
+        "jquery/ui",
+        "prototype",
+        "mage/translate",
+        "mage/mage",
+        "mage/backend/form"
+    ], function () {
+        changeImageDesignAgain = function (el) {
+            urlUploadImage = el.src;
+            changeImageDesign();
+        }
+
+        changeImageDesign = function () {
+            if (urlUploadImage == '')
+                url = '';
+            else {
+                url = 'url(' + urlUploadImage + ')';
+                if (typeof image_old != 'undefined') {
+                    $('div-' + image_old).removeClassName('gift-active');
+                    $('div-' + image_old).down('.egcSwatch-arrow').hide();
+                }
+            }
+
+            if ($('giftcard-template-back'))
+                $('giftcard-template-back').down('.giftcard-change-image').style.backgroundImage = url;
+            if ($('giftcard-template-left'))
+                $('giftcard-template-left').down('.giftcard-change-image').style.backgroundImage = url;
+            if ($('giftcard-template-top'))
+                $('giftcard-template-top').down('.giftcard-change-image').style.backgroundImage = url;
+
+            $('div-image-for-custom').addClassName('gift-active');
+            $('div-image-for-custom').show();
+            $('div-image-for-custom').down('.egcSwatch-arrow').show();
+
+            images_tmp = templates[template_id].images;
+            images_tmp = images_tmp.split(',');
+            $('giftcard-template-images').value = image_upload_name;
+            $('giftcard-use-custom-image').value = '1';
+
+            jQuery('form[id^="giftcard_custom_uploadimage"]').mage('form').mage('validation', {validationUrl: '<?php echo $block->getUrl("giftvoucher/index/uploadImageAjax") ?>'});
+        }
+    })
+</script>

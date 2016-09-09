@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Giftvoucher
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Magestore_Giftvoucher::css/magestore/giftvoucher.css"/>
+        <css src="Magestore_Giftvoucher::css/magestore/mobilelibrary.css"/>
+        <css src="Magestore_Giftvoucher::css/magestore/uploadfile.min.css"/>
+        <link src="Magestore_Giftvoucher::js/jquery/jquery.form.js" />
+        <link src="Magestore_Giftvoucher::js/jquery/jquery.uploadfile.min.js" />
+        <link src="Magestore_Giftvoucher::js/ie_fix.js" />
+    </head>
+    <body>
+        <referenceContainer name="product.info.form.content">
+            <block class="Magestore\Giftvoucher\Block\Product\View" name="product.info.giftvoucher" before="product.info.addtocart" template="giftvoucher/product/view.phtml">                
+                <block class="Magestore\Giftvoucher\Block\Product\View" name="giftcard.product.selecttemplate" template="giftvoucher/product/template.phtml" >
+                    <block class="Magestore\Giftvoucher\Block\Product\Upload" name="giftcard.product.upload" template="giftvoucher/product/upload.phtml" as="giftcard.uploadimage" />
+                </block>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="product.info.type">
+            <block class="Magestore\Giftvoucher\Block\Product\View\Type\Giftvoucher" as="product.info.giftvoucher" template="giftvoucher/product/view/type/default.phtml"/>
+            <container name="product.info.giftvoucher.extra" after="product.info.giftvoucher" before="product.info.giftvoucher" as="product_type_data_extra" label="Product Extra Info"/>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block name="customer.section.config" class="Magento\Customer\Block\SectionConfig"
+                   template="Magento_Customer::js/section-config.phtml"/>
+        </referenceContainer>
+    </body>
+</page>
