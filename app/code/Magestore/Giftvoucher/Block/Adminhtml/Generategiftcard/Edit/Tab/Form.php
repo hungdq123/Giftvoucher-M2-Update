@@ -82,6 +82,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements
         $isElementDisabled = false;
         
         $fieldset = $form->addFieldset('generategiftcard_form', array('legend' =>__('General Information')));
+        $fieldset2 = $form->addFieldset('import_form', array('legend' =>__('Import Gift Code Sets')));
          $data = $this->_coreRegistry->registry('generategiftcard_data');
         if ($this->_backendSession->getGenerategiftcardData()) {
             $model = $this->_backendSession->getGenerategiftcardData();
@@ -113,7 +114,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements
             . '<br/>GIFT-[A.4]-[AN.6] : GIFT-ADFA-12NF0O</strong>');
         $fieldset->addField('pattern', 'text', array(
             'label' => __('Gift code pattern '),
-            'required' => true,
+            'required' => false,
             'name' => 'pattern',
             'value' => $this->_giftvoucherHelper->getGeneralConfig('pattern'),
             'note' => $note,
@@ -122,7 +123,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements
 
         $fieldset->addField('balance', 'text', array(
             'label' => __('Gift code value'),
-            'required' => true,
+            'required' => false,
             'name' => 'balance',
             'disabled' => $disabled,
             'class' => 'validate-number validate-greater-than-zero',
@@ -146,7 +147,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements
             'name' => 'expired_at',
             'input_format' => 'yyyy-MM-dd',
             'date_format' => 'MM/dd/yyyy',
-            'readonly' => true,
+            'readonly' => false,
             'disabled' => $disabled,
             'style' => $style,
         ));
@@ -157,7 +158,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements
                 'label' => __('Template'),
                 'name' => 'giftcard_template_id',
                 'values' => $template,
-                'required' => true,
+                'required' => false,
                 'onchange' => 'loadImageTemplate(this.value)',
                 'disabled' => $disabled,
                 'after_element_html' => (isset($data['giftcard_template_image'])
@@ -178,7 +179,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements
         
         $fieldset->addField('amount', 'text', array(
             'label' => __('Gift code Qty'),
-            'required' => true,
+            'required' => false,
             'name' => 'amount',
             'disabled' => $disabled,
             'class' => 'validate-number validate-greater-than-zero',
@@ -191,6 +192,12 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements
             'required' => false,
             'disabled' => $disabled,
             'values' => $this->_systemStore->getStoreValuesForForm(false, true)
+        ));
+        $fieldset2->addField('import_code','file',array(
+            'label' => __('Import Gift Code Sets'),
+            'name' => 'import_code',
+            'required' => false,
+
         ));
         
         $form->setValues($data);

@@ -28,7 +28,7 @@ namespace Magestore\Giftvoucher\Model;
  * @module   Giftvoucher
  * @author   Magestore Developer
  */
-class Giftcodesetoptions extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
+class Giftcodesetsoptions extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
 {
 
     /**
@@ -54,8 +54,8 @@ class Giftcodesetoptions extends \Magento\Eav\Model\Entity\Attribute\Source\Abst
      */
     public function getAvailableGiftcodeSets()
     {
-        $giftcodeSets = $this->_giftcodeSets->getCollection()
-            ->addFieldToFilter('status', '2');
+        $giftcodeSets = $this->_giftcodeSets->getCollection();
+//            ->addFieldToFilter('status', '2');
         $listGiftcodeSets = array();
         foreach ($giftcodeSets as $giftcodeSet) {
             $listGiftcodeSets[] = array('label' => $giftcodeSet->getGiftCode(),

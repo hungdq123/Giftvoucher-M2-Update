@@ -33,11 +33,98 @@ class UpgradeSchema implements UpgradeSchemaInterface
 {
 
     /**
+     * @var \Magento\Eav\Model\Entity\Type
+     */
+    protected $_entityTypeModel;
+
+    /**
+     * @var \Magento\Eav\Model\Entity\Attribute
+     */
+    protected $_catalogAttribute;
+
+    /**
+     * @var \Magento\Eav\Setup\EavSetupe
+     */
+    protected $_eavSetup;
+
+    /**
      * {@inheritdoc}
      */
+    public function __construct(
+        \Magento\Eav\Setup\EavSetup $eavSetup,
+        \Magento\Eav\Model\Entity\Type $entityType,
+        \Magento\Eav\Model\Entity\Attribute $catalogAttribute
+    ) {
+        $this->_eavSetup = $eavSetup;
+        $this->_entityTypeModel = $entityType;
+        $this->_catalogAttribute = $catalogAttribute;
+    }
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
+        $entityTypeModel = $this->_entityTypeModel;
+        $catalogAttributeModel = $this->_catalogAttribute;
+
+        $installer =  $this->_eavSetup;
+
         $setup->startSetup();
-        $setup->endSetup();
+
+        if (version_compare($context->getVersion(), '1.0.4', '<')) {
+
+            $setup->getConnection()->addColumn(
+                $setup->getTable('giftvoucher'),
+                'used',
+                \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT
+            );
+            $data = array(
+                'group' => 'General',
+                'type' => 'varchar',
+                'input' => 'multiselect',
+                'default' => 1,
+                'label' => 'Select Gift Card templates ',
+                'backend' => 'Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend',
+                'frontend' => '',
+                'source' => 'Magestore\Giftvoucher\Model\Templateoptions',
+                'visible' => 1,
+                'required' => 1,
+                'user_defined' => 1,
+                'used_for_price_rules' => 1,
+                'position' => 2,
+                'unique' => 0,
+                'default' => '',
+                'sort_order' => 100,
+                'apply_to' => 'giftvoucher',
+                'is_global' => \Magento\Catalog\Model\ResourceModel\Eav\Attribute::SCOPE_STORE,
+                'is_required' => 1,
+                'is_configurable' => 1,
+                'is_searchable' => 0,
+                'is_visible_in_advanced_search' => 0,
+                'is_comparable' => 0,
+                'is_filterable' => 0,
+                'is_filterable_in_search' => 1,
+                'is_used_for_promo_rules' => 1,
+                'is_html_allowed_on_front' => 0,
+                'is_visible_on_front' => 0,
+                'used_in_product_listing' => 1,
+                'used_for_sort_by' => 0,
+            );
+            if (version_compare($context->getVersion(), '1.0.4', '<')) {
+                $data['label'] = 'Sellect The Gift Code Sets';
+                $data['source'] ='Magestore\Giftvoucher\Model\Giftcodesetsoptions';
+                $data['sort_order'] = 110;
+                $data['required'] = 2;
+
+                $installer->addAttribute(
+                    $entityTypeModel->loadByCode('catalog_product')->getData('entity_type_id'),
+                    'gift_code_sets',
+                    $data
+                );
+                $giftCodeSets = $catalogAttributeModel->loadByCode('catalog_product', 'gift_code_sets');
+                $giftCodeSets->addData($data)->save();
+
+            }
+
+            $setup->endSetup();
+
+        }
     }
 }

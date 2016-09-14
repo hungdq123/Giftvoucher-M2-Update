@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
-
 <!--
-/**ss
+/**
  * Magestore
  * 
  * NOTICE OF LICENSE
@@ -22,6 +21,6 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/Module/etc/module.xsd">
-    <module name="Magestore_Giftvoucher" setup_version="1.0.3">
+    <module name="Magestore_Giftvoucher" setup_version="1.0.4">
     </module>
 </config>

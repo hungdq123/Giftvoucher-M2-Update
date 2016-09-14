@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="93fa5966-e760-412f-991a-ca300ecf1472" name="giftcard2" url="http://localhost">
+        <fileTransfer port="0" mountedRoot="C:\xampp\htdocs\magento2.1" accessType="MOUNT" />
+      </webServer>
+    </option>
+  </component>
+</project>

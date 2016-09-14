@@ -173,7 +173,16 @@ class Giftcodelist extends \Magento\Backend\Block\Widget\Grid\Extended implement
             'index' => 'stores',
             'is_system' => true,
         ));
+        $this->addColumn('used',array(
+            'header' =>__('Used'),
+            'width' => '10px',
+            'align' => 'left',
+            'type' => 'options',
+            'options' => \Magestore\Giftvoucher\Model\Used::getOptionArray(),
+            'filter_index' => 'main_table.status'
 
+
+        ));
         $this->addExportType('*/*/exportGiftCodeCsv', __('CSV'));
         $this->addExportType('*/*/exportGiftCodeXml', __('XML'));
         $this->addExportType('*/*/exportGiftCodePdf', __('PDF'));
