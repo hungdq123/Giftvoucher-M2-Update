@@ -48,18 +48,19 @@ class Giftcodesetsoptions extends \Magento\Eav\Model\Entity\Attribute\Source\Abs
 
 
     /**
-     * Get Gift Card available templates
+     * Get Gift Card available giftcode sets
      *
      * @return array
      */
     public function getAvailableGiftcodeSets()
     {
         $giftcodeSets = $this->_giftcodeSets->getCollection();
+
 //            ->addFieldToFilter('status', '2');
         $listGiftcodeSets = array();
         foreach ($giftcodeSets as $giftcodeSet) {
-            $listGiftcodeSets[] = array('label' => $giftcodeSet->getGiftCode(),
-                'value' => $giftcodeSet->getGiftCode());
+            $listGiftcodeSets[] = array('label' => $giftcodeSet->getTemplateName(),
+                'value' => $giftcodeSet->getTemplateId());
         }
         return  $listGiftcodeSets;
     }
