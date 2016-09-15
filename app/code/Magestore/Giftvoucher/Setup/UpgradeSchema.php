@@ -78,9 +78,9 @@ class UpgradeSchema implements UpgradeSchemaInterface
             $data = array(
                 'group' => 'General',
                 'type' => 'varchar',
-                'input' => 'multiselect',
+                'input' => 'select',
                 'default' => 1,
-                'label' => 'Select Gift Card templates ',
+                'label' => 'Select Gift Card Templates ',
                 'backend' => 'Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend',
                 'frontend' => '',
                 'source' => 'Magestore\Giftvoucher\Model\Templateoptions',
@@ -107,11 +107,11 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 'used_in_product_listing' => 1,
                 'used_for_sort_by' => 0,
             );
-            if (version_compare($context->getVersion(), '1.0.4', '<')) {
+
                 $data['label'] = 'Sellect The Gift Code Sets';
                 $data['source'] ='Magestore\Giftvoucher\Model\Giftcodesetsoptions';
                 $data['sort_order'] = 110;
-                $data['required'] = 2;
+                $data['is_required'] = 0;
 
                 $installer->addAttribute(
                     $entityTypeModel->loadByCode('catalog_product')->getData('entity_type_id'),
@@ -121,7 +121,10 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 $giftCodeSets = $catalogAttributeModel->loadByCode('catalog_product', 'gift_code_sets');
                 $giftCodeSets->addData($data)->save();
 
-            }
+                //-----
+                $data['lable'] ='Sellect Gift Card Type';
+
+
 
             $setup->endSetup();
 
