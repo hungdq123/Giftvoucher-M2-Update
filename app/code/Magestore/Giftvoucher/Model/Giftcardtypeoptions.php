@@ -18,19 +18,18 @@
  * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
  * @license     http://www.magestore.com/license-agreement.html
  */
-
 namespace Magestore\Giftvoucher\Model;
 
 /**
- * Giftvoucher Status Model
+ * Giftvoucher View Block
  *
- * @category    Magestore
- * @package     Magestore_Giftvoucher
- * @author      Magestore Developer
+ * @category Magestore
+ * @package  Magestore_Giftvoucher
+ * @module   Giftvoucher
+ * @author   Magestore Developer
  */
-class Giftcardtype extends \Magento\Framework\DataObject
+class Giftcardtypeoptions extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
 {
-
     const TYPE_PHYSICAL = 1;
     const TYPE_VIRTUAL = 2;
     const TYPE_COMBINE= 3;
@@ -50,16 +49,7 @@ class Giftcardtype extends \Magento\Framework\DataObject
 
         );
     }
-
-
-     */
-
-    /**
-     * Get the gift card's type options
-     *
-     * @return array
-     */
-    public static function getOptions()
+    public function getGiftcardtype()
     {
         $options = array();
         foreach (self::getOptionArray() as $value => $label) {
@@ -71,8 +61,18 @@ class Giftcardtype extends \Magento\Framework\DataObject
         return $options;
     }
 
-    public function toOptionArray()
+    public function getAllOptions($withEmpty = true)
     {
-        return self::getOptions();
+        if (is_null($this->_options)) {
+            $this->_options = $this->getGiftcardtype();
+        }
+        $options = $this->_options;
+        if ($withEmpty) {
+            array_unshift($options, array(
+                'value' => '',
+                'label' => __('-- Please Select --'),
+            ));
+        }
+        return $options;
     }
 }

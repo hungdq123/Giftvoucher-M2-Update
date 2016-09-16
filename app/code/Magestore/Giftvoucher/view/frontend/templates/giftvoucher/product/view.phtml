@@ -255,7 +255,7 @@ $mageinit = '{"calendar":{'
                     if (el.value.length > remaining_max) {
                         el.value = el.value.substring(0, remaining_max);
                     }
-                    // el.value = el.value.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+                     el.value = el.value.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
                     $('giftvoucher_char_remaining').innerHTML = remaining_max - el.value.length;
                     for (i = 0; i < 3; i++)
                         if ($(giftmedia[i]))
@@ -267,8 +267,7 @@ $mageinit = '{"calendar":{'
                             if (el.value)
                                 $(giftmedia[i]).down('.giftcard-send-from').innerHTML = el.value.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
                             else
-                                $(giftmedia[i]).down('.giftcard-send-from').innerHTML = '<?php echo $isLogged ?
-                    $customerName : '';
+                                $(giftmedia[i]).down('.giftcard-send-from').innerHTML = '<?php echo $isLogged ?  $customerName : '';
             ?>';
                 }
                 changeReceiverName = function (el) {
@@ -356,6 +355,9 @@ $mageinit = '{"calendar":{'
                         }
                     if ($('recipient_ship') && $('recipient_ship').checked)
                         $('recipient_ship_desc').show();
+                    $$('.giftcard-from-to').each(function(el){
+                        el.show();
+                    });
 
                 } else {
                     if (receiver)
@@ -365,6 +367,9 @@ $mageinit = '{"calendar":{'
                             $(giftmedia[i]).down('.giftcard-custom-message').innerHTML = '';
                             $(giftmedia[i]).down('.giftcard-send-to').innerHTML = '';
                             $(giftmedia[i]).down('.giftcard-send-from').innerHTML = '<?php echo $isLogged ? $customerName : ''; ?>';
+                            $$('.giftcard-from-to').each(function(el){
+                                el.hide();
+                            });
                         }
                 }
             }
@@ -402,11 +407,20 @@ $mageinit = '{"calendar":{'
             changePriceMediaGiftcard($('giftcard-product-amount-media').innerHTML);
             changeSenderName($('customer_name'));
             changeReceiverName($('recipient_name'));
-            changeRemaining($('message'));
+//            changeRemaining($('message'));
             if ($('amount_dropdown'))
                 changePriceByInputDropdown($('amount_dropdown'));
             if ($('amount_range'))
                 changePriceByInput($('amount_range').value);
+            if($('send_friend').checked){
+                $$('.giftcard-from-to').each(function(el){
+                    el.show();
+                });
+            }else{
+                $$('.giftcard-from-to').each(function(el){
+                    el.hide();
+                });
+            }
         });
     })
 </script>

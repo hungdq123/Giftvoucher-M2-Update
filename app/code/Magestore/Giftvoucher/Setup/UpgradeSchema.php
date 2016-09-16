@@ -121,9 +121,19 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 $giftCodeSets = $catalogAttributeModel->loadByCode('catalog_product', 'gift_code_sets');
                 $giftCodeSets->addData($data)->save();
 
-                //-----
-                $data['lable'] ='Sellect Gift Card Type';
 
+                $data['label'] = 'Sellect Gift Card Type';
+                $data['source'] = 'Magestore\Giftvoucher\Model\Giftcardtypeoptions';
+                $data['sort_order'] = 14;
+                $data['is_required'] = 1;
+
+                $installer->addAttribute(
+                $entityTypeModel->loadByCode('catalog_product')->getData('entity_type_id'),
+                'gift_card_type',
+                $data
+                );
+                $giftCardType = $catalogAttributeModel->loadByCode('catalog_product', 'gift_card_type');
+                $giftCardType->addData($data)->save();
 
 
             $setup->endSetup();

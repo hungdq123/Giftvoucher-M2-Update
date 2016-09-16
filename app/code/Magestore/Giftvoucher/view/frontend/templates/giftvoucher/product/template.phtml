@@ -131,7 +131,7 @@
                     $(template_show_id).show();
 
                     templateShow = templates[template_id];
-                    $(template_show_id).down('.giftcard-title').innerHTML = templateShow.caption;
+//                    $(template_show_id).down('.giftcard-title').innerHTML = templateShow.caption;
 
                     if ($('giftcard-notes-top'))
                         $('giftcard-notes-top').hide();
@@ -140,7 +140,7 @@
                     if ($('giftcard-notes-center'))
                         $('giftcard-notes-center').hide();
                     if (templateShow.design_pattern == design_top) {
-                        url_image_position = 'top/';
+                        url_image_position = '';
                         if ($('giftcard-notes-top'))
                             $('giftcard-notes-top').show();
                     }
@@ -167,12 +167,6 @@
                         text_color = templateShow.text_color;
                     else
                         text_color = '#2f2f2f';
-
-                    $(template_show_id).down('.giftcard-template-content').style.backgroundImage = 'url(' + background_img + ')';
-                    if (templates[template_id].notes)
-                        $(template_show_id).down('p.giftcard-text-color').innerHTML = templates[template_id].notes;
-                    else
-                        $(template_show_id).down('p.giftcard-text-color').innerHTML = '<?php echo $block->getObjectManager()->get('Magestore\Giftvoucher\Model\Giftvoucher')->getPrintNotes(); ?>';
 
                     $$('#' + template_show_id + ' .giftcard-style-color').each(function (el) {
                         el.style.color = style_color;
