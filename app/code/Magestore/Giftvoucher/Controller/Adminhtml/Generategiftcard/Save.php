@@ -182,7 +182,7 @@ class Save extends \Magento\Backend\App\Action
                         try {
                             $giftVoucher->setGiftCode($giftVoucherData['gift_code'])
                                 ->setIncludeHistory(true)
-                                ->setUsed(1)
+                                ->setUsed(2)
                                 ->setGenerateGiftcode(true)
                                 ->setTemplateId($model->getId())
                                 ->setId(null)

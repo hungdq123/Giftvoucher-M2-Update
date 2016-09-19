@@ -159,35 +159,35 @@ class Form extends \Magestore\Giftvoucher\Block\Adminhtml\Gifttemplate\Edit\Tab\
             )
         );
 
-        $fieldset->addField(
-            'background_img',
-            'image',
-            array(
-                'name' => 'background_img',
-                'label' => __('Backgroud Image'),
-                'title' => __('Backgroud Image'),
-                'required' => false,
-                'disabled' => $isElementDisabled,
-                'note' => __('Support jpg, jpeg, gif, png files.'),
-            )
-        );
+//        $fieldset->addField(
+//            'background_img',
+//            'image',
+//            array(
+//                'name' => 'background_img',
+//                'label' => __('Backgroud Image'),
+//                'title' => __('Backgroud Image'),
+//                'required' => false,
+//                'disabled' => $isElementDisabled,
+//                'note' => __('Support jpg, jpeg, gif, png files.'),
+//            )
+//        );
 
-        $fieldset->addField(
-            'notes',
-            'textarea',
-            array(
-                'name' => 'notes',
-                'label' => __('Notes'),
-                'title' => __('Notes'),
-                'required' => false,
-                'disabled' => $isElementDisabled,
-                'note' => __(
-                    '{store_name}: your store\'s name<br/>
-                    {store_url}: your store\'s url<br/>
-                    {store_address}: your store\'s address'
-                ),
-            )
-        );
+//        $fieldset->addField(
+//            'notes',
+//            'textarea',
+//            array(
+//                'name' => 'notes',
+//                'label' => __('Notes'),
+//                'title' => __('Notes'),
+//                'required' => false,
+//                'disabled' => $isElementDisabled,
+//                'note' => __(
+//                    '{store_name}: your store\'s name<br/>
+//                    {store_url}: your store\'s url<br/>
+//                    {store_address}: your store\'s address'
+//                ),
+//            )
+//        );
 
         if ($model->getData('background_img')) {
             $dirBackground = $this->_filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath(

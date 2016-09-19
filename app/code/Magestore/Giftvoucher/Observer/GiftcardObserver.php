@@ -267,12 +267,11 @@ class GiftcardObserver implements ObserverInterface
 //            var_dump($item->getProduct()->getGiftCodeSets());
             $giftCodeSets =$this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->getCollection()->addFieldToFilter('template_id',$item->getProduct()->getGiftCodeSets())
                 ->addFieldToFilter('used',2)->getFirstItem()->getGiftCode();
-            if($giftCodeSets){
 
-            }
 //            var_dump($giftCodeSets->getGiftCode());
             $giftVouchers = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->getCollection()
                 ->addItemFilter($item->getQuoteItemId());
+            //var_dump($giftVouchers->getSize());
 
             $time = time();
             for ($i = 0; $i < $item->getQtyOrdered() - $giftVouchers->getSize(); $i++) {
