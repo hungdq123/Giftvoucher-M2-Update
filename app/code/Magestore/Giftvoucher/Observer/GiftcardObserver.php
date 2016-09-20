@@ -265,17 +265,37 @@ class GiftcardObserver implements ObserverInterface
             }
 //           var_dump($item->getProduct()->getGiftCardType());
 //            var_dump($item->getProduct()->getGiftCodeSets());
-            $giftCodeSets =$this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->getCollection()->addFieldToFilter('template_id',$item->getProduct()->getGiftCodeSets())
-                ->addFieldToFilter('used',2)->getFirstItem()->getGiftCode();
+
+            //var_dump($giftCodeSets);
+//            if(!$giftCodeSets){
+//
+//                $giftVouchers = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->getCollection()->addFieldToFilter('template_id',$item->getProduct()->getGiftCodeSets())
+//                    ->addFieldToFilter('used',2)->getFirstItem()->addItemFilter($item->getQuoteItemId());
+//            }else{
+//                $giftVouchers = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->getCollection()
+//                    ->addItemFilter($item->getQuoteItemId());
+//            }
 
 //            var_dump($giftCodeSets->getGiftCode());
             $giftVouchers = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->getCollection()
                 ->addItemFilter($item->getQuoteItemId());
             //var_dump($giftVouchers->getSize());
-
+            //var_dump($giftCodeSets);
+           // die('xx');
             $time = time();
             for ($i = 0; $i < $item->getQtyOrdered() - $giftVouchers->getSize(); $i++) {
-                $giftVoucher = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher');
+                $giftCodeSets =$this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->getCollection()->addFieldToFilter('template_id',$item->getProduct()->getGiftCodeSets())
+                    ->addFieldToFilter('used',2)->getFirstItem()->getGiftCode();
+
+                if($giftCodeSets){
+                    $giftVoucher = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->getCollection()->addFieldToFilter('template_id',$item->getProduct()->getGiftCodeSets())
+                        ->addFieldToFilter('used',2)->getFirstItem();
+                }else{
+                    $giftVoucher = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher');
+                    //$this->_registry->register('code_sets','aaa');
+                }
+//                var_dump($giftVoucher->getData());
+//                die();
 
                 $product = $this->_objectManager->create('Magento\Catalog\Model\Product')->load($item->getProductId());
                 if (isset($buyRequest['amount'])) {
@@ -404,7 +424,7 @@ class GiftcardObserver implements ObserverInterface
                     );
                 }
 
-                $giftVoucher->setAction(\Magestore\Giftvoucher\Model\Actions::ACTIONS_CREATE)
+                    $giftVoucher->setAction(\Magestore\Giftvoucher\Model\Actions::ACTIONS_CREATE)
                         ->setComments(__('Created for order %1', $order->getIncrementId()))
                         ->setOrderIncrementId($order->getIncrementId())
                         ->setQuoteItemId($item->getQuoteItemId())
@@ -412,6 +432,7 @@ class GiftcardObserver implements ObserverInterface
                             __('Created by customer %1 %2', $order->getData('customer_firstname'), $order->getData('customer_lastname'))
                         )
                         ->setIncludeHistory(true);
+
                 try {
                     if ($giftVoucher->getDayToSend() && strtotime($giftVoucher->getDayToSend()) > time()
                     ) {
@@ -423,9 +444,13 @@ class GiftcardObserver implements ObserverInterface
                             $giftVoucher->setData('dont_send_email_to_recipient', 1);
                         }
                     }
+                    //$this->_registry->register('code_sets', 'createcode');
                     if($giftCodeSets){
                         //var_dump($giftCodeSets);
+                        //$this->_registry->register('code_sets', $giftCodeSets);
                         $giftVoucher->setGiftCode($giftCodeSets);
+//                        $giftVoucher->setOrderIncrementId($order->getIncrementId());
+//                        $giftVoucher->setAction(\Magestore\Giftvoucher\Model\Actions::ACTIONS_UPDATE);
                         $giftVoucher->setUsed(1);
 
                         //var_dump($giftVoucher->getGiftCode());

@@ -109,8 +109,7 @@ class Save extends \Magento\Backend\App\Action
 //            }
             $model->setData($data)
                 ->setId($this->getRequest()->getParam('template_id'));
-            //begin
-            //end
+
             try {
                 $model->loadPost($data);
                 if ($this->getRequest()->getParam('generate')) {
@@ -122,6 +121,7 @@ class Save extends \Magento\Backend\App\Action
                     $data['conditions'] = $conditions;
                     $data['gift_code'] = $data['pattern'];
                     $data['template_id'] = $model->getId();
+                    $data['used'] = \Magestore\Giftvoucher\Model\Used::STATUS_NO;
                     $data['amount'] = $data['balance'];
                     $data['status'] = \Magestore\Giftvoucher\Model\Status::STATUS_ACTIVE;
                     $data['extra_content'] = __('Created by %1', $authSession->getUser()->getUsername());
@@ -164,7 +164,6 @@ class Save extends \Magento\Backend\App\Action
                     }
 
 
-
                     foreach ($giftVoucherImport as $giftVoucherData) {
                         $giftVoucher = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher');
                         if (isset($giftVoucherData['gift_code']) && $giftVoucherData['gift_code']) {
@@ -182,10 +181,10 @@ class Save extends \Magento\Backend\App\Action
                         try {
                             $giftVoucher->setGiftCode($giftVoucherData['gift_code'])
                                 ->setIncludeHistory(true)
-                                ->setUsed(2)
+                                ->setUsed($giftVoucherData['used'])
                                 ->setGenerateGiftcode(true)
+                                ->setIncludeHistory(true)
                                 ->setTemplateId($model->getId())
-                                ->setId(null)
                                 ->save();
                             $count[] = $giftVoucher->getId();
                         } catch (\Exception $e) {
@@ -193,6 +192,10 @@ class Save extends \Magento\Backend\App\Action
                         }
                     }
 
+
+                    $model->setIsGenerated(1);
+                    $model->setAmount(count($count));
+                    $model->save();
                     if (count($count)) {
                         $successMessage = __('Imported total %1 Gift Code(s)', count($count));
                         $this->messageManager->addSuccess($successMessage);

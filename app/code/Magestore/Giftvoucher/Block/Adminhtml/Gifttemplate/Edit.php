@@ -146,13 +146,13 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
                     . "'+template_id+'.jpg';
                 if(template_id == " . \Magestore\Giftvoucher\Model\Gifttemplate\Type::TYPE_CENTER . ")
                 {
-                    $('background_img').up('div').up('div').hide();
+//                    $('background_img').up('div').up('div').hide();
                     $('giftcard-notes-center').show();
                     $('style_color-note').innerHTML = '" . __('Choose color of texts in Gift Cart title, value and gift code fields. (Recommended color: #FFFFFF)') . "';
                     $('text_color-note').innerHTML = '" . __('Choose color of other texts (fields title, notes, etc.). (Recommended color: #A9A7A7)') . "';
                 }
                 else {
-                    $('background_img').up('div').up('div').show();
+//                    $('background_img').up('div').up('div').show();
                     if (template_id == ".\Magestore\Giftvoucher\Model\Gifttemplate\Type::TYPE_TOP."){
                             $('background_img-note').innerHTML = '600x175. Support jpg, jpeg, gif, png files';
                             $('giftcard-notes-top').show();

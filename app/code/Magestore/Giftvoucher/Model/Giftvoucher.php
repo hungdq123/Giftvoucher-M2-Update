@@ -312,16 +312,25 @@ class Giftvoucher extends \Magento\Rule\Model\AbstractModel
                 $this->_objectManager->create('Magestore\Giftvoucher\Helper\Data')->getGeneralConfig('pattern')
             );
         }
-//        if ($this->_codeIsExpression()) {
-//            $this->setGiftCode($this->_getGiftCode());
-//        } else {
-//            if ($this->getAction() == \Magestore\Giftvoucher\Model\Actions::ACTIONS_CREATE) {
-//                if ($this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')
-//                        ->loadByCode($this->getGiftCode())->getId()) {
-//                    throw new \Exception(__('Gift code is existed!'));
-//                }
-//            }
-//        }
+           //var_dump($this->getData());
+//            var_dump($this->_objectManager->create('Magestore\Giftvoucher\Helper\Data')->getGeneralConfig('pattern'));
+           //die();
+
+            if ($this->_codeIsExpression()) {
+                if($this->getGiftCode()==$this->_objectManager->create('Magestore\Giftvoucher\Helper\Data')->getGeneralConfig('pattern') || $this->getPattern()||$this->getFormKey()) {
+
+                    $this->setGiftCode($this->_getGiftCode());
+                }
+            } else {
+                if ($this->getAction() == \Magestore\Giftvoucher\Model\Actions::ACTIONS_CREATE && !$this->getGiftCode()) {
+                    if ($this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')
+                        ->loadByCode($this->getGiftCode())->getId()
+                    ) {
+                        throw new \Exception(__('Gift code is existed!'));
+                    }
+                }
+            }
+
         
         $registryObject = $this->_objectManager->get('Magento\Framework\Registry');
         if (!$registryObject->registry('giftvoucher_conditions')) {
