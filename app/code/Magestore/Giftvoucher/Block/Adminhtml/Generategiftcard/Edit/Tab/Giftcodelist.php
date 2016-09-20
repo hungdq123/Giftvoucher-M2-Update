@@ -177,6 +177,7 @@ class Giftcodelist extends \Magento\Backend\Block\Widget\Grid\Extended implement
             'header' =>__('Used'),
             'width' => '10px',
             'align' => 'left',
+            'index' => 'used',
             'type' => 'options',
             'options' => \Magestore\Giftvoucher\Model\Used::getOptionArray(),
             'filter_index' => 'main_table.status'
