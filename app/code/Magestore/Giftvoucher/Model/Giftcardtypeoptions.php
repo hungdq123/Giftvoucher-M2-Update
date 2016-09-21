@@ -49,30 +49,32 @@ class Giftcardtypeoptions extends \Magento\Eav\Model\Entity\Attribute\Source\Abs
 
         );
     }
-    public function getGiftcardtype()
-    {
-        $options = array();
-        foreach (self::getOptionArray() as $value => $label) {
-            $options[] = array(
-                'value' => $value,
-                'label' => $label
-            );
-        }
-        return $options;
-    }
+
 
     public function getAllOptions($withEmpty = true)
     {
         if (is_null($this->_options)) {
-            $this->_options = $this->getGiftcardtype();
+            $this->_options = array(
+                array(
+                    'label' => __('Physical'),
+                    'value' => self::TYPE_PHYSICAL
+                ),
+                array(
+                    'label' => __('Virtual'),
+                    'value' => self::TYPE_VIRTUAL
+                ),
+                array(
+                    'label' => __('Combine'),
+                    'value' => self::TYPE_COMBINE
+                ),
+            );
         }
-        $options = $this->_options;
-        if ($withEmpty) {
-            array_unshift($options, array(
+        if($withEmpty){
+            array_unshift($this->_options, array(
                 'value' => '',
                 'label' => __('-- Please Select --'),
             ));
         }
-        return $options;
+        return $this->_options;
     }
 }

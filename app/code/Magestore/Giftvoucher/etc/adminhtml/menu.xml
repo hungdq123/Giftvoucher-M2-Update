@@ -27,7 +27,7 @@
             parent="Magestore_Giftvoucher::giftcard" action="giftvoucheradmin/giftvoucher" resource="Magestore_Giftvoucher::giftvoucher"/>
         <add id="Magestore_Giftvoucher::giftproduct" title="Manage Gift Card Products" module="Magestore_Giftvoucher" sortOrder="2"
             parent="Magestore_Giftvoucher::giftcard" action="giftvoucheradmin/giftproduct/" resource="Magestore_Giftvoucher::giftproduct"/>
-        <add id="Magestore_Giftvoucher::generategiftcard" title="Generate Gift Codes" module="Magestore_Giftvoucher" sortOrder="3"
+        <add id="Magestore_Giftvoucher::generategiftcard" title="Manage Gift Codes Sets" module="Magestore_Giftvoucher" sortOrder="3"
             parent="Magestore_Giftvoucher::giftcard" action="giftvoucheradmin/generategiftcard/" resource="Magestore_Giftvoucher::generategiftcard"/>
         <add id="Magestore_Giftvoucher::gifttemplate" title="Manage Gift Card Templates" module="Magestore_Giftvoucher" sortOrder="4"
             parent="Magestore_Giftvoucher::giftcard" action="giftvoucheradmin/gifttemplate/" resource="Magestore_Giftvoucher::gifttemplate"/>

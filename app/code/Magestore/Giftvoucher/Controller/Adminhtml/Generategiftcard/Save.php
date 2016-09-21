@@ -133,14 +133,80 @@ class Save extends \Magento\Backend\App\Action
                             ->setGenerateGiftcode(true)
                             ->save();
                     }
-                    $this->messageManager->addSuccess(__('The pattern has been generated successfully.'));
+                    //die();
+
+                    if( isset($_FILES['import_code']) && substr($_FILES['import_code']["name"], -4)=='.csv') {
+                        try {
+
+                            $fileName = $_FILES['import_code']['tmp_name'];
+                            $data= $this->_csvObject->getData($fileName);
+                            $count = array();
+                            $fields = array();
+                            $giftVoucherImport = array();
+                            foreach ($data as $row => $cols) {
+                                if ($row == 0) {
+                                    $fields = $cols;
+                                } else {
+                                    $giftVoucherImport[] = array_combine($fields, $cols);
+                                }
+                            }
+
+
+                            foreach ($giftVoucherImport as $giftVoucherData) {
+                                $giftVoucher = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher');
+                                if (isset($giftVoucherData['gift_code']) && $giftVoucherData['gift_code']) {
+                                    $giftVoucher->loadByCode($giftVoucherData['gift_code']);
+                                    if ($giftVoucher->getId()) {
+                                        $this->messageManager->addError(
+                                            __('Gift code %1 already existed', $giftVoucher->getGiftCode())
+                                        );
+                                        continue;
+                                    } else {
+                                        //Mage::helper('giftvoucher')->createBarcode($giftVoucherData['gift_code']);
+                                    }
+                                }
+
+                                try {
+                                    //die('32');
+                                    $giftVoucher->setGiftCode($giftVoucherData['gift_code'])
+                                        ->setIncludeHistory(true)
+                                        ->setUsed($giftVoucherData['used'])
+                                        //->setGenerateGiftcode(true)
+                                        ->setIncludeHistory(true)
+                                        ->setTemplateId($model->getId())
+                                        ->save();
+                                    $count[] = $giftVoucher->getId();
+                                } catch (\Exception $e) {
+                                    $this->messageManager->addError($e->getMessage());
+                                }
+                            }
+
+
+                            $model->setIsGenerated(1);
+                            $model->setAmount((int)count($count)+(int)$amount);
+                            $model->save();
+                            //var_dump((int)$amount);
+                            //var_dump((int)count($count));die('xxx');
+                            if (count($count)) {
+                                $successMessage = __('Imported total %1 Gift Code(s)', count($count));
+                                $this->messageManager->addSuccess($successMessage);
+                                //return $resultRedirect->setPath('*/*/index');
+                            } else {
+                                $this->messageManager->addError(__('No gift code imported'));
+                                return $resultRedirect->setPath('*/*/edit' ,array('id' => $model->getId()));
+                            }
+                        } catch (\Exception $e) {
+                            $this->messageManager->addError(__('Please check your import file content again.'));
+                            return $resultRedirect->setPath('*/*/edit',array('id' => $model->getId()));
+                        }
+
+                    }
+
                     return $resultRedirect->setPath('*/*/edit', array('id' => $model->getId()));
                 }
                 $this->messageManager->addSuccess(__('The pattern has been saved successfully.'));
                 $this->_getSession()->setFormData(false);
-                if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', array('id' => $model->getId()));
-                }
+
                 //return $resultRedirect->setPath('*/*/');
             } catch (\Exception $e) {
                 $this->messageManager->addError($e->getMessage());
@@ -196,23 +262,26 @@ class Save extends \Magento\Backend\App\Action
                     $model->setIsGenerated(1);
                     $model->setAmount(count($count));
                     $model->save();
+                    if ($this->getRequest()->getParam('back')) {
+                        return $resultRedirect->setPath('*/*/edit', array('id' => $model->getId()));
+                    }
                     if (count($count)) {
                         $successMessage = __('Imported total %1 Gift Code(s)', count($count));
                         $this->messageManager->addSuccess($successMessage);
                         //return $resultRedirect->setPath('*/*/index');
                     } else {
                         $this->messageManager->addError(__('No gift code imported'));
-                        return $resultRedirect->setPath('*/*/import');
+                        return $resultRedirect->setPath('*/*/edit',array('id' => $model->getId()));
                     }
                 } catch (\Exception $e) {
                     $this->messageManager->addError(__('Please check your import file content again.'));
-                    return $resultRedirect->setPath('*/*/import');
+                    return $resultRedirect->setPath('*/*/edit',array('id' => $model->getId()));
                 }
 
             }
         }
         //$this->messageManager->addError(__('Unable to find Template to save'));
-        return $resultRedirect->setPath('*/*/');
+        return $resultRedirect->setPath('*/*/edit',array('id' => $model->getId()));
     }
 
     protected function _duplicatePattern()

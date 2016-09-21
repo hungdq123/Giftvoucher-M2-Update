@@ -199,6 +199,16 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements
             'required' => false,
 
         ));
+        $notes=  __('Status of Used : 1-Yes,2-No');
+        $fieldset2->addField('sample', 'note', array(
+            'label' => __('Download Sample CSV File'),
+            'note' =>$notes,
+            'text' => '<a href="' .
+                $this->getUrl('*/*/downloadSampleSets') .
+                '" title="' .
+                __('Download Sample Gift Code Set CSV File') .
+                '">import_giftcodesets_sample.csv</a>'
+        ));
         
         $form->setValues($data);
         $this->setForm($form);

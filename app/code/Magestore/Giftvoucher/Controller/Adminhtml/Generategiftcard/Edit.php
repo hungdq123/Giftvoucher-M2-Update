@@ -79,7 +79,7 @@ class Edit extends \Magento\Backend\App\Action
         if ($model->getId()) {
             $resultPage->getConfig()->getTitle()->prepend(__('Edit Gift Code Pattern "%1"', $model->getTemplateName()));
         } else {
-            $resultPage->getConfig()->getTitle()->prepend(__('New Gift Code Pattern'));
+            $resultPage->getConfig()->getTitle()->prepend(__('New Gift Code Sets'));
         }
 
         return $resultPage;

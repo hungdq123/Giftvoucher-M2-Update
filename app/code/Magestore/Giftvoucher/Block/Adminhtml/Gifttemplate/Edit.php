@@ -154,13 +154,13 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
                 else {
 //                    $('background_img').up('div').up('div').show();
                     if (template_id == ".\Magestore\Giftvoucher\Model\Gifttemplate\Type::TYPE_TOP."){
-                            $('background_img-note').innerHTML = '600x175. Support jpg, jpeg, gif, png files';
+                            //('background_img-note').innerHTML = '600x175. Support jpg, jpeg, gif, png files';
                             $('giftcard-notes-top').show();
                             $('style_color-note').innerHTML = '".__('Choose color of texts in Gift Cart title, value and gift code fields. (Recommended color: #FFFFFF)')."';
                             $('text_color-note').innerHTML = '".__('Choose color of other texts (fields title, notes, etc.). (Recommended color: #636363)')."';
                     }	
                     if (template_id == ".\Magestore\Giftvoucher\Model\Gifttemplate\Type::TYPE_LEFT."){
-                            $('background_img-note').innerHTML = '350x365. Support jpg, jpeg, gif, png files';
+                            //$('background_img-note').innerHTML = '350x365. Support jpg, jpeg, gif, png files';
                             $('giftcard-notes-left').show();
                             $('style_color-note').innerHTML = '".__('Choose color of texts in Gift Cart title, value and gift code fields. (Recommended color: #DC8C71)')."';
                             $('text_color-note').innerHTML = '".__('Choose color of other texts (fields title, notes, etc.). (Recommended color: #949392)')."';	

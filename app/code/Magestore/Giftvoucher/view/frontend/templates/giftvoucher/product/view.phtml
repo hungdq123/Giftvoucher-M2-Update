@@ -25,6 +25,8 @@ if ($block->getGiftvoucherHelper()->getCustomerSession()->isLoggedIn()) {
     $customerName = $this->helper('Magento\Customer\Helper\View')->getCustomerName($block->getGiftvoucherHelper()->getCustomerSession()->getCustomerData());
 }
 $_product = $block->getProduct();
+$giftcard_type = $_product->getGiftCardType();
+
 $_giftAmount = $block->getGiftAmount($_product);
 $_formData = $block->getFormConfigData();
 $timezones = $block->getObjectManager()->get('Magento\Config\Model\Config\Source\Locale\Timezone')->toOptionArray();
@@ -195,10 +197,10 @@ $mageinit = '{"calendar":{'
     <?php endif ?>
     <?php echo $block->getChildHtml('giftcard.product.selecttemplate') ?>
     <?php if ($block->enablePhysicalMail()): ?>
-        <div class ="recipient_ship_form form-group" style="margin: 0;">
+        <div class ="recipient_ship_form form-group" style="margin: 0;display:<?php if($giftcard_type<3) echo 'none;'?>">
             <div class="checkbox">
                 <label class = "recipient_ship" for="recipient_ship">
-                    <input class="giftvoucher_custom_option" type="checkbox" value="<?php echo __('Yes') ?>" name="recipient_ship" id="recipient_ship" onclick="shipToFriend(this);" <?php if ($_formData->getRecipientShip()) echo 'checked' ?> />
+                    <input class="giftvoucher_custom_option" type="checkbox" value="<?php echo __('Yes') ?>" name="recipient_ship" id="recipient_ship" onclick="shipToFriend(this);" <?php if ($_formData->getRecipientShip()|| $giftcard_type==1) echo 'checked' ?> />
                     <?php echo __('Send through post office') ?>
                 </label>
             </div>
@@ -211,10 +213,10 @@ $mageinit = '{"calendar":{'
 
     <div class = "giftcard-send-friend form-group">
         <div class="checkbox">
-            <label for="send_friend"><input class="giftvoucher_custom_option" type="checkbox" value="1" name="send_friend" id="send_friend" onclick="sendFriend(this);" <?php if ($_formData->getSendFriend()) echo 'checked' ?> /><?php echo __('Send Gift Card to friend') ?></label>
+            <label for="send_friend"><input class="giftvoucher_custom_option" type="checkbox" value="1" name="send_friend" id="send_friend" onclick="sendFriend(this);" <?php if ($_formData->getSendFriend()||$giftcard_type==2) echo 'checked' ?> /><?php echo __('Send Gift Card to friend') ?></label>
         </div>
     </div>
-    <div class="giftvoucher-receiver form-group" id="giftvoucher-receiver" style="<?php if (!$_formData->getSendFriend()) echo 'display:none;' ?>">
+    <div class="giftvoucher-receiver form-group" id="giftvoucher-receiver" style="<?php if ($giftcard_type!=2) echo 'display:none;' ?>">
         <div class="form-group">
             <label for="customer_name"><?php echo __('Sender name (optional)') ?></label><br />
             <input type="text" class="giftvoucher_custom_option input-text form-control" name="customer_name" id="customer_name" value="<?php if ($_formData->getCustomerName() == '' && isset($customerName)) echo $customerName;
