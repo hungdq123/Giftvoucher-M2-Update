@@ -1259,6 +1259,6 @@ li.giftvoucher-discount-code strong{float:none;}
 }
 button.gc-amount-selected, button.gc-template-selected{border-color: #e77600}
 #amount_dropdown_buttons .gc-amount {float: left; margin-right: 10px;}
-#amount_dropdown_buttons .gc-amount button{padding: 7px 4px}
+#amount_dropdown_buttons .gc-amount button{padding: 7px 4px; background: #fff;}
 #template_buttons .template{float: left; margin-right: 10px; }
-#template_buttons .template button{padding: 7px 4px}
+#template_buttons .template button{padding: 7px 4px; background: #fff;}
