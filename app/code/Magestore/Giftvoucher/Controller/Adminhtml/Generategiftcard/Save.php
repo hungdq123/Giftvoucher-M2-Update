@@ -129,7 +129,7 @@ class Save extends \Magento\Backend\App\Action
                     for ($i = 1; $i <= $amount; $i++) {
                         $this->_giftvoucher = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher');
                         $this->_giftvoucher->setData($data)->loadPost($data)
-                            ->setIncludeHistory(true)
+                            ->setIncludeHistory(false)
                             ->setGenerateGiftcode(true)
                             ->save();
                     }
@@ -169,7 +169,7 @@ class Save extends \Magento\Backend\App\Action
                                 try {
                                     //die('32');
                                     $giftVoucher->setGiftCode($giftVoucherData['gift_code'])
-                                        ->setIncludeHistory(true)
+                                        ->setIncludeHistory(false)
                                         ->setUsed($giftVoucherData['used'])
                                         //->setGenerateGiftcode(true)
                                         ->setIncludeHistory(true)
@@ -249,7 +249,6 @@ class Save extends \Magento\Backend\App\Action
                                 ->setIncludeHistory(true)
                                 ->setUsed($giftVoucherData['used'])
                                 ->setGenerateGiftcode(true)
-                                ->setIncludeHistory(true)
                                 ->setTemplateId($model->getId())
                                 ->save();
                             $count[] = $giftVoucher->getId();

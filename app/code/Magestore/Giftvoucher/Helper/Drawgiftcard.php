@@ -100,8 +100,8 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
 
         $img4 = $this->createGMessageBox('left');
 
-        $x = 10;
-        $y = 30;
+        $x = 0;
+        $y = 250;
         $fsize = 15;
         $font = $this->_filesystem->getDirectoryRead('lib_internal')
             ->getAbsolutePath('Magestore/fonts/OpenSans-Semibold.ttf');
@@ -111,10 +111,10 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             $widthLogo = imagesx($img3);
             $heightLogo = imagesy($img3);
             imagecopyresampled(
-                $img2,
+                $img1,
                 $img3,
-                (250 - $widthLogo) / 2,
-                265,
+                (200 - $widthLogo) / 2,
+                10,
                 0,
                 0,
                 $widthLogo,
@@ -124,81 +124,40 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             );
         }
 
-        /* Draw Expiry Date */
-        if ($this->getGeneralConfig('show_expiry_date')) {
-            if ($giftcode['expired_at']) {
-                $expiryDate = __('Expired: ') . date('m/d/Y', strtotime($giftcode['expired_at']));
-                $textbox = imageftbbox(9, 0, $font, $expiryDate);
-                imagefttext(
-                    $img2,
-                    9,
-                    0,
-                    (250 - ($textbox[2] - $textbox[0])) / 2,
-                    350,
-                    imagecolorallocate($img, 255, 255, 255),
-                    $font,
-                    $expiryDate
-                );
-            }
-        }
-
-        /* Draw Text */
-        $word = $giftcardTemplate['caption'];
-        $textbox = imageftbbox($fsize, 0, $font, $word);
-
-        $stringArray = $this->processString($word, $font, $fsize, 350);
-        // The width of textbox: $textbox[2] - $textbox[0]
-        // The height of textbox: $textbox[7] - $textbox[1]
-        // $x = ($w - ($textbox[2] - $textbox[0])) / 2;
-        // $y = ($h - ($textbox[7] - $textbox[1])) / 2;
-
-        for ($i = 0; $i < count($stringArray); $i++) {
-            imagefttext($img1, $fsize, 0, $x, $y, $styleColor, $font, $stringArray[$i]);
-            $y -= 1.4 * ($textbox[7] - $textbox[1]);
-        }
-
-        // $font = Mage::getBaseDir('lib') . DS . 'Magestore' . DS . 'fonts' . DS . 'OpenSans-Light.ttf';
         /* Print "From:" and "To: " */
 
-        $textbox = imageftbbox($fsize, 0, $font, __('From: '));
-        imagefttext($img1, 13, 0, 15, $y, $textColor, $font, __('From: '));
-        imagefttext($img1, 13, 0, $x + ($textbox[2] - $textbox[0]), $y, $styleColor, $font, $giftcode['customer_name']);
-        $y -= 1.55 * ($textbox[7] - $textbox[1]);
+        $textbox = imageftbbox($fsize, 0, $font, __('From:'));
+        imagefttext($img1, 8, 0, 15, $y, $textColor, $font, __('From: '));
+        $textboxCustomerName = imageftbbox($fsize, 0, $font, $giftcode['customer_name']);
+        imagefttext($img1, 8, 0, ($textbox[2] - $textbox[0]), $y, $styleColor, $font, $giftcode['customer_name']);
+//        $y -= 1.55 * ($textbox[7] - $textbox[1]);
+        $x = $x + ($textboxCustomerName[2] - $textboxCustomerName[0]) + 20;
+        $textbox = imageftbbox($fsize, 0, $font, __('To:'));
 
-        $textbox = imageftbbox($fsize, 0, $font, __('To: '));
-        imagefttext($img1, 13, 0, 15, $y + 5, $textColor, $font, __('To: '));
-        imagefttext($img1, 13, 0, $x+($textbox[2]-$textbox[0]), $y+5, $styleColor, $font, $giftcode['recipient_name']);
+        imagefttext($img1, 8, 0, $x, $y, $textColor, $font, __('To: '));
+        imagefttext($img1, 8, 0, $x+($textbox[2]-$textbox[0]), $y, $styleColor, $font, $giftcode['recipient_name']);
         $y -= 1.55 * ($textbox[7] - $textbox[1]);
 
         /* Print Customers' s messages */
-
-        $xMessage = 5;
-        $yMessage = 15;
-
+        $xMessage = 10;
+        $yMessage = 280;
         if (isset($giftcode['message']) && $giftcode['message'] != null) {
             $message = $giftcode['message'];
         } else {
             $message = '';
         }
-
         $stringArray = $this->processString($message, $font, 9, 322);
-
         for ($i = 0; $i < count($stringArray); $i++) {
-            imagefttext($img4, 9, 0, $xMessage, $yMessage, $textColor, $font, $stringArray[$i]);
+            imagefttext($img1, 9, 0, $xMessage, $yMessage, $textColor, $font, $stringArray[$i]);
             $yMessage -= 1.25 * ($textbox[7] - $textbox[1]);
         }
-
-        imagecopyresampled($img1, $img4, 14, $y - 10, 0, 0, 322, 90, 322, 90);
+        imagecopyresampled($img1, $img4, 14, $y - 50, 0, 0, 322, 1, 322, 1);
 
         /* Print Value */
 
-        $valueY = $y + 100;
-        $fsizePrice = 13;
+        $valueY = 130 ;
+        $fsizePrice = 25;
 
-        $textbox = imageftbbox($fsize, 0, $font, __('Value '));
-        imagefttext($img1, 10, 0, 15, $valueY, $textColor, $font, __('Value '));
-        $valueY -= 1.55 * ($textbox[7] - $textbox[1]);
-        
         $price = $this->_objectManager->get('Magento\Directory\Model\Currency')
                     ->setData('currency_code', $giftcode['currency'])
                     ->format($giftcode['balance'], array('display' => 2), false);
@@ -210,20 +169,21 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
         /* Print Gift Code */
 
         $fontCode = $this->_filesystem->getDirectoryRead('lib_internal')
-            ->getAbsolutePath('Magestore/fonts/OpenSans-SemiboldItalic.ttf');
-        $codeY = $y + 105;
+            ->getAbsolutePath('Magestore/fonts/OpenSans-Regular.ttf');
+        $codeY = 160;
         $textbox = imageftbbox(13, 0, $fontCode, $giftcode['gift_code']);
         imagefttext(
             $img1,
-            13,
+            15,
             0,
-            335 - ($textbox[2] - $textbox[0]),
+            150 - ($textbox[2] - $textbox[0]),
             $codeY,
             $styleColor,
             $fontCode,
             $giftcode['gift_code']
         );
-        $codeY -= ($textbox[7] - $textbox[1]);
+
+        $this->columnImage(3, $img1);
 
         /* Print Barcode */
         $barcode = $this->getGeneralConfig('barcode_enable');
@@ -235,7 +195,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
                 $img1,
                 $newImgBarcode,
                 335 - $newImgBarcodeX,
-                $codeY - 5,
+                $codeY - 50,
                 0,
                 0,
                 $newImgBarcodeX,
@@ -245,35 +205,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             );
         }
 
-        /* Print Notes */
-
-        if (isset($giftcardTemplate['notes']) && $giftcardTemplate['notes'] != null) {
-            $notes = $giftcardTemplate['notes'];
-        } else {
-            $notes = $this->getStoreConfig('giftvoucher/print_voucher/note', $storeId);
-            $notes = str_replace(array(
-                '{store_url}',
-                '{store_name}',
-                '{store_address}'
-                    ), array(
-                '<span class="print-notes">' . $this->_storeManager->getStore($storeId)->getBaseUrl() . '</span>',
-                '<span class="print-notes">' . $this->_storeManager->getStore($storeId)->getFrontendName() . '</span>',
-                '<span class="print-notes">' . $this->getStoreConfig('general/store_information/address', $storeId)
-                . '</span>'
-                    ), $notes);
-            $notes = strip_tags($notes);
-        }
-
-        $stringArray = $this->processString($notes, $font, 9, 350);
-        for ($i = 0; $i < count($stringArray); $i++) {
-            imagefttext($img1, 9, 0, $x, $codeY + 58, $textColor, $font, $stringArray[$i]);
-            $codeY -= 1.3 * ($textbox[7] - $textbox[1]);
-        }
-
-        /* End */
-
-
-        /* Draw Images */
+         /* Draw Images */
         imagecopyresampled($img, $img2, 0, 0, 0, 0, 250, 365, 250, 365);
 
 
@@ -289,7 +221,6 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
      */
     public function generateTopImage($giftcode, $giftcardTemplate)
     {
-
         $storeId = $this->_storeManager->getStore()->getId();
         $images = $this->getImagesInFolder($giftcode['gift_code']);
         if (isset($images[0]) && file_exists($images[0])) {
@@ -300,7 +231,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
 
         $imgFile = $this->getImgDir($giftcode['gift_code']) . $giftcode['gift_code'] . '-' . $imageSuffix . '.png';
         $w = 600;
-        $h = 365;
+        $h = 529;
 
         $img = imagecreatetruecolor($w, $h);
         $textColor = $this->hexColorAllocate($img, $giftcardTemplate['text_color']);
@@ -308,103 +239,53 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
         $bgColor = imagecolorallocate($img, 255, 255, 255);
         imagefilledrectangle($img, 0, 0, $w - 1, $h - 1, $bgColor);
 
-        // if (isset($giftcode['giftcard_template_image']) && $giftcode['giftcard_template_image'] != null)
-        $img2 = $this->createGCImage($giftcode['giftcard_template_image'], 'top');
 
+        $img2 = $this->createGCImage($giftcode['giftcard_template_image'], 'top');
         $img1 = $this->createGCBackground($giftcardTemplate['background_img'], 'top');
 
         $img3 = $this->createGCLogo();
 
         $img4 = $this->createGMessageBox('top');
 
-        $img5 = $this->createGCBackground('bkg-title.png');
-
-        $img6 = $this->createGCBackground('bkg-value.png');
-
-        $x = 10;
-        $y = 33;
+        $x = 0;
+        $y = 100;
         $fsize = 15;
         $font = $this->_filesystem->getDirectoryRead('lib_internal')
             ->getAbsolutePath('Magestore/fonts/OpenSans-Semibold.ttf');
 
-        /* Draw Expiry Date */
-        if ($this->getGeneralConfig('show_expiry_date')) {
-            if ($giftcode['expired_at']) {
-                $expiryDate = __('Expired: ') . date('m/d/Y', strtotime($giftcode['expired_at']));
-                $textbox = imageftbbox(9, 0, $font, $expiryDate);
-                imagefttext(
-                    $img2,
-                    9,
-                    0,
-                    (580 - ($textbox[2] - $textbox[0])),
-                    25,
-                    imagecolorallocate($img, 255, 255, 255),
-                    $font,
-                    $expiryDate
-                );
-            }
+        /* Insert Logo to Image */
+        if ($img3) {
+            $widthLogo = imagesx($img3);
+            $heightLogo = imagesy($img3);
+            imagecopyresampled(
+                $img1,
+                $img3,
+                (200 - $widthLogo) / 2,
+                20,
+                0,
+                0,
+                $widthLogo,
+                $heightLogo,
+                $widthLogo,
+                $heightLogo
+            );
         }
 
-        /* Draw Text */
-        $word = $giftcardTemplate['caption'];
-        $textbox = imageftbbox($fsize, 0, $font, $word);
-
-        $word = $this->processTitle($word, $font, $fsize, 370);
-        imagefttext($img5, $fsize, 0, $x, $y, $styleColor, $font, $word);
-
-
-        /* Print Value */
-        $fontPrice = $this->_filesystem->getDirectoryRead('lib_internal')
-            ->getAbsolutePath('Magestore/fonts/OpenSans-ExtraBold.ttf');
-        $fsizePrice = 14;
-
-        $price = $this->_objectManager->get('Magento\Directory\Model\Currency')
-                    ->setData('currency_code', $giftcode['currency'])
-                    ->format($giftcode['balance'], array('display' => 2), false);
-
-        $textbox = imageftbbox($fsizePrice, 0, $fontPrice, $price);
-        $valueX = $textbox[2] - $textbox[0];
-        imagefttext($img6, $fsizePrice, 0, 210 - $valueX, $y + 3, $styleColor, $font, $price);
-
-        $fsizeValue = 9;
-        $textbox = imageftbbox($fsizeValue, 0, $fontPrice, __('Value '));
-        $valueX += $textbox[2] - $textbox[0] + 15;
-        imagefttext($img6, $fsizeValue, 0, 210 - $valueX, $y, $styleColor, $font, __('Value '));
-
         /* Print "From:" and "To: " */
-
-        $textbox = imageftbbox($fsize, 0, $font, __('From: '));
-        imagefttext($img1, 13, 0, 15, $y - 5, $textColor, $font, __('From: '));
-        imagefttext(
-            $img1,
-            13,
-            0,
-            $x + ($textbox[2] - $textbox[0]),
-            $y - 5,
-            $styleColor,
-            $font,
-            $giftcode['customer_name']
-        );
-        $y -= 1.55 * ($textbox[7] - $textbox[1]);
-
-        $textbox = imageftbbox($fsize, 0, $font, __('To: '));
-        imagefttext($img1, 13, 0, 15, $y, $textColor, $font, __('To: '));
-        imagefttext(
-            $img1,
-            13,
-            0,
-            $x + ($textbox[2] - $textbox[0]),
-            $y,
-            $styleColor,
-            $font,
-            $giftcode['recipient_name']
-        );
+        $textbox = imageftbbox($fsize, 0, $font, __('From:'));
+        imagefttext($img1, 8, 0, 15, $y, $textColor, $font, __('From: '));
+        $textboxCustomerName = imageftbbox($fsize, 0, $font, $giftcode['customer_name']);
+        imagefttext($img1, 8, 0, ($textbox[2] - $textbox[0]), $y, $styleColor, $font, $giftcode['customer_name']);
+        $x = $x + ($textboxCustomerName[2] - $textboxCustomerName[0]) + 20;
+        $textbox = imageftbbox($fsize, 0, $font, __('To:'));
+        imagefttext($img1, 8, 0, $x, $y, $textColor, $font, __('To: '));
+        imagefttext($img1, 8, 0, $x+($textbox[2]-$textbox[0]), $y, $styleColor, $font, $giftcode['recipient_name']);
         $y -= 1.55 * ($textbox[7] - $textbox[1]);
 
         /* Print Customers' s messages */
 
-        $xMessage = 5;
-        $yMessage = 15;
+        $xMessage = 15;
+        $yMessage = 115;
 
         if (isset($giftcode['message']) && $giftcode['message'] != null) {
             $message = $giftcode['message'];
@@ -412,35 +293,43 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             $message = '';
         }
 
-        $stringArray = $this->processString($message, $font, 9, 340);
+        $stringArray = $this->processString($message, $font, 9, 322);
 
         for ($i = 0; $i < count($stringArray); $i++) {
-            imagefttext($img4, 9, 0, $xMessage, $yMessage, $textColor, $font, $stringArray[$i]);
+            imagefttext($img1, 9, 0, $xMessage, $yMessage, $textColor, $font, $stringArray[$i]);
             $yMessage -= 1.25 * ($textbox[7] - $textbox[1]);
         }
 
-        imagecopyresampled($img1, $img4, 14, $y - 7, 0, 0, 343, 97, 343, 97);
+        imagecopyresampled($img1, $img4, 14, 80, 0, 0, 570, 1, 550, 1);
+
+        /* Print Value */
+        $valueY = 30 ;
+        $fsizePrice = 20;
+        $price = $this->_objectManager->get('Magento\Directory\Model\Currency')
+            ->setData('currency_code', $giftcode['currency'])
+            ->format($giftcode['balance'], array('display' => 2), false);
+
+        $textbox = imageftbbox($fsizePrice, 0, $font, $price);
+        imagefttext($img1, $fsizePrice, 0,255, $valueY + 5, $styleColor, $font, $price);
+        $valueY -= 1.55 * ($textbox[7] - $textbox[1]);
 
         /* Print Gift Code */
-
         $fontCode = $this->_filesystem->getDirectoryRead('lib_internal')
-            ->getAbsolutePath('Magestore/fonts/OpenSans-SemiboldItalic.ttf');
-        $codeY = 20;
-        $textbox = imageftbbox(11, 0, $fontCode, $giftcode['gift_code']);
+            ->getAbsolutePath('Magestore/fonts/OpenSans-Regular.ttf');
+        $codeY = 60;
+        $textbox = imageftbbox(13, 0, $fontCode, $giftcode['gift_code']);
         imagefttext(
             $img1,
-            11,
+            13,
             0,
-            590 - ($textbox[2] - $textbox[0]),
+            380 - ($textbox[2] - $textbox[0]),
             $codeY,
             $styleColor,
             $fontCode,
             $giftcode['gift_code']
         );
-        $codeY -= ($textbox[7] - $textbox[1]);
 
         /* Print Barcode */
-
         $barcode = $this->getGeneralConfig('barcode_enable');
         if ($barcode) {
             $newImgBarcode = $this->resizeBarcodeImage($giftcode['gift_code']);
@@ -449,8 +338,8 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             imagecopyresampled(
                 $img1,
                 $newImgBarcode,
-                590 - $newImgBarcodeX,
-                $codeY - 5,
+                580 - $newImgBarcodeX,
+                $codeY - 40,
                 0,
                 0,
                 $newImgBarcodeX,
@@ -460,63 +349,12 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             );
         }
 
-        /* Print Notes */
-
-        if (isset($giftcardTemplate['notes']) && $giftcardTemplate['notes'] != null) {
-            $notes = $giftcardTemplate['notes'];
-        } else {
-            $notes = $this->getStoreConfig('giftvoucher/print_voucher/note', $storeId);
-            $store = $this->_storeManager->getStore($storeId);
-            $notes = str_replace(array(
-                '{store_url}',
-                '{store_name}',
-                '{store_address}'
-                    ), array(
-                '<span class="print-notes">' . $store->getBaseUrl() . '</span>',
-                '<span class="print-notes">' . $store->getFrontendName() . '</span>',
-                '<span class="print-notes">' . $this->getStoreConfig('general/store_information/address', $storeId)
-                . '</span>'
-                    ), $notes);
-            $notes = strip_tags($notes);
-        }
-
-        $stringArray = $this->processString($notes, $font, 8, 240);
-        for ($i = 0; $i < count($stringArray); $i++) {
-            $textbox = imageftbbox(8, 0, $font, $stringArray[$i]);
-            imagefttext(
-                $img1,
-                8,
-                0,
-                590 - ($textbox[2] - $textbox[0]),
-                $codeY + 58,
-                $textColor,
-                $font,
-                $stringArray[$i]
-            );
-            $codeY += 18.5;
-        }
-        /* End */
-
-        /* Insert Logo to Image */
-        if ($img3) {
-            $widthLogo = imagesx($img3);
-            $heightLogo = imagesy($img3);
-            imagecopyresampled($img2, $img3, 13, 0, 0, 0, $widthLogo, $heightLogo, $widthLogo, $heightLogo);
-        }
-
-
-        /* Insert Backgound Value Image */
-        imagecopyresampled($img5, $img6, 381, 0, 0, 0, 219, 52, 219, 52);
-
-        /* Insert Background Title Image */
-        imagecopyresampled($img2, $img5, 0, 138, 0, 0, 600, 52, 600, 52);
-
         /* Draw Images */
-        imagecopyresampled($img, $img2, 0, 0, 0, 0, 600, 190, 600, 190);
+        imagecopyresampled($img, $img2, 0, 0, 0, 0, 600, 529, 600, 300);
 
 
         /* Draw Background */
-        imagecopyresampled($img, $img1, 0, 190, 0, 0, 600, 175, 600, 175);
+        imagecopyresampled($img, $img1, 0, 300, 0, 0, 600, 529, 600, 405);
 
         imagepng($img, $imgFile);
         imagedestroy($img);
@@ -527,7 +365,6 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
      */
     public function generateCenterImage($giftcode, $giftcardTemplate)
     {
-
         $storeId = $this->_storeManager->getStore()->getId();
         $images = $this->getImagesInFolder($giftcode['gift_code']);
         if (isset($images[0]) && file_exists($images[0])) {
@@ -538,7 +375,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
 
         $imgFile = $this->getImgDir($giftcode['gift_code']) . $giftcode['gift_code'] . '-' . $imageSuffix . '.png';
         $w = 600;
-        $h = 365;
+        $h = 529;
 
         $img = imagecreatetruecolor($w, $h);
         $textColor = $this->hexColorAllocate($img, $giftcardTemplate['text_color']);
@@ -546,135 +383,107 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
         $bgColor = imagecolorallocate($img, 255, 255, 255);
         imagefilledrectangle($img, 0, 0, $w - 1, $h - 1, $bgColor);
 
-        // if (isset($giftcode['giftcard_template_image']) && $giftcode['giftcard_template_image'] != null)
-        $img2 = $this->createGCImage($giftcode['giftcard_template_image']);
+
+        $img2 = $this->createGCImage($giftcode['giftcard_template_image'], 'top');
+        $img1 = $this->createGCBackground($giftcardTemplate['background_img'], 'top');
 
         $img3 = $this->createGCLogo();
 
-        $img4 = $this->createGMessageBox();
+        $img4 = $this->createGMessageBox('top');
 
-        $img5 = $this->createGCBackground('bkg-title.png');
-
-        $img6 = $this->createGCBackground('bkg-value.png');
-
-        $x = 10;
-        $y = 33;
+        $x = 0;
+        $y = 30;
         $fsize = 15;
         $font = $this->_filesystem->getDirectoryRead('lib_internal')
             ->getAbsolutePath('Magestore/fonts/OpenSans-Semibold.ttf');
 
-        /* Draw Expiry Date */
-        if ($this->getGeneralConfig('show_expiry_date')) {
-            if ($giftcode['expired_at']) {
-                $expiryDate = __('Expired: ') . date('m/d/Y', strtotime($giftcode['expired_at']));
-                $textbox = imageftbbox(9, 0, $font, $expiryDate);
-                imagefttext(
-                    $img2,
-                    9,
-                    0,
-                    (580 - ($textbox[2] - $textbox[0])),
-                    25,
-                    imagecolorallocate($img, 255, 255, 255),
-                    $font,
-                    $expiryDate
-                );
-            }
+        /* Insert Logo to Image */
+        if ($img3) {
+            $widthLogo = imagesx($img3);
+            $heightLogo = imagesy($img3);
+            imagecopyresampled(
+                $img,
+                $img3,
+                20,
+                40,
+                0,
+                0,
+                $widthLogo,
+                $heightLogo,
+                $widthLogo,
+                $heightLogo
+            );
         }
 
+        /* Print "From:" and "To: " */
+        $textbox = imageftbbox($fsize, 0, $font, __('From:'));
+        imagefttext($img1, 8, 0, 15, $y, $textColor, $font, __('From: '));
+        $textboxCustomerName = imageftbbox($fsize, 0, $font, $giftcode['customer_name']);
+        imagefttext($img1, 8, 0, ($textbox[2] - $textbox[0]), $y, $styleColor, $font, $giftcode['customer_name']);
+        $x = $x + ($textboxCustomerName[2] - $textboxCustomerName[0]) + 20;
+        $textbox = imageftbbox($fsize, 0, $font, __('To:'));
+        imagefttext($img1, 8, 0, $x, $y, $textColor, $font, __('To: '));
+        imagefttext($img1, 8, 0, $x+($textbox[2]-$textbox[0]), $y, $styleColor, $font, $giftcode['recipient_name']);
+        $y -= 1.55 * ($textbox[7] - $textbox[1]);
 
-        /* Draw Text */
-        $fsize = 15;
-        $font = $this->_filesystem->getDirectoryRead('lib_internal')
-            ->getAbsolutePath('Magestore/fonts/OpenSans-Semibold.ttf');
-        $word = $giftcardTemplate['caption'];
-        $textbox = imageftbbox($fsize, 0, $font, $word);
+        /* Print Customers' s messages */
 
-        $word = $this->processTitle($word, $font, $fsize, 370);
-        // Chieu dai cua textbox: $textbox[2] - $textbox[0]
-        // Chieu rong cua textbox: $textbox[7] - $textbox[1]
+        $xMessage = 15;
+        $yMessage = 45;
 
-        imagefttext($img5, $fsize, 0, $x, $y, $styleColor, $font, $word);
+        if (isset($giftcode['message']) && $giftcode['message'] != null) {
+            $message = $giftcode['message'];
+        } else {
+            $message = '';
+        }
+
+        $stringArray = $this->processString($message, $font, 9, 322);
+
+        for ($i = 0; $i < count($stringArray); $i++) {
+            imagefttext($img1, 9, 0, $xMessage, $yMessage, $textColor, $font, $stringArray[$i]);
+            $yMessage -= 1.25 * ($textbox[7] - $textbox[1]);
+        }
+
+        imagecopyresampled($img1, $img4, 14, 10, 0, 0, 570, 1, 550, 1);
 
         /* Print Value */
-
-        $fontPrice = $this->_filesystem->getDirectoryRead('lib_internal')
-            ->getAbsolutePath('Magestore/fonts/OpenSans-ExtraBold.ttf');
-        $fsizePrice = 14;
-
+        $valueY = 50 ;
+        $fsizePrice = 20;
         $price = $this->_objectManager->get('Magento\Directory\Model\Currency')
-                    ->setData('currency_code', $giftcode['currency'])
-                    ->format($giftcode['balance'], array('display' => 2), false);
-       
-        $textbox = imageftbbox($fsizePrice, 0, $fontPrice, $price);
-        $valueX = $textbox[2] - $textbox[0];
-        imagefttext($img6, $fsizePrice, 0, 210 - $valueX, $y + 3, $styleColor, $font, $price);
+            ->setData('currency_code', $giftcode['currency'])
+            ->format($giftcode['balance'], array('display' => 2), false);
 
-        $fsizeValue = 9;
-        $textbox = imageftbbox($fsizeValue, 0, $fontPrice, __('Value '));
-        $valueX += $textbox[2] - $textbox[0] + 15;
-        imagefttext($img6, $fsizeValue, 0, 210 - $valueX, $y, $styleColor, $font, __('Value '));
-
-        /* Print "From:" and "To: " */
-
-        $y += 135;
-        $textbox = imageftbbox($fsize, 0, $font, __('From: '));
-        imagefttext($img2, 13, 0, 15, $y - 5, $textColor, $font, __('From: '));
-        imagefttext(
-            $img2,
-            13,
-            0,
-            $x + ($textbox[2] - $textbox[0]),
-            $y - 5,
-            $styleColor,
-            $font,
-            $giftcode['customer_name']
-        );
-        $y -= 1.55 * ($textbox[7] - $textbox[1]);
-
-        $textbox = imageftbbox($fsize, 0, $font, __('To: '));
-        imagefttext($img2, 13, 0, 15, $y, $textColor, $font, __('To: '));
-        imagefttext(
-            $img2,
-            13,
-            0,
-            $x + ($textbox[2] - $textbox[0]),
-            $y,
-            $styleColor,
-            $font,
-            $giftcode['recipient_name']
-        );
-        $y -= 1.55 * ($textbox[7] - $textbox[1]);
+        $textbox = imageftbbox($fsizePrice, 0, $font, $price);
+        imagefttext($img, $fsizePrice, 0,255, $valueY + 5, $styleColor, $font, $price);
+        $valueY -= 1.55 * ($textbox[7] - $textbox[1]);
 
         /* Print Gift Code */
-
         $fontCode = $this->_filesystem->getDirectoryRead('lib_internal')
-            ->getAbsolutePath('Magestore/fonts/OpenSans-SemiboldItalic.ttf');
-        $codeY = 160;
-        $textbox = imageftbbox(11, 0, $fontCode, $giftcode['gift_code']);
+            ->getAbsolutePath('Magestore/fonts/OpenSans-Regular.ttf');
+        $codeY = 80;
+        $textbox = imageftbbox(13, 0, $fontCode, $giftcode['gift_code']);
         imagefttext(
-            $img2,
-            11,
+            $img,
+            13,
             0,
-            590 - ($textbox[2] - $textbox[0]),
+            380 - ($textbox[2] - $textbox[0]),
             $codeY,
             $styleColor,
             $fontCode,
             $giftcode['gift_code']
         );
-        $codeY -= ($textbox[7] - $textbox[1]);
 
         /* Print Barcode */
-
         $barcode = $this->getGeneralConfig('barcode_enable');
         if ($barcode) {
             $newImgBarcode = $this->resizeBarcodeImage($giftcode['gift_code']);
             $newImgBarcodeX = imagesx($newImgBarcode);
             $newImgBarcodeY = imagesy($newImgBarcode);
             imagecopyresampled(
-                $img2,
+                $img,
                 $newImgBarcode,
-                590 - $newImgBarcodeX,
-                $codeY - 5,
+                580 - $newImgBarcodeX,
+                $codeY - 40,
                 0,
                 0,
                 $newImgBarcodeX,
@@ -684,71 +493,12 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             );
         }
 
-        /* Print Customers' s messages */
-
-        $xMessage = 5;
-        $yMessage = 15;
-
-        if (isset($giftcode['message']) && $giftcode['message'] != null) {
-            $message = $giftcode['message'];
-        } else {
-            $message = '';
-        }
-
-        $stringArray = $this->processString($message, $font, 9, 568);
-
-        for ($i = 0; $i < count($stringArray); $i++) {
-            imagefttext($img4, 9, 0, $xMessage, $yMessage, $textColor, $font, $stringArray[$i]);
-            $yMessage -= 1.25 * ($textbox[7] - $textbox[1]);
-        }
-
-        imagecopyresampled($img2, $img4, 16, $y + 5, 0, 0, 568, 97, 568, 97);
-
-        /* Print Notes */
-
-        $y += 110;
-
-        if (isset($giftcardTemplate['notes']) && $giftcardTemplate['notes'] != null) {
-            $notes = $giftcardTemplate['notes'];
-        } else {
-            $notes = $this->getStoreConfig('giftvoucher/print_voucher/note', $storeId);
-            $notes = str_replace(array(
-                '{store_url}',
-                '{store_name}',
-                '{store_address}'
-                    ), array(
-                '<span class="print-notes">' . $this->_storeManager->getStore($storeId)->getBaseUrl() . '</span>',
-                '<span class="print-notes">' . $this->_storeManager->getStore($storeId)->getFrontendName() . '</span>',
-                '<span class="print-notes">' . $this->getStoreConfig('general/store_information/address', $storeId)
-                . '</span>'
-                    ), $notes);
-            $notes = strip_tags($notes);
-        }
-
-        $stringArray = $this->processString($notes, $font, 9, 570);
-        for ($i = 0; $i < count($stringArray); $i++) {
-            imagefttext($img2, 9, 0, 16, $y + 10, $textColor, $font, $stringArray[$i]);
-            $y -= 1.55 * ($textbox[7] - $textbox[1]);
-        }
-
-        /* End */
-
-        /* Insert Logo to Image */
-        if ($img3) {
-            $widthLogo = imagesx($img3);
-            $heightLogo = imagesy($img3);
-            imagecopyresampled($img2, $img3, 13, 0, 0, 0, $widthLogo, $heightLogo, $widthLogo, $heightLogo);
-        }
-
-
-        /* Insert Backgound Value Image */
-        imagecopyresampled($img5, $img6, 381, 0, 0, 0, 219, 52, 219, 52);
-
-        /* Insert Background Title Image */
-        imagecopyresampled($img2, $img5, 0, 85, 0, 0, 600, 52, 600, 52);
-
         /* Draw Images */
-        imagecopyresampled($img, $img2, 0, 0, 0, 0, 600, 365, 600, 365);
+        imagecopyresampled($img, $img2, 0, 140, 0, 0, 600, 529, 600, 390);
+
+
+        /* Draw Background */
+        imagecopyresampled($img, $img1, 0, 390, 0, 0, 600, 529, 600, 405);
 
         imagepng($img, $imgFile);
         imagedestroy($img);
@@ -1020,5 +770,17 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
     {
         $directory = $this->getBaseDirMedia()->getAbsolutePath('giftvoucher/draw/' . $code . '/');
         return glob($directory . $code . "*.png");
+    }
+
+    public function columnImage($int, $image)
+    {
+        $dir = $this->getBaseDirMedia()->getAbsolutePath('giftvoucher/template/background/line.png');
+        $lineImage = $this->imagecreatefromfile($dir);
+
+        for ($i = 0; $i < $int; $i++) {
+            $x = 600 * ($i + 1) / $int;
+            /* Draw Lines */
+            imagecopyresampled($image, $lineImage, 30, 333, 0, 0, 1, 90, 1, 90);
+        }
     }
 }

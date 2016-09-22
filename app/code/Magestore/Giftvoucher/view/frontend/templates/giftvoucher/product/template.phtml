@@ -39,12 +39,16 @@
             <?php else: ?>
                 <label for="giftcard_template_select" ><?php echo __('Select a template ') ?></label>
             <?php endif; ?>
-            <select  id="giftcard_template_select" name="giftcard_template_id" class="giftvoucher_custom_option select form-control <?php if (count($templates) == 1) echo 'hide'; ?>"  onchange="changeTemplate(this);">
-
+            <input type="hidden" id="giftcard_template_select" name="giftcard_template_id" value="">
+            <div id="template_buttons" class="giftvoucher_custom_option">
                 <?php foreach ($templates as $template): ?>
-                    <option value="<?php echo $template['giftcard_template_id'] ?>" <?php if ($_formData->getGiftcardTemplateId() == $template['giftcard_template_id']) echo 'selected' ?>><?php echo $template['template_name'] ?></option>
+                    <div class="template">
+                        <button id="template_<?php echo $template['giftcard_template_id'] ?>" class="gc-template-button" type="button" value="<?php echo $template['giftcard_template_id'] ?>" onclick="changeTemplate(this)">
+                            <?php echo $template['template_name'] ?>
+                        </button>
+                    </div>
                 <?php endforeach; ?>
-            </select>
+            </div>
         </div>
         <input class="giftvoucher_custom_option" type="hidden" name="giftcard_template_image" id="giftcard-template-images" value="<?php echo $_formData->getGiftcardTemplateImage() ? $_formData->getGiftcardTemplateImage() : '0' ?>" />
         <div class="col-xs-12" style="padding: 0 30px;">
@@ -112,13 +116,15 @@
                 "prototype",
                 "mage/translate"
             ], function () {
-
-
                 /**
                  * change select template
                  */
-
                 changeTemplate = function (el) {
+                    $$('.template').each(function (element) {
+                        element.down('button').removeClassName('gc-template-selected');
+                    });
+                    el.addClassName('gc-template-selected');
+                    $('giftcard_template_select').value = el.value;
                     template_id = getTemplateById(el.value);
                     if (typeof template_show_id != 'undefined')
                         $(template_show_id).hide();
@@ -131,7 +137,6 @@
                     $(template_show_id).show();
 
                     templateShow = templates[template_id];
-//                    $(template_show_id).down('.giftcard-title').innerHTML = templateShow.caption;
 
                     if ($('giftcard-notes-top'))
                         $('giftcard-notes-top').hide();

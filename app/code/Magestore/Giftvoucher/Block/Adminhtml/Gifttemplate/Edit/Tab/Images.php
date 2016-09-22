@@ -49,7 +49,7 @@ class Images extends \Magestore\Giftvoucher\Block\Adminhtml\Gifttemplate\Edit\Ta
         if (isset($data['images']) && $data['images']) {
             $images = $data['images'];
             $str = '';
-            
+
             if ($images) {
                 $str.='<div class=\"carousel\" id=\"gift-image-carosel\">
                             <div class=\"gift-middle\" id=\"carousel-wrapper\">
@@ -90,7 +90,7 @@ class Images extends \Magestore\Giftvoucher\Block\Adminhtml\Gifttemplate\Edit\Ta
                 </div>
                </div>';
             }
-            
+
         }
         $fieldset = $form->addFieldset('images_fieldset', array('legend' => __('Upload Images')));
         $fieldset->addField('number_image', 'hidden', array(
@@ -202,7 +202,7 @@ class Images extends \Magestore\Giftvoucher\Block\Adminhtml\Gifttemplate\Edit\Ta
     {
         return false;
     }
-    
+
     protected function _isAllowedAction($resourceId)
     {
         return $this->_authorization->isAllowed($resourceId);

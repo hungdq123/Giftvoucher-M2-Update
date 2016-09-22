@@ -166,7 +166,7 @@ span#giftvoucher_wait{
 }
 .giftcard-preview-template-dialog .dialog_e,
 .giftcard-preview-template-dialog .dialog_w {
-    width: 0;	
+    width: 0;   
 }
 .giftcard-preview-template-dialog .dialog_close{
     display: none;
@@ -1257,3 +1257,8 @@ li.giftvoucher-discount-code strong{float:none;}
     border-top: 1px solid #cccccc;
     padding-top: 10px;
 }
+button.gc-amount-selected, button.gc-template-selected{border-color: #e77600}
+#amount_dropdown_buttons .gc-amount {float: left; margin-right: 10px;}
+#amount_dropdown_buttons .gc-amount button{padding: 7px 4px}
+#template_buttons .template{float: left; margin-right: 10px; }
+#template_buttons .template button{padding: 7px 4px}
