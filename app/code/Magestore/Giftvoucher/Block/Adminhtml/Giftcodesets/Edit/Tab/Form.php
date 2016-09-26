@@ -18,7 +18,7 @@
  * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
  * @license     http://www.magestore.com/license-agreement.html
  */
-namespace Magestore\Giftvoucher\Block\Adminhtml\Generategiftcard\Edit\Tab;
+namespace Magestore\Giftvoucher\Block\Adminhtml\Giftcodesets\Edit\Tab;
 
 /**
  * Adminhtml Giftvoucher Generategiftcard Edit Tab Form Block
@@ -76,13 +76,14 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements
     protected function _prepareForm()
     {
         /** @var \Magento\Framework\Data\Form $form */
-        
+
         $form = $this->_formFactory->create();
-        
+
         $isElementDisabled = false;
-        
-        $fieldset = $form->addFieldset('generategiftcard_form', array('legend' =>__('General Information')));
-         $data = $this->_coreRegistry->registry('generategiftcard_data');
+
+        $fieldset = $form->addFieldset('giftcodesets_form', array('legend' =>__('Import Gift Code Sets')));
+
+        $data = $this->_coreRegistry->registry('giftcodesets_data');
         if ($this->_backendSession->getGenerategiftcardData()) {
             $model = $this->_backendSession->getGenerategiftcardData();
             $this->_backendSession->setGenerategiftcardData(null);
@@ -91,108 +92,39 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements
         } else {
             $model = $this->_generategiftcard;
         }
-         
+
         if (isset($model) && $model->getId()) {
             $fieldset->addField('template_id', 'hidden', array('name' => 'template_id'));
         }
-        
+
         $disabled = false;
         $style = 'opacity:1;background-color:#fff';
-        if (isset($data['is_generated']) && $data['is_generated']) {
-            $disabled = true;
-            $style = '';
-        }
+
         $fieldset->addField('template_name', 'text', array(
-            'label' =>__('Pattern name '),
+            'label' =>__('Sets Name '),
             'required' => true,
             'name' => 'template_name',
             'disabled' => $disabled,
         ));
-        
-        $note = __('Pattern examples:<br/><strong>[A.8] : 8 alpha<br/>[N.4] : 4 numeric<br/>[AN.6] : 6 alphanumeric'
-            . '<br/>GIFT-[A.4]-[AN.6] : GIFT-ADFA-12NF0O</strong>');
-        $fieldset->addField('pattern', 'text', array(
-            'label' => __('Gift code pattern '),
-            'required' => true,
-            'name' => 'pattern',
-            'value' => $this->_giftvoucherHelper->getGeneralConfig('pattern'),
-            'note' => $note,
-            'disabled' => $disabled,
-        ));
 
-        $fieldset->addField('balance', 'text', array(
-            'label' => __('Gift code value'),
-            'required' => true,
-            'name' => 'balance',
-            'disabled' => $disabled,
-            'class' => 'validate-number validate-greater-than-zero',
-        ));
 
-        $fieldset->addField('currency', 'select', array(
-            'label' => __('Currency'),
+        $fieldset->addField('import_code','file',array(
+            'label' => __('Import Gift Code Sets'),
+            'name' => 'import_code',
             'required' => false,
-            'name' => 'currency',
-            'value' => $this->_storeManager->getStore()->getDefaultCurrencyCode(),
-            'values' => $this->_giftvoucherHelper->getAllowedCurrencies(),
-            'disabled' => $disabled,
+
+        ));
+        $notes=  __('Status of Used : 1-Yes,2-No');
+        $fieldset->addField('sample', 'note', array(
+            'label' => __('Download Sample CSV File'),
+            'note' =>$notes,
+            'text' => '<a href="' .
+                $this->getUrl('*/*/downloadSampleSets') .
+                '" title="' .
+                __('Download Sample Gift Code Set CSV File') .
+                '">import_giftcodesets_sample.csv</a>'
         ));
 
-        $dateFormat = $this->_localeDate->getDateFormat(
-            \IntlDateFormatter::SHORT
-        );
-        $fieldset->addField('expired_at', 'date', array(
-            'label' =>__('Expired on'),
-            'required' => false,
-            'name' => 'expired_at',
-            'input_format' => 'yyyy-MM-dd',
-            'date_format' => 'MM/dd/yyyy',
-            'readonly' => true,
-            'disabled' => $disabled,
-            'style' => $style,
-        ));
-
-        $template = $this->getGiftTemplate();
-        if ($template && count($template)) {
-            $fieldset->addField('giftcard_template_id', 'select', array(
-                'label' => __('Template'),
-                'name' => 'giftcard_template_id',
-                'values' => $template,
-                'required' => true,
-                'onchange' => 'loadImageTemplate(this.value)',
-                'disabled' => $disabled,
-                'after_element_html' => (isset($data['giftcard_template_image'])
-                    && isset($data['giftcard_template_id'])) ?
-                '<script> window.onload = function(){loadImageTemplate(\'' . $data['giftcard_template_id'] . '\',\''
-                . $data['giftcard_template_image'] . '\',\''.$data['is_generated'].'\');};</script>' : '',
-            ));
-            $fieldset->addField('list_images', 'note', array(
-                'label' => __('Template image'),
-                'name' => 'list_images',
-                'text' => sprintf(''),
-            ));
-            $fieldset->addField('giftcard_template_image', 'hidden', array(
-                'name' => 'giftcard_template_image',
-            ));
-        }
-        
-        
-        $fieldset->addField('amount', 'text', array(
-            'label' => __('Gift code Qty'),
-            'required' => true,
-            'name' => 'amount',
-            'disabled' => $disabled,
-            'class' => 'validate-number validate-greater-than-zero',
-        ));
-
-
-        $fieldset->addField('store_id', 'select', array(
-            'label' => __('Store view'),
-            'name' => 'store_id',
-            'required' => false,
-            'disabled' => $disabled,
-            'values' => $this->_systemStore->getStoreValuesForForm(false, true)
-        ));
-        
         $form->setValues($data);
         $this->setForm($form);
 
@@ -246,7 +178,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements
         /**
          * gifttemplate
          */
-        
+
         $dataTemp = $this->_objectManager->create('Magestore\Giftvoucher\Model\Gifttemplate')->getCollection();
         $option = array();
         $option[] = array('value' => '',

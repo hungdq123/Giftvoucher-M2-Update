@@ -19,7 +19,7 @@
  * @license     http://www.magestore.com/license-agreement.html
  */
 namespace Magestore\Giftvoucher\Block\Adminhtml;
- 
+
 /**
  * Adminhtml Giftvoucher Generategiftcard Block
  *
@@ -28,11 +28,11 @@ namespace Magestore\Giftvoucher\Block\Adminhtml;
  * @module   Giftvoucher
  * @author   Magestore Developer
  */
-class Generategiftcard extends \Magento\Backend\Block\Widget\Grid\Container
+class Giftcodesets extends \Magento\Backend\Block\Widget\Grid\Container
 {
     protected function _construct()
     {
-        $this->_controller = 'adminhtml_generategiftcard';
+        $this->_controller = 'adminhtml_giftcodesets';
         $this->_blockGroup = 'Magestore_Giftvoucher';
         $this->_headerText = __('Gift Code Pattern Manager');
         $this->_addButtonLabel = __('Add Gift Code Pattern');

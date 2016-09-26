@@ -18,7 +18,7 @@
  * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
  * @license     http://www.magestore.com/license-agreement.html
  */
-namespace Magestore\Giftvoucher\Block\Adminhtml\Generategiftcard\Edit\Tab;
+namespace Magestore\Giftvoucher\Block\Adminhtml\Giftcodesets\Edit\Tab;
 
 /**
  * Adminhtml Giftvoucher Generategiftcard Edit Tab Giftcodelist Block
@@ -36,12 +36,12 @@ class Giftcodelist extends \Magento\Backend\Block\Widget\Grid\Extended implement
      * @var \Magestore\Giftvoucher\Model\Giftvoucher
      */
     protected $_giftvoucher;
-    
+
     /**
      * @var \Magestore\Giftvoucher\Model\GiftvoucherFactory
      */
     protected $_giftvoucherFactory;
-    
+
     /**
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Backend\Helper\Data $backendHelper
@@ -60,7 +60,7 @@ class Giftcodelist extends \Magento\Backend\Block\Widget\Grid\Extended implement
         $this->_giftvoucher = $giftvoucher;
         parent::__construct($context, $backendHelper, $data);
     }
-    
+
     protected function _construct()
     {
         parent::_construct();
@@ -98,64 +98,6 @@ class Giftcodelist extends \Magento\Backend\Block\Widget\Grid\Extended implement
             'filter_index' => 'main_table.gift_code'
         ));
 
-        $this->addColumn('history_amount', array(
-            'header' => __('Initial value'),
-            'align' => 'left',
-            'index' => 'history_amount',
-            'type' => 'currency',
-            'currency' => 'history_currency',
-            'filter_index' => 'history.amount',
-            'rate' => '1'
-        ));
-
-        $this->addColumn('balance', array(
-            'header' => __('Current balance'),
-            'align' => 'left',
-            'index' => 'balance',
-            'type' => 'currency',
-            'currency' => 'currency',
-            'filter_index' => 'main_table.balance',
-            'rate' => '1'
-        ));
-
-        $this->addColumn('status', array(
-            'header' => __('Status'),
-            'align' => 'left',
-            'index' => 'status',
-            'type' => 'options',
-            'options' => \Magestore\Giftvoucher\Model\Status::getOptionArray(),
-            'filter_index' => 'main_table.status'
-        ));
-
-
-        $this->addColumn('created_at', array(
-            'header' => __('Created at'),
-            'align' => 'left',
-            'index' => 'created_at',
-            'type' => 'datetime',
-            'filter_index' => 'history.created_at'
-        ));
-
-        $this->addColumn('expired_at', array(
-            'header' => __('Expired at'),
-            'align' => 'left',
-            'index' => 'expired_at',
-            'type' => 'datetime',
-            'filter_index' => 'main_table.expired_at'
-        ));
-
-        $this->addColumn('store_id', array(
-            'header' => __('Store view'),
-            'align' => 'left',
-            'index' => 'store_id',
-            'type' => 'store',
-            'store_all' => true,
-            'store_view' => true,
-            'filter_index' => 'main_table.store_id',
-            'skipEmptyStoresLabel' => true,
-            'filter_condition_callback' => array($this, 'filterByGiftvoucherStoreId')
-        ));
-        
         $this->addColumn('action', array(
             'header' => __('Action'),
             'width' => '70px',
@@ -173,7 +115,17 @@ class Giftcodelist extends \Magento\Backend\Block\Widget\Grid\Extended implement
             'index' => 'stores',
             'is_system' => true,
         ));
+        $this->addColumn('used',array(
+            'header' =>__('Used'),
+            'width' => '10px',
+            'align' => 'left',
+            'index' => 'used',
+            'type' => 'options',
+            'options' => \Magestore\Giftvoucher\Model\Used::getOptionArray(),
+            'filter_index' => 'main_table.status'
 
+
+        ));
         $this->addExportType('*/*/exportGiftCodeCsv', __('CSV'));
         $this->addExportType('*/*/exportGiftCodeXml', __('XML'));
         $this->addExportType('*/*/exportGiftCodePdf', __('PDF'));
@@ -227,7 +179,7 @@ class Giftcodelist extends \Magento\Backend\Block\Widget\Grid\Extended implement
     public function getGridUrl()
     {
         return $this->getUrl('*/*/giftcodelist', array(
-                    '_current' => true,
+            '_current' => true,
         ));
     }
 }

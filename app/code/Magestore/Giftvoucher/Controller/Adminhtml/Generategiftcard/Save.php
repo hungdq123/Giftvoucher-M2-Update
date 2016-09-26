@@ -38,11 +38,7 @@ class Save extends \Magento\Backend\App\Action
      * @var \Magento\Framework\Stdlib\DateTime\Filter\Date
      */
     protected $_filterDate;
-    /**
-     * @var \Magento\Framework\File\Csv
-     */
-    protected $_csvObject;
-
+    
     /**
      * @var \Magento\Framework\ObjectManagerInterface
      */
@@ -62,13 +58,11 @@ class Save extends \Magento\Backend\App\Action
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Framework\Stdlib\DateTime\Filter\Date $filterDate,
-        \Magento\Framework\File\Csv $csvObject,
         \Magestore\Giftvoucher\Helper\Data $giftvoucherHelper
     ) {
         $this->_filterDate = $filterDate;
         $this->_objectManager = $objectManager;
         $this->_giftvoucherHelper = $giftvoucherHelper;
-        $this->_csvObject = $csvObject;
         parent::__construct($context);
     }
 
@@ -101,15 +95,14 @@ class Save extends \Magento\Backend\App\Action
                 $conditions = $data['conditions'];
                 unset($data['rule']);
             }
-
-//            if (!$this->_giftvoucherHelper->isExpression($data['pattern'])) {
-//                $this->messageManager->addError(__('Invalid pattern'));
-//                $this->_getSession()->setFormData($data);
-//                return $resultRedirect->setPath('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
-//            }
+            
+            if (!$this->_giftvoucherHelper->isExpression($data['pattern'])) {
+                $this->messageManager->addError(__('Invalid pattern'));
+                $this->_getSession()->setFormData($data);
+                return $resultRedirect->setPath('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+            }
             $model->setData($data)
                 ->setId($this->getRequest()->getParam('template_id'));
-
             try {
                 $model->loadPost($data);
                 if ($this->getRequest()->getParam('generate')) {
@@ -121,7 +114,6 @@ class Save extends \Magento\Backend\App\Action
                     $data['conditions'] = $conditions;
                     $data['gift_code'] = $data['pattern'];
                     $data['template_id'] = $model->getId();
-                    $data['used'] = \Magestore\Giftvoucher\Model\Used::STATUS_NO;
                     $data['amount'] = $data['balance'];
                     $data['status'] = \Magestore\Giftvoucher\Model\Status::STATUS_ACTIVE;
                     $data['extra_content'] = __('Created by %1', $authSession->getUser()->getUsername());
@@ -129,160 +121,29 @@ class Save extends \Magento\Backend\App\Action
                     for ($i = 1; $i <= $amount; $i++) {
                         $this->_giftvoucher = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher');
                         $this->_giftvoucher->setData($data)->loadPost($data)
-                            ->setIncludeHistory(false)
-                            ->setGenerateGiftcode(true)
-                            ->save();
+                                ->setIncludeHistory(true)
+                                ->setGenerateGiftcode(true)
+                                ->save();
                     }
-                    //die();
-
-                    if( isset($_FILES['import_code']) && substr($_FILES['import_code']["name"], -4)=='.csv') {
-                        try {
-
-                            $fileName = $_FILES['import_code']['tmp_name'];
-                            $data= $this->_csvObject->getData($fileName);
-                            $count = array();
-                            $fields = array();
-                            $giftVoucherImport = array();
-                            foreach ($data as $row => $cols) {
-                                if ($row == 0) {
-                                    $fields = $cols;
-                                } else {
-                                    $giftVoucherImport[] = array_combine($fields, $cols);
-                                }
-                            }
-
-
-                            foreach ($giftVoucherImport as $giftVoucherData) {
-                                $giftVoucher = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher');
-                                if (isset($giftVoucherData['gift_code']) && $giftVoucherData['gift_code']) {
-                                    $giftVoucher->loadByCode($giftVoucherData['gift_code']);
-                                    if ($giftVoucher->getId()) {
-                                        $this->messageManager->addError(
-                                            __('Gift code %1 already existed', $giftVoucher->getGiftCode())
-                                        );
-                                        continue;
-                                    } else {
-                                        //Mage::helper('giftvoucher')->createBarcode($giftVoucherData['gift_code']);
-                                    }
-                                }
-
-                                try {
-                                    //die('32');
-                                    $giftVoucher->setGiftCode($giftVoucherData['gift_code'])
-                                        ->setIncludeHistory(false)
-                                        ->setUsed($giftVoucherData['used'])
-                                        //->setGenerateGiftcode(true)
-                                        ->setIncludeHistory(true)
-                                        ->setTemplateId($model->getId())
-                                        ->save();
-                                    $count[] = $giftVoucher->getId();
-                                } catch (\Exception $e) {
-                                    $this->messageManager->addError($e->getMessage());
-                                }
-                            }
-
-
-                            $model->setIsGenerated(1);
-                            $model->setAmount((int)count($count)+(int)$amount);
-                            $model->save();
-                            //var_dump((int)$amount);
-                            //var_dump((int)count($count));die('xxx');
-                            if (count($count)) {
-                                $successMessage = __('Imported total %1 Gift Code(s)', count($count));
-                                $this->messageManager->addSuccess($successMessage);
-                                //return $resultRedirect->setPath('*/*/index');
-                            } else {
-                                $this->messageManager->addError(__('No gift code imported'));
-                                return $resultRedirect->setPath('*/*/edit' ,array('id' => $model->getId()));
-                            }
-                        } catch (\Exception $e) {
-                            $this->messageManager->addError(__('Please check your import file content again.'));
-                            return $resultRedirect->setPath('*/*/edit',array('id' => $model->getId()));
-                        }
-
-                    }
-
+                    $this->messageManager->addSuccess(__('The pattern has been generated successfully.'));
                     return $resultRedirect->setPath('*/*/edit', array('id' => $model->getId()));
                 }
                 $this->messageManager->addSuccess(__('The pattern has been saved successfully.'));
                 $this->_getSession()->setFormData(false);
-
-                //return $resultRedirect->setPath('*/*/');
+                if ($this->getRequest()->getParam('back')) {
+                    return $resultRedirect->setPath('*/*/edit', array('id' => $model->getId()));
+                }
+                return $resultRedirect->setPath('*/*/');
             } catch (\Exception $e) {
                 $this->messageManager->addError($e->getMessage());
                 $this->_getSession()->setFormData($data);
                 return $resultRedirect->setPath('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
             }
-
-            if( isset($_FILES['import_code']) && substr($_FILES['import_code']["name"], -4)=='.csv') {
-                try {
-                    $fileName = $_FILES['import_code']['tmp_name'];
-                    $data= $this->_csvObject->getData($fileName);
-                    $count = array();
-                    $fields = array();
-                    $giftVoucherImport = array();
-                    foreach ($data as $row => $cols) {
-                        if ($row == 0) {
-                            $fields = $cols;
-                        } else {
-                            $giftVoucherImport[] = array_combine($fields, $cols);
-                        }
-                    }
-
-
-                    foreach ($giftVoucherImport as $giftVoucherData) {
-                        $giftVoucher = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher');
-                        if (isset($giftVoucherData['gift_code']) && $giftVoucherData['gift_code']) {
-                            $giftVoucher->loadByCode($giftVoucherData['gift_code']);
-                            if ($giftVoucher->getId()) {
-                                $this->messageManager->addError(
-                                    __('Gift code %1 already existed', $giftVoucher->getGiftCode())
-                                );
-                                continue;
-                            } else {
-                                //Mage::helper('giftvoucher')->createBarcode($giftVoucherData['gift_code']);
-                            }
-                        }
-
-                        try {
-                            $giftVoucher->setGiftCode($giftVoucherData['gift_code'])
-                                ->setIncludeHistory(true)
-                                ->setUsed($giftVoucherData['used'])
-                                ->setGenerateGiftcode(true)
-                                ->setTemplateId($model->getId())
-                                ->save();
-                            $count[] = $giftVoucher->getId();
-                        } catch (\Exception $e) {
-                            $this->messageManager->addError($e->getMessage());
-                        }
-                    }
-
-
-                    $model->setIsGenerated(1);
-                    $model->setAmount(count($count));
-                    $model->save();
-                    if ($this->getRequest()->getParam('back')) {
-                        return $resultRedirect->setPath('*/*/edit', array('id' => $model->getId()));
-                    }
-                    if (count($count)) {
-                        $successMessage = __('Imported total %1 Gift Code(s)', count($count));
-                        $this->messageManager->addSuccess($successMessage);
-                        //return $resultRedirect->setPath('*/*/index');
-                    } else {
-                        $this->messageManager->addError(__('No gift code imported'));
-                        return $resultRedirect->setPath('*/*/edit',array('id' => $model->getId()));
-                    }
-                } catch (\Exception $e) {
-                    $this->messageManager->addError(__('Please check your import file content again.'));
-                    return $resultRedirect->setPath('*/*/edit',array('id' => $model->getId()));
-                }
-
-            }
         }
-        //$this->messageManager->addError(__('Unable to find Template to save'));
-        return $resultRedirect->setPath('*/*/edit',array('id' => $model->getId()));
+        $this->messageManager->addError(__('Unable to find Template to save'));
+        return $resultRedirect->setPath('*/*/');
     }
-
+    
     protected function _duplicatePattern()
     {
         $resultRedirect = $this->resultRedirectFactory->create();

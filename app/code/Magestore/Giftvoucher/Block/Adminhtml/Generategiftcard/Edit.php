@@ -56,7 +56,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
 
 
 
-        $this->buttonList->update('save', 'label', __('Save'));
+        $this->buttonList->update('save', 'label', __('Save Pattern'));
         $this->buttonList->update('delete', 'label', __('Delete Pattern'));
         $this->buttonList->add(
             'saveandcontinue',

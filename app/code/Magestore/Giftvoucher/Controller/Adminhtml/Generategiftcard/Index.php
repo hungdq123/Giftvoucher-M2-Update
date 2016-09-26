@@ -70,7 +70,7 @@ class Index extends \Magento\Backend\App\Action
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->getConfig()->getTitle()->prepend(__('Generate Giftcard'));
-        $resultPage->getConfig()->getTitle()->prepend(__('Gift Code Sets Manager'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Gift Code Pattern Manager'));
         return $resultPage;
     }
     
