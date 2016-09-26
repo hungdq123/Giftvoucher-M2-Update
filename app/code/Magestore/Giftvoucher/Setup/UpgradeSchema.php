@@ -75,6 +75,11 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 'used',
                 \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT
             );
+            $setup->getConnection()->addColumn(
+                $setup->getTable('giftvoucher'),
+                'set_id',
+                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER
+            );
             $data = array(
                 'group' => 'General',
                 'type' => 'varchar',
