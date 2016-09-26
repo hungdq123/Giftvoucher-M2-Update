@@ -87,20 +87,20 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements
         if ($this->_backendSession->getGenerategiftcardData()) {
             $model = $this->_backendSession->getGenerategiftcardData();
             $this->_backendSession->setGenerategiftcardData(null);
-        } elseif ($this->_coreRegistry->registry('generategiftcard_data')) {
-            $model = $this->_coreRegistry->registry('generategiftcard_data');
+        } elseif ($this->_coreRegistry->registry('giftcodesets_data')) {
+            $model = $this->_coreRegistry->registry('giftcodesets_data');
         } else {
             $model = $this->_generategiftcard;
         }
 
         if (isset($model) && $model->getId()) {
-            $fieldset->addField('template_id', 'hidden', array('name' => 'template_id'));
+            $fieldset->addField('set_id', 'hidden', array('name' => 'set_id'));
         }
 
         $disabled = false;
         $style = 'opacity:1;background-color:#fff';
 
-        $fieldset->addField('template_name', 'text', array(
+        $fieldset->addField('set_name', 'text', array(
             'label' =>__('Sets Name '),
             'required' => true,
             'name' => 'template_name',

@@ -57,8 +57,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Backend\Helper\Data $backendHelper,
-        \Magestore\Giftvoucher\Model\GenerategiftcardFactory $generategiftcardFactory,
-        \Magestore\Giftvoucher\Model\Generategiftcard $generategiftcard,
+        \Magestore\Giftvoucher\Model\GiftcodesetsFactory $generategiftcardFactory,
+        \Magestore\Giftvoucher\Model\Giftcodesets $generategiftcard,
         array $data = array()
     ) {
         $this->_generategiftcardFactory = $generategiftcardFactory;
@@ -96,21 +96,21 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
     protected function _prepareColumns()
     {
         $this->addColumn(
-            'template_id',
+            'set_id',
             array(
                 'header' => __('ID'),
                 'type' => 'number',
-                'index' => 'template_id',
+                'index' => 'set_id',
                 'header_css_class' => 'col-id',
                 'column_css_class' => 'col-id'
             )
         );
 
         $this->addColumn(
-            'template_name',
+            'set_name',
             array(
                 'header' => __('Set Name'),
-                'index' => 'template_name',
+                'index' => 'set_name',
                 'class' => 'xxx'
             )
         );

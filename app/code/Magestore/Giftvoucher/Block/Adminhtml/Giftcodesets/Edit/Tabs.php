@@ -45,7 +45,7 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
         \Magento\Framework\Json\EncoderInterface $jsonEncoder,
         \Magento\Backend\Model\Auth\Session $authSession,
         \Magento\Framework\Registry $registry,
-        \Magestore\Giftvoucher\Model\Generategiftcard $generategiftcard,
+        \Magestore\Giftvoucher\Model\Giftcodesets $generategiftcard,
         array $data = []
     ) {
         $this->_coreRegistry = $registry;
@@ -85,11 +85,11 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
         }
     }
 
-    public function getTemplateGenerate()
-    {
-        if ($this->_coreRegistry->registry('generategiftcard_data')) {
-            return $this->_coreRegistry->registry('generategiftcard_data');
-        }
-        return $this->_generategiftcard;
-    }
+//    public function getTemplateGenerate()
+//    {
+//        if ($this->_coreRegistry->registry('generategiftcard_data')) {
+//            return $this->_coreRegistry->registry('generategiftcard_data');
+//        }
+//        return $this->_generategiftcard;
+//    }
 }

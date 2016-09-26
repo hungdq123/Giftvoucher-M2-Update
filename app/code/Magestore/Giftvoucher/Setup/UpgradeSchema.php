@@ -69,17 +69,29 @@ class UpgradeSchema implements UpgradeSchemaInterface
         $setup->startSetup();
 
         if (version_compare($context->getVersion(), '1.0.4', '<')) {
-
+            $setup->getConnection()->dropTable($setup->getTable('giftvoucher_sets'));
             $setup->getConnection()->addColumn(
                 $setup->getTable('giftvoucher'),
                 'used',
                 \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT
             );
-            $setup->getConnection()->addColumn(
-                $setup->getTable('giftvoucher'),
+            $table = $setup->getConnection()->newTable(
+                $setup->getTable('giftvoucher_sets')
+            )->addColumn(
                 'set_id',
-                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER
+                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                10,
+                ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
+                'Set Id'
+            )->addColumn(
+                'set_name',
+                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                45,
+                ['default' => ''],
+                'Set Name'
             );
+             $setup->getConnection()->createTable($table);
+
             $data = array(
                 'group' => 'General',
                 'type' => 'varchar',
