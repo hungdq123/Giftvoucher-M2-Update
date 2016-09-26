@@ -73,7 +73,7 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
     {
         parent::_construct();
         $this->setId('giftcodesetsGrid');
-        $this->setDefaultSort('template_id');
+        $this->setDefaultSort('set_id');
         $this->setDefaultDir('DESC');
         $this->setSaveParametersInSession(true);
         $this->setUseAjax(true);
@@ -109,27 +109,11 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         $this->addColumn(
             'template_name',
             array(
-                'header' => __('Pattern Name'),
+                'header' => __('Set Name'),
                 'index' => 'template_name',
                 'class' => 'xxx'
             )
         );
-
-
-//        $this->addColumn(
-//            'store_id',
-//            array(
-//                'header' => __('Store view'),
-//                'align' => 'left',
-//                'index' => 'store_id',
-//                'type' => 'store',
-//                'store_all' => true,
-//                'store_view' => true,
-//                'filter_index' => 'main_table.store_id',
-//                'skipEmptyStoresLabel' => true,
-//                'filter_condition_callback' => array($this, 'filterByGiftvoucherStoreId')
-//            )
-//        );
 
         $this->addColumn(
             'action',
@@ -166,7 +150,7 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 
     protected function _prepareMassaction()
     {
-        $this->setMassactionIdField('template_id');
+        $this->setMassactionIdField('set_id');
         $this->getMassactionBlock()->setFormFieldName('template');
 
         $this->getMassactionBlock()->addItem('delete', array(

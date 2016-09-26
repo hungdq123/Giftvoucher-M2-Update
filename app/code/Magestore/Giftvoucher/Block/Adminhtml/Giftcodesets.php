@@ -34,8 +34,8 @@ class Giftcodesets extends \Magento\Backend\Block\Widget\Grid\Container
     {
         $this->_controller = 'adminhtml_giftcodesets';
         $this->_blockGroup = 'Magestore_Giftvoucher';
-        $this->_headerText = __('Gift Code Pattern Manager');
-        $this->_addButtonLabel = __('Add Gift Code Pattern');
+        $this->_headerText = __('Gift Code Sets Manager');
+        $this->_addButtonLabel = __('Import New Gift Code Set');
         parent::_construct();
     }
 }

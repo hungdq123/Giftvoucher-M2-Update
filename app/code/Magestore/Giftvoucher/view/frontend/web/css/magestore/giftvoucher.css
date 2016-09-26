@@ -738,9 +738,9 @@ div.egcSwatch-arrow {
 
 
 .giftcard-product-media{
-    float:Left;
+    /*float:Left;*/
     width:600px;
-    height: 365px;
+    /*height: 365px;*/
     transform-origin: top left;
     -webkit-transform-origin: top left;
 }
