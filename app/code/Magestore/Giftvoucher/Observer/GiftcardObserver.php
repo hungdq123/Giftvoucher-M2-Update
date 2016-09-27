@@ -284,12 +284,13 @@ class GiftcardObserver implements ObserverInterface
            // die('xx');
             $time = time();
             for ($i = 0; $i < $item->getQtyOrdered() - $giftVouchers->getSize(); $i++) {
-                $giftCodeSets =$this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->getCollection()->addFieldToFilter('template_id',$item->getProduct()->getGiftCodeSets())
+                $giftCodeSets =$this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->getCollection()->addFieldToFilter('set_id',$item->getProduct()->getGiftCodeSets())
                     ->addFieldToFilter('used',2)->getFirstItem()->getGiftCode();
 
                 if($giftCodeSets){
-                    $giftVoucher = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->getCollection()->addFieldToFilter('template_id',$item->getProduct()->getGiftCodeSets())
+                    $giftVoucher = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->getCollection()->addFieldToFilter('set_id',$item->getProduct()->getGiftCodeSets())
                         ->addFieldToFilter('used',2)->getFirstItem();
+                    //var_dump( $giftVoucher->getData());die();
                 }else{
                     $giftVoucher = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher');
                     //$this->_registry->register('code_sets','aaa');
@@ -455,8 +456,9 @@ class GiftcardObserver implements ObserverInterface
 
                         //var_dump($giftVoucher->getGiftCode());
                     }
-
+                    //var_dump($giftVoucher->getData());die('xxxx');
                     $giftVoucher->save();
+
                     if ($order->getCustomerId()) {
                         $timeSite = date(
                             "Y-m-d",

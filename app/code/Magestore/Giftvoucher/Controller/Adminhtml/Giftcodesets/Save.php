@@ -77,6 +77,7 @@ class Save extends \Magento\Backend\App\Action
         $resultRedirect = $this->resultRedirectFactory->create();
 
         $id = $this->getRequest()->getParam('set_id');
+        var_dump($id);
         $authSession = $this->_objectManager->create('Magento\Backend\Model\Auth\Session');
         $model = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftcodesets');
 
@@ -127,7 +128,7 @@ class Save extends \Magento\Backend\App\Action
 
                             try {
                                 $giftVoucher->setGiftCode($giftVoucherData['gift_code'])
-                                    ->setIncludeHistory(false)
+                                    ->setIncludeHistory(true)
                                     ->setUsed($giftVoucherData['used'])
                                     //->setGenerateGiftcode(true)
                                     ->setSetId($model->getId())

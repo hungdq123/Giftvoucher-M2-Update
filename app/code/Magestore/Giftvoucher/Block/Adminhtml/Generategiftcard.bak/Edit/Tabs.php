@@ -19,10 +19,10 @@
  * @license     http://www.magestore.com/license-agreement.html
  */
 
-namespace Magestore\Giftvoucher\Block\Adminhtml\Giftcodesets\Edit;
+namespace Magestore\Giftvoucher\Block\Adminhtml\Generategiftcard\Edit;
 
 /**
- * Adminhtml Giftvoucher Giftcodesets Edit Tabs Block
+ * Adminhtml Giftvoucher Generategiftcard Edit Tabs Block
  *
  * @category Magestore
  * @package  Magestore_Giftvoucher
@@ -31,7 +31,7 @@ namespace Magestore\Giftvoucher\Block\Adminhtml\Giftcodesets\Edit;
  */
 class Tabs extends \Magento\Backend\Block\Widget\Tabs
 {
-
+    
     /**
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Framework\Json\EncoderInterface $jsonEncoder
@@ -45,20 +45,20 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
         \Magento\Framework\Json\EncoderInterface $jsonEncoder,
         \Magento\Backend\Model\Auth\Session $authSession,
         \Magento\Framework\Registry $registry,
-        \Magestore\Giftvoucher\Model\Giftcodesets $generategiftcard,
+        \Magestore\Giftvoucher\Model\Generategiftcard $generategiftcard,
         array $data = []
     ) {
         $this->_coreRegistry = $registry;
         $this->_generategiftcard = $generategiftcard;
         parent::__construct($context, $jsonEncoder, $authSession, $data);
     }
-
+    
     protected function _construct()
     {
         parent::_construct();
-        $this->setId('giftcodesets_tabs');
+        $this->setId('generategiftcard_tabs');
         $this->setDestElementId('edit_form');
-        $this->setTitle(__('Sets Information'));
+        $this->setTitle(__('Pattern Information'));
     }
 
     protected function _prepareLayout()
@@ -69,26 +69,36 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
             [
                 'label' => __('General Information'),
                 'content' => $this->getLayout()->createBlock(
-                    'Magestore\Giftvoucher\Block\Adminhtml\Giftcodesets\Edit\Tab\Form'
+                    'Magestore\Giftvoucher\Block\Adminhtml\Generategiftcard\Edit\Tab\Form'
                 )->toHtml()
             ]
         );
 
-
+        $this->addTab(
+            'condition',
+            [
+                'label' => __('Conditions'),
+                'content' => $this->getLayout()->createBlock(
+                    'Magestore\Giftvoucher\Block\Adminhtml\Generategiftcard\Edit\Tab\Conditions'
+                )->toHtml()
+            ]
+        );
+        $isGenerated = $this->getTemplateGenerate()->getIsGenerated();
+        if ($isGenerated) {
             $this->addTab('form_giftcode', array(
                 'label' => __('Gift Codes Information'),
                 'title' => __('Gift Codes Information'),
                 'content' => $this->getLayout()
-                    ->createBlock('Magestore\Giftvoucher\Block\Adminhtml\Giftcodesets\Edit\Tab\Giftcodelist')->toHtml(),
+                ->createBlock('Magestore\Giftvoucher\Block\Adminhtml\Generategiftcard\Edit\Tab\Giftcodelist')->toHtml(),
             ));
-
+        }
     }
 
-//    public function getTemplateGenerate()
-//    {
-//        if ($this->_coreRegistry->registry('generategiftcard_data')) {
-//            return $this->_coreRegistry->registry('generategiftcard_data');
-//        }
-//        return $this->_generategiftcard;
-//    }
+    public function getTemplateGenerate()
+    {
+        if ($this->_coreRegistry->registry('generategiftcard_data')) {
+            return $this->_coreRegistry->registry('generategiftcard_data');
+        }
+        return $this->_generategiftcard;
+    }
 }

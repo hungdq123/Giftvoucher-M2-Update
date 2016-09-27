@@ -41,7 +41,7 @@ class Giftcodesetsoptions extends \Magento\Eav\Model\Entity\Attribute\Source\Abs
      * @param \Magestore\Giftvoucher\Model\Generategiftcard $giftcodeSets
      */
     public function __construct(
-        \Magestore\Giftvoucher\Model\Generategiftcard $giftcodeSets
+        \Magestore\Giftvoucher\Model\Giftcodesets $giftcodeSets
     ) {
         $this->_giftcodeSets = $giftcodeSets;
     }
@@ -59,8 +59,8 @@ class Giftcodesetsoptions extends \Magento\Eav\Model\Entity\Attribute\Source\Abs
 //            ->addFieldToFilter('status', '2');
         $listGiftcodeSets = array();
         foreach ($giftcodeSets as $giftcodeSet) {
-            $listGiftcodeSets[] = array('label' => $giftcodeSet->getTemplateName(),
-                'value' => $giftcodeSet->getTemplateId());
+            $listGiftcodeSets[] = array('label' => $giftcodeSet->getSetName(),
+                'value' => $giftcodeSet->getSetId());
         }
         return  $listGiftcodeSets;
     }

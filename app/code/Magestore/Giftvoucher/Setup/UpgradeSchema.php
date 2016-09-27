@@ -75,6 +75,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 'used',
                 \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT
             );
+
             $table = $setup->getConnection()->newTable(
                 $setup->getTable('giftvoucher_sets')
             )->addColumn(
@@ -89,8 +90,17 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 45,
                 ['default' => ''],
                 'Set Name'
+            )->addIndex(
+                $setup->getIdxName('giftvoucher_sets', ['set_id']),
+                ['set_id']
             );
              $setup->getConnection()->createTable($table);
+
+            $setup->getConnection()->addColumn(
+                $setup->getTable('giftvoucher'),
+                'set_id',
+                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER
+            );
 
             $data = array(
                 'group' => 'General',

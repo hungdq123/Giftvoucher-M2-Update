@@ -103,7 +103,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements
         $fieldset->addField('set_name', 'text', array(
             'label' =>__('Sets Name '),
             'required' => true,
-            'name' => 'template_name',
+            'name' => 'set_name',
             'disabled' => $disabled,
         ));
 
@@ -111,7 +111,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements
         $fieldset->addField('import_code','file',array(
             'label' => __('Import Gift Code Sets'),
             'name' => 'import_code',
-            'required' => false,
+            'required' => true,
 
         ));
         $notes=  __('Status of Used : 1-Yes,2-No');
@@ -167,28 +167,5 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic implements
         return false;
     }
 
-    /**
-     * Check permission for passed action
-     *
-     * @param string $resourceId
-     * @return bool
-     */
-    public function getGiftTemplate()
-    {
-        /**
-         * gifttemplate
-         */
 
-        $dataTemp = $this->_objectManager->create('Magestore\Giftvoucher\Model\Gifttemplate')->getCollection();
-        $option = array();
-        $option[] = array('value' => '',
-            'label' => __('Please select a template')
-        );
-        foreach ($dataTemp as $template) {
-            $option[] = array('value' => $template->getGiftcardTemplateId(),
-                'label' => $template->getTemplateName()
-            );
-        }
-        return $option;
-    }
 }
