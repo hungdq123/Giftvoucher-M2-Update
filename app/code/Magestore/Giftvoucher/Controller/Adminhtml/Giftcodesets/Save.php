@@ -95,7 +95,7 @@ class Save extends \Magento\Backend\App\Action
 
             try {
                 $model->loadPost($data);
-                $model->save();
+                //$model->save();
                 if( isset($_FILES['import_code']) && substr($_FILES['import_code']["name"], -4)=='.csv') {
                     try {
                         $fileName = $_FILES['import_code']['tmp_name'];
@@ -143,9 +143,7 @@ class Save extends \Magento\Backend\App\Action
 
                         //$model->setAmount(count($count));
                         $model->save();
-                        if ($this->getRequest()->getParam('back')) {
-                            return $resultRedirect->setPath('*/*/edit', array('id' => $model->getId()));
-                        }
+
                         if (count($count)) {
                             $successMessage = __('Imported total %1 Gift Code(s)', count($count));
                             $this->messageManager->addSuccess($successMessage);
@@ -163,7 +161,10 @@ class Save extends \Magento\Backend\App\Action
                 $this->messageManager->addSuccess(__('The Gift Code Set have been save.'));
                 $this->_getSession()->setFormData(false);
 
-                return $resultRedirect->setPath('*/*/');
+                //return $resultRedirect->setPath('*/*/');
+                if ($this->getRequest()->getParam('back')) {
+                    return $resultRedirect->setPath('*/*/edit', array('id' => $model->getId()));
+                }
             } catch (\Exception $e) {
                 $this->messageManager->addError($e->getMessage());
                 $this->_getSession()->setFormData($data);

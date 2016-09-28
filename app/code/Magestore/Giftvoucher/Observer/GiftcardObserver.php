@@ -263,20 +263,7 @@ class GiftcardObserver implements ObserverInterface
                     }
                 }
             }
-//           var_dump($item->getProduct()->getGiftCardType());
-//            var_dump($item->getProduct()->getGiftCodeSets());
 
-            //var_dump($giftCodeSets);
-//            if(!$giftCodeSets){
-//
-//                $giftVouchers = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->getCollection()->addFieldToFilter('template_id',$item->getProduct()->getGiftCodeSets())
-//                    ->addFieldToFilter('used',2)->getFirstItem()->addItemFilter($item->getQuoteItemId());
-//            }else{
-//                $giftVouchers = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->getCollection()
-//                    ->addItemFilter($item->getQuoteItemId());
-//            }
-
-//            var_dump($giftCodeSets->getGiftCode());
             $giftVouchers = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->getCollection()
                 ->addItemFilter($item->getQuoteItemId());
             //var_dump($giftVouchers->getSize());

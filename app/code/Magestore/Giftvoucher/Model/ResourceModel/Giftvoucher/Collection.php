@@ -90,7 +90,7 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
                 'extra_content',
                 'order_increment_id'
             )
-        )->where('history.action = ?', \Magestore\Giftvoucher\Model\Actions::ACTIONS_CREATE);
+        )->where('history.amount > ?', 0 or 'history.action = ?', \Magestore\Giftvoucher\Model\Actions::ACTIONS_CREATE );
         return $this;
     }
     

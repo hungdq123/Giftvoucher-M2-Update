@@ -77,7 +77,7 @@ class Edit extends \Magento\Backend\App\Action
 
         $resultPage = $this->resultPageFactory->create();
         if ($model->getId()) {
-            $resultPage->getConfig()->getTitle()->prepend(__('Edit Gift Code Sets "%1"', $model->getTemplateName()));
+            $resultPage->getConfig()->getTitle()->prepend(__('Edit Gift Code Sets "%1"', $model->getSetName()));
         } else {
             $resultPage->getConfig()->getTitle()->prepend(__('New Gift Code Sets'));
         }
