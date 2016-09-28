@@ -29,7 +29,7 @@ namespace Magestore\Giftvoucher\Controller\Adminhtml\Generategiftcard;
  * @module   Giftvoucher
  * @author   Magestore Developer
  */
-class Massdelete extends \Magento\Backend\App\Action
+class MassDelete extends \Magento\Backend\App\Action
 {
 
     /**

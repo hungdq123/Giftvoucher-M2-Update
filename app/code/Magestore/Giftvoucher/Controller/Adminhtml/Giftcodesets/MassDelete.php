@@ -29,7 +29,7 @@ namespace Magestore\Giftvoucher\Controller\Adminhtml\Giftcodesets;
  * @module   Giftvoucher
  * @author   Magestore Developer
  */
-class Massdelete extends \Magento\Backend\App\Action
+class MassDelete extends \Magento\Backend\App\Action
 {
 
     /**
@@ -40,7 +40,7 @@ class Massdelete extends \Magento\Backend\App\Action
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magestore\Giftvoucher\Model\Generategiftcard $generategiftcard
+        \Magestore\Giftvoucher\Model\Giftcodesets $generategiftcard
     ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
@@ -51,9 +51,9 @@ class Massdelete extends \Magento\Backend\App\Action
     {
         $resultRedirect = $this->resultRedirectFactory->create();
 
-        $templateIds = $this->getRequest()->getParam('template');
+        $templateIds = $this->getRequest()->getParam('set_name');
         if (!is_array($templateIds)) {
-            $this->messageManager->addError(__('Please select Template(s)'));
+            $this->messageManager->addError(__('Please select Set(s)'));
         } else {
             try {
                 foreach ($templateIds as $templateId) {

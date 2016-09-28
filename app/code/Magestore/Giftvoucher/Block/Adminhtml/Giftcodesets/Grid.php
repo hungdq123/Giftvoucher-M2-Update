@@ -142,8 +142,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         }
 
 
-        $this->addExportType('*/*/exportCsv', __('CSV'));
-        $this->addExportType('*/*/exportXml', __('XML'));
+//        $this->addExportType('*/*/exportCsv', __('CSV'));
+//        $this->addExportType('*/*/exportXml', __('XML'));
 
         return parent::_prepareColumns();
     }
@@ -151,7 +151,7 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
     protected function _prepareMassaction()
     {
         $this->setMassactionIdField('set_id');
-        $this->getMassactionBlock()->setFormFieldName('template');
+        $this->getMassactionBlock()->setFormFieldName('set_name');
 
         $this->getMassactionBlock()->addItem('delete', array(
             'label' => __('Delete'),

@@ -95,7 +95,7 @@ class Save extends \Magento\Backend\App\Action
 
             try {
                 $model->loadPost($data);
-                //$model->save();
+                $model->save();
                 if( isset($_FILES['import_code']) && substr($_FILES['import_code']["name"], -4)=='.csv') {
                     try {
                         $fileName = $_FILES['import_code']['tmp_name'];

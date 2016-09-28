@@ -98,7 +98,17 @@ class Giftcodelist extends \Magento\Backend\Block\Widget\Grid\Extended implement
             'index' => 'gift_code',
             'filter_index' => 'main_table.gift_code'
         ));
+        $this->addColumn('used',array(
+            'header' =>__('Used'),
+            'width' => '10px',
+            'align' => 'left',
+            'index' => 'used',
+            'type' => 'options',
+            'options' => \Magestore\Giftvoucher\Model\Used::getOptionArray(),
+            'filter_index' => 'main_table.status'
 
+
+        ));
         $this->addColumn('action', array(
             'header' => __('Action'),
             'width' => '70px',
@@ -116,20 +126,10 @@ class Giftcodelist extends \Magento\Backend\Block\Widget\Grid\Extended implement
             'index' => 'stores',
             'is_system' => true,
         ));
-        $this->addColumn('used',array(
-            'header' =>__('Used'),
-            'width' => '10px',
-            'align' => 'left',
-            'index' => 'used',
-            'type' => 'options',
-            'options' => \Magestore\Giftvoucher\Model\Used::getOptionArray(),
-            'filter_index' => 'main_table.status'
 
-
-        ));
-        $this->addExportType('*/*/exportGiftCodeCsv', __('CSV'));
-        $this->addExportType('*/*/exportGiftCodeXml', __('XML'));
-        $this->addExportType('*/*/exportGiftCodePdf', __('PDF'));
+//        $this->addExportType('*/*/exportGiftCodeCsv', __('CSV'));
+//        $this->addExportType('*/*/exportGiftCodeXml', __('XML'));
+//        $this->addExportType('*/*/exportGiftCodePdf', __('PDF'));
 
         return parent::_prepareColumns();
     }
