@@ -6,8 +6,10 @@
     ], function($){
         var gift_type = $("select[name='product[gift_type]']");
         var gift_price_type = $("select[name='product[gift_price_type]']");
+        var giftcard_type =$$("select[name='product[gift_card_type]']");
         $( document ).ready(function() {
             hidesettingGC();
+            hideTemplate();
         });
         gift_type.change(function(){
             hidesettingGC();
@@ -15,7 +17,19 @@
         gift_price_type.change(function(){
             hidesettingGC();
         });
-
+        $("select[name='product[gift_card_type]']").on('change',function () {
+            hideTemplate();
+        });
+        
+        function hideTemplate(){
+             var giftcard_type =$$("select[name='product[gift_card_type]']")[0];
+                if(giftcard_type.value==1){
+                    $$("select[name='product[gift_template_ids]']")[0].up('div').up('div').hide();
+                    $$("select[name='product[gift_template_ids]']")[0].options[0].selected= true;
+                }else{
+                    $$("select[name='product[gift_template_ids]']")[0].up('div').up('div').show();
+                }
+        }
         function hidesettingGC(){
 
             var gift_type = $("select[name='product[gift_type]']");

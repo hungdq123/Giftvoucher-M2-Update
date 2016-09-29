@@ -114,6 +114,14 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
                 'class' => 'xxx'
             )
         );
+        $this->addColumn(
+            'sets_qty',
+            array(
+                'header' => __('Qty'),
+                'index' => 'sets_qty',
+                'class' => 'xxx'
+            )
+        );
 
         $this->addColumn(
             'action',

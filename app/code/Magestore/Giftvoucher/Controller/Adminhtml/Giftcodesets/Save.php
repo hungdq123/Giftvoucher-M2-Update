@@ -77,7 +77,7 @@ class Save extends \Magento\Backend\App\Action
         $resultRedirect = $this->resultRedirectFactory->create();
 
         $id = $this->getRequest()->getParam('set_id');
-        var_dump($id);
+        //var_dump($id);
         $authSession = $this->_objectManager->create('Magento\Backend\Model\Auth\Session');
         $model = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftcodesets');
 
@@ -95,6 +95,12 @@ class Save extends \Magento\Backend\App\Action
 
             try {
                 $model->loadPost($data);
+
+                if(!(substr($_FILES['import_code']["name"], -4)=='.csv')){
+                    $this->messageManager->addError(__('Please import the csv file!.'));
+                    return $resultRedirect->setPath('*/*/edit',array('id' => $model->getId()));
+
+                }
                 $model->save();
                 if( isset($_FILES['import_code']) && substr($_FILES['import_code']["name"], -4)=='.csv') {
                     try {
@@ -140,8 +146,10 @@ class Save extends \Magento\Backend\App\Action
                         }
 
 
+                       $qtys=$model->load($this->getRequest()->getParam('set_id'))->getSetsQty();
+                        //var_dump($qtys);die('xxx');
+                        $model->setSetsQty($qtys+count($count));
 
-                        //$model->setAmount(count($count));
                         $model->save();
 
                         if (count($count)) {

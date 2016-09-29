@@ -152,7 +152,7 @@ class View extends \Magento\Catalog\Block\Product\View\AbstractView
         $product = $this->getProduct();
         $media = $this->getLayout()->getBlock('product.info.media.image');
         
-        if ($media && $product->getTypeId() == 'giftvoucher') {
+        if ($media && $product->getTypeId() == 'giftvoucher' ) {
             $media->setTemplate('Magestore_Giftvoucher::giftvoucher/product/media.phtml');
         }
     }

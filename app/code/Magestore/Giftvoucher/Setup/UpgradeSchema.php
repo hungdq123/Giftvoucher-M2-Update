@@ -90,6 +90,12 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 45,
                 ['default' => ''],
                 'Set Name'
+            )->addColumn(
+                'sets_qty',
+                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                11,
+                ['default' => '0'],
+                'Set Qty'
             )->addIndex(
                 $setup->getIdxName('giftvoucher_sets', ['set_id']),
                 ['set_id']
