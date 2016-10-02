@@ -53,14 +53,16 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
                 )->toHtml()
             ]
         );
-        $this->addTab(
-            'images_gifttemplate_section',
-            [
-                'label' => __('Images'),
-                'content' =>  $this->getLayout()->createBlock(
-                    'Magestore\Giftvoucher\Block\Adminhtml\Gifttemplate\Edit\Tab\Images'
-                )->toHtml()
-            ]
-        );
+//        $this->addTab(
+//            'images_gifttemplate_section',
+//            [
+//                'label' => __('Images'),
+//                'content' =>  $this->getLayout()->createBlock(
+//                    'Magestore\Giftvoucher\Block\Adminhtml\Gifttemplate\Edit\Tab\Images'
+//                )->toHtml()
+//            ]
+//        );
+
+        $this->addTab('image_section', 'giftvocuher_edit_tab_image');
     }
 }

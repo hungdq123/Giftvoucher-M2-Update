@@ -98,7 +98,7 @@ class Item extends \Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer
     {
         $result = parent::getItemOptions();
         $item = $this->getOrderItem();
-
+        $cartType = $item->getGiftCardType();
         if ($item->getProductType() != 'giftvoucher') {
             return $result;
         }
@@ -110,7 +110,7 @@ class Item extends \Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer
         if ($options = $item->getProductOptionByCode('info_buyRequest')) {
             foreach ($this->_helper->getGiftVoucherOptions() as $code => $label) {
                 if (isset($options[$code]) && $options[$code]) {
-                    if ($code == 'giftcard_template_id') {
+                    if ($code == 'giftcard_template_id' && $cartType !=1) {
                         foreach ($templates as $template) {
                             if ($template->getId() == $options[$code]) {
                                 $valueTemplate = $template;

@@ -21,7 +21,7 @@
 namespace Magestore\Giftvoucher\Controller\Adminhtml\Gifttemplate;
 
 use Magento\Store\Model\Store;
-
+use Magento\Framework\App\Filesystem\DirectoryList;
 /**
  * Adminhtml Gifttemplate Save Action
  *
@@ -62,36 +62,38 @@ class Save extends \Magento\Backend\App\Action
             $filterDate = $this->_objectManager->create('Magento\Framework\Stdlib\DateTime\Filter\Date');
             $authSession = $this->_objectManager->create('Magento\Backend\Model\Auth\Session');
             $helper = $this->_objectManager->create('Magestore\Giftvoucher\Helper\Data');
-            //upload giftcard template image
-            $numberImage = $data['number_image'];
-            $imgUploaded = $helper->uploadTemplateImages($numberImage);
-            //upload or delete backgroud image
-            if (isset($data['background_img']['delete']) && $data['background_img']['delete'] == 1) {
-                $helper->deleteImageFile($data['background_img']['value']);
-            }
-            $background = $helper->uploadTemplateBackground();
-            if ($background || (isset($data['background_img']['delete']) && $data['background_img']['delete'])) {
-                $data['background_img'] = $background;
-            } else {
-                unset($data['background_img']);
-            }
             //save data to database
             if (isset($data['giftcard_template_id']) && $data['giftcard_template_id']) {
                 $id = $data['giftcard_template_id'];
                 $model->load($id);
             }
-            if (isset($imgUploaded) && count($imgUploaded)) {
+                $images = $data['arrayImages'];
+                $arrayImg = array();
+                foreach ($images as $image){
+                    $imageJson = json_decode($image);
+                    $url = $imageJson->url;
+                    $file = substr($imageJson->file, 5);
+                    $imagePath = parse_url($url, PHP_URL_PATH);
+                    $mediaDirectory = $this->_objectManager->get('Magento\Framework\Filesystem')->getDirectoryRead(DirectoryList::MEDIA);
+
+                    if($data['design_pattern'] == 1){
+                        $toPath = $mediaDirectory->getAbsolutePath('giftvoucher/template/images/left/'.$file);
+                    }elseif ($data['design_pattern'] ==  2) {
+                        $toPath = $mediaDirectory->getAbsolutePath('giftvoucher/template/images/top/'.$file);
+                    }else{
+                        $toPath =$mediaDirectory->getAbsolutePath('giftvoucher/template/images/'.$file);
+                    }
+                    copy($_SERVER['DOCUMENT_ROOT'].'/'.$imagePath, $toPath);
+                    $arrayImg[] = $file;
+                }
                 if ($model->getImages()) {
                     $currenImg = explode(',', $model->getImages());
                 }
                 if (isset($currenImg) && count($currenImg)) {
-                    $arrayImg = array_merge($imgUploaded, $currenImg);
-                } else {
-                    $arrayImg = $imgUploaded;
-                }
+                    $arrayImg = array_merge($arrayImg, $currenImg);
+                }                 
                 $data['images'] = implode(',', $arrayImg);
-            }
-            $model->setData($data);
+                $model->setData($data);
             try {
                 $model->save();
                 $this->messageManager->addSuccess(__('Gift Card Template was successfully saved'));

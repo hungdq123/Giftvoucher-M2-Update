@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Giftvoucher
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+
+ ?>
+<?php
+/** @var \Magestore\Giftvoucher\Block\Adminhtml\Widget\Form\Renderer\Gallery $block */
+?>
+<div id="<?php echo $block->getHtmlId() ?>-container" class="image-gallery-container images"
+     data-max-file-size="<?php echo $block->getFileMaxSize() ?>"
+     data-mage-init='{"Magestore_Giftvoucher/js/gallery/base-image-uploader": {"imagesJson": <?php echo $block->getImageJsonData() ?>, "galleryContainer": "#<?php echo $block->getHtmlId() ?>-container"}}'
+>
+    <div class="image image-placeholder">
+        <input type="file" name="image" data-url="<?php echo $block->getUploadUrl() ?>" multiple="multiple" style="border:0px solid !important"/>
+        <div class="image-loader-wrapper" style="display: none;">
+            <img class="image-loader"src="<?php echo $block->getAssetRepoUrl('images/loader-2.gif') ?>">
+        </div>
+        <img class="spacer" src="<?php echo $block->getAssetRepoUrl('images/spacer.gif') ?>"/>
+        <p class="image-placeholder-text"><?php echo __('Click here or drag and drop to add images') ?></p>
+    </div>
+    <script id="<?php echo $block->getHtmlId() ?>-template" class="image-template" type="text/x-magento-template">
+        <div class="image image-item element-image<%- data.image_id %>">
+            <input type="hidden" class="arrayImages" name="arrayImages[]" value="<%- data.imageJSON %>" />
+            <img class="spacer" src="<?php echo $block->getAssetRepoUrl('images/spacer.gif') ?>"/>
+            <img
+                class="store-image"
+                src="<%- data.url %>"
+                data-position="<%- data.position %>"
+                alt="<%- data.label %>" />
+            <div class="actions">
+                <button type="button" class="action-delete" data-role="delete-button" title="<?php echo __('Delete image') ?>">
+                    <span><?php echo __('Delete image') ?></span>
+                </button>
+                
+            </div>
+            <div class="image-label"></div>
+            <div class="image-fade"><span><?php echo __('Hidden') ?></span></div>
+        </div>
+    </script>
+</div>

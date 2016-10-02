@@ -8,7 +8,8 @@ var config = {
         '*': {
             jscolor: 'Magestore_Giftvoucher/js/jscolor/jscolor',
             uploadimage: 'Magestore_Giftvoucher/js/uploadimage',
-            jqueryMediaBox: 'Magestore_Giftvoucher/js/gifttemplate/jquery.media.box'
+            jqueryMediaBox: 'Magestore_Giftvoucher/js/gifttemplate/jquery.media.box',
+            'magestore/baseimage': 'Magestore_Giftvoucher/js/gallery/base-image-uploader',
            
         }
     }

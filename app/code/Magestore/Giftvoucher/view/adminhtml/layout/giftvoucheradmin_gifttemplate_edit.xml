@@ -23,6 +23,7 @@
     <head>
         <css src="Magestore_Giftvoucher::tinybox/style.css"/>
         <css src="Magestore_Giftvoucher::gifttemplate/previewimage.css"/>
+        <link src="Magestore_Giftvoucher::js/slideshow.js" />
     </head>
     <body>
         <referenceContainer name="content">
@@ -30,6 +31,7 @@
         </referenceContainer>
         <referenceContainer name="left">
             <block class="Magestore\Giftvoucher\Block\Adminhtml\Gifttemplate\Edit\Tabs" name="giftvoucheradmin_gifttemplate_edit_tabs">
+                <block class="Magestore\Giftvoucher\Block\Adminhtml\Gifttemplate\Edit\Tab\Images" name="giftvocuher_edit_tab_image"/>
            </block>
         </referenceContainer>
     </body>
