@@ -38,6 +38,41 @@ class OrderSaveAfterObserver extends \Magestore\Giftvoucher\Observer\GiftcardObs
         
         $refundState = array('canceled');
         if (in_array($order->getStatus(), $refundState)) {
+
+            foreach ($order->getAllItems() as $item) {
+                if ($item->getProductType() != 'giftvoucher') {
+                    continue;
+                }
+                $req = $item->getProductOptions()['info_buyRequest'];
+                $giftVouchers = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')
+                    ->getCollection()
+                    ->addItemFilter($item->getQuoteItemId());
+                $itemQtyInvoice =$req['qty'];
+                foreach ($giftVouchers as $giftVoucher) {
+                    if ($giftVoucher->getUsed() ==1) {
+                        $giftVoucher->addData(array(
+                            'used' => 2,
+                            'status' => \Magestore\Giftvoucher\Model\Status::STATUS_DISABLED,
+                            'comments' => __('Canceled order'),
+                            'amount' => $giftVoucher->getBalance(),
+                            'action' => \Magestore\Giftvoucher\Model\Actions::ACTIONS_UPDATE,
+                            'order_increment_id'    => $order->getIncrementId()
+                        ))->setIncludeHistory(true);
+                        try {
+
+                            $giftVoucher->save();
+
+                        } catch (\Exception $e) {
+                            $this->messageManager->addError($e->getMessage());
+                        }
+                        $itemQtyInvoice -= 1;
+                        if (!$itemQtyInvoice) {
+                            break;
+                        }
+                    }
+                }
+
+            }
             $this->_refundOffline($order, $order->getBaseGiftVoucherDiscount());
         }
     }

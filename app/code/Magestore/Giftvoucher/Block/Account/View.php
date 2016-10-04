@@ -214,11 +214,20 @@ class View extends \Magestore\Giftvoucher\Block\Account
      */
     public function getCodeTxt($row)
     {
+        $type = $this->getHelper()->getSetIdOfCode($row->getGiftCode());
         $input = '<input style="width:auto;" id="input-gift-code' . $row->getId()
             . '" readonly type="text" class="input-text" value="' . $row->getGiftCode()
             . '" onblur="hiddencode' . $row->getId() . '(this);">';
-        $aelement = '<a href="javascript:void(0);" onclick="viewgiftcode' . $row->getId() . '()">'
-            . $this->getHelper()->getHiddenCode($row->getGiftCode()) . '</a>';
+        if($type){
+            $aelement = '<a href="javascript:void(0);" onclick="viewgiftscode' . $row->getId() . '()">'
+                . $this->getHelper()->getHiddenCode($row->getGiftCode()) . '</a>';
+        }else{
+            $aelement = '<a href="javascript:void(0);" onclick="viewgiftcode' . $row->getId() . '()">'
+                . $this->getHelper()->getHiddenCode($row->getGiftCode()) . '</a>';
+        }
+
+
+
         $html = '<div id="inputboxgiftvoucher' . $row->getId() . '" >' . $aelement . '</div>
                 <script type="text/javascript">
                     //<![CDATA[

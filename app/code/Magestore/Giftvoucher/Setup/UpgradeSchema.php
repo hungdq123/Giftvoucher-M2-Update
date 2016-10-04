@@ -141,7 +141,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 'used_for_sort_by' => 0,
             );
 
-                $data['label'] = 'Sellect The Gift Code Sets';
+                $data['label'] = 'Select The Gift Code Sets';
                 $data['source'] ='Magestore\Giftvoucher\Model\Giftcodesetsoptions';
                 $data['sort_order'] = 110;
                 $data['is_required'] = 0;
@@ -155,7 +155,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 $giftCodeSets->addData($data)->save();
 
 
-                $data['label'] = 'Sellect Gift Card Type';
+                $data['label'] = 'Select Gift Card Type';
                 $data['source'] = 'Magestore\Giftvoucher\Model\Giftcardtypeoptions';
                 $data['sort_order'] = 14;
                 $data['is_required'] = 1;

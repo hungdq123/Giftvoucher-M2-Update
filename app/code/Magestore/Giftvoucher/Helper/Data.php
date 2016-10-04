@@ -412,7 +412,17 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         }
         return $prefixCode . $suffixCode;
     }
+    /**
+     * Get Type Of Gift Code
+     *
+     * @return int
+     */
+    public function getSetIdOfCode($code){
 
+            $codes = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->loadByCode($code);
+            return  $codes->getSetId();
+
+    }
     /**
      * Check gift codes whether they are available to add or not
      *

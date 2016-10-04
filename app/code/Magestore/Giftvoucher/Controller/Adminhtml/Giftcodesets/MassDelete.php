@@ -61,7 +61,7 @@ class MassDelete extends \Magento\Backend\App\Action
                     $template->delete();
                 }
                 $this->messageManager->addSuccess(
-                    __('Total of %d record(s) were successfully deleted', count($templateIds))
+                    __('The Gift Code Set was deleted successfully')
                 );
             } catch (\Exception $e) {
                 $this->messageManager->addError($e->getMessage());
