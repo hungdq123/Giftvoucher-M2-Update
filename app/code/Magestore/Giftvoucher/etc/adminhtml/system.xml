@@ -314,10 +314,10 @@ Supported format: jpeg, gif, png</comment>
                         <field id="barcode_enable">1</field>
                     </depends>
                 </field>
-                <field id="note" translate="label comment" type="textarea" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+               <!--  <field id="note" translate="label comment" type="textarea" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Gift Card notes</label>
                     <comment></comment>
-                </field>
+                </field> -->
             </group>
         </section>
         <section id="sales" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">

@@ -28,7 +28,7 @@
      data-max-file-size="<?php echo $block->getFileMaxSize() ?>"
      data-mage-init='{"Magestore_Giftvoucher/js/gallery/base-image-uploader": {"imagesJson": <?php echo $block->getImageJsonData() ?>, "galleryContainer": "#<?php echo $block->getHtmlId() ?>-container"}}'
 >
-    <div class="image image-placeholder">
+    <div class="image image-placeholder" style="border: 1px solid #ccc;">
         <input type="file" name="image" data-url="<?php echo $block->getUploadUrl() ?>" multiple="multiple" style="border:0px solid !important"/>
         <div class="image-loader-wrapper" style="display: none;">
             <img class="image-loader"src="<?php echo $block->getAssetRepoUrl('images/loader-2.gif') ?>">
