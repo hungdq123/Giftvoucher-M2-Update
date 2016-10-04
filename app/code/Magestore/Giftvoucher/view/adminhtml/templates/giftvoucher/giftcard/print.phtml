@@ -430,7 +430,7 @@ if (!$_template->getBackgroundImg()) {
     $image = $this->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/template/images/left/' . $image;
     ?>
     <div id="giftcard-template-top" class="gift-card">
-        <div class="giftcard-template-content-top giftcard-change-image-temp2 giftcard-change-image form-group" style="background-image: url(<?php echo $image ?>); background-position: center; background-repeat: no-repeat;background-size: 585px 274px"></div>
+        <div class="giftcard-template-content-top giftcard-change-image-temp2 giftcard-change-image form-group" style="background-image: url(<?php echo $_store->getBaseUrl('media') . 'giftvoucher/template/images/top/' . $_giftCard->getGiftcardTemplateImage() ?>); background-position: center; background-repeat: no-repeat;background-size: 585px 274px"></div>
         <div class="giftcard-template-content template-top-content ">
             <div class="top-content-top form-group">
                 <div class="<?php if($url_barcode != ''): ?>col-xs-4<?php else: ?>col-xs-6<?php endif;?> top-logo">
@@ -512,7 +512,7 @@ if (!$_template->getBackgroundImg()) {
                 <?php endif; ?>
             </div>
         </div>
-        <div class="giftcard-template-content-top giftcard-change-image-temp2 giftcard-change-image form-group" style="background-image: url(<?php echo $image ?>); background-position: center; background-repeat: no-repeat;background-size: 585px 274px"></div>
+        <div class="giftcard-template-content-top giftcard-change-image-temp2 giftcard-change-image form-group" style="background-image: url(<?php echo $_store->getBaseUrl('media') . 'giftvoucher/template/images/' . $_giftCard->getGiftcardTemplateImage() ?>); background-position: center; background-repeat: no-repeat;background-size: 585px 274px"></div>
         <div class="giftcard-message top-bottom">
             <div class="giftcard-from-to">
                 <span class="giftcard-from">
@@ -540,7 +540,7 @@ if (!$_template->getBackgroundImg()) {
         $image = $this->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/template/images/left/' . $image;
     ?>
     <div id="giftcard-template-left">
-        <div class="giftcard-template-content-left giftcard-change-image" style="background-image: url(<?php echo $image ?>); background-position: center; background-repeat: no-repeat;background-size: 275px 400px">
+        <div class="giftcard-template-content-left giftcard-change-image" style="background-image: url(<?php echo $_store->getBaseUrl('media') . 'giftvoucher/template/images/left/' . $_giftCard->getGiftcardTemplateImage() ?>); background-position: center; background-repeat: no-repeat;background-size: 275px 400px">
         </div>
         <div class="giftcard-template-content">
             <div class = "giftcard-logo"><img src ="<?php echo $logo; ?>" /></div>
