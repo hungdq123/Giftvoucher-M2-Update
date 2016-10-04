@@ -194,11 +194,11 @@ if ($block->getHelper()->getStoreConfig('giftvoucher/print_voucher/logo')) {
     }
     #giftcard-template-left .giftcard-barcode img {float: right;max-width: 100%;height: 40px;}
     .giftcard-template-content .top-content-left{
-        margin-top: 45px;
+        margin-top: 20px;
     }
     .top-content-left .two-border{
         height: 90px;
-        padding-top: 10px;
+        padding-top: 30px;
     }
     .top-content-left .top-barcode{
         height: 90px;
@@ -219,6 +219,13 @@ if ($block->getHelper()->getStoreConfig('giftvoucher/print_voucher/logo')) {
         border-top: 1px solid #cccccc;
         padding-top: 10px;
     }
+    .top-qrcode{
+        height: 90px;
+    }
+    .top-qrcode img{
+        width: 75%;
+        margin-left: 20px;
+    }
 </style>
 <div id="giftcard-template-left">
     <div class="giftcard-template-content-left giftcard-change-image" style="background-image: url(<?php echo $image ?>); background-position: center; background-repeat: no-repeat;background-size: 275px 400px">
@@ -236,7 +243,7 @@ if ($block->getHelper()->getStoreConfig('giftvoucher/print_voucher/logo')) {
 
             </div>
             <?php if($url_barcode != ''): ?>
-                <div class="top-barcode col-xs-6 text-center">
+                <div class="<?php if($barcode_type == 'code128') {echo 'top-barcode';}else{echo 'top-qrcode';} ?> col-xs-6 text-center">
                     <img src="<?php echo $url_barcode ?>" />
                 </div>
             <?php endif; ?>
