@@ -1257,6 +1257,12 @@ li.giftvoucher-discount-code strong{float:none;}
     border-top: 1px solid #cccccc;
     padding-top: 10px;
 }
+.top-qrcode{
+    height: 90px;
+}
+.top-qrcode img{
+    height: 90%;
+}
 button.gc-amount-selected, button.gc-template-selected{border-color: #e77600}
 #amount_dropdown_buttons .gc-amount {float: left; margin-right: 10px;}
 #amount_dropdown_buttons .gc-amount button{padding: 7px 4px; background: #fff;}
