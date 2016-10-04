@@ -136,10 +136,14 @@ class Item extends \Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer
         if ($giftVouchers->getSize()) {
             $giftVouchersCode = array();
             foreach ($giftVouchers as $giftVoucher) {
+
                 $balance = $this->_localeCurrency->getCurrency($giftVoucher->getCurrency())
                     ->toCurrency($giftVoucher->getBalance(), array());
-                
-                $giftVouchersCode[] = $giftVoucher->getGiftCode() . ' (' . $balance . ') ';
+                if($giftVoucher->getSetId()>0){
+                    $giftVouchersCode[] = 'XXXXXXXXX'. ' (' . $balance . ') ';
+                }else {
+                    $giftVouchersCode[] = $giftVoucher->getGiftCode() . ' (' . $balance . ') ';
+                }
             }
             $codes = implode('<br />', $giftVouchersCode);
             $result[] = array(
