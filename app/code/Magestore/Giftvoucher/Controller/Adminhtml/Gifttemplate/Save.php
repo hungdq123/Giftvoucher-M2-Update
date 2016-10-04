@@ -67,8 +67,9 @@ class Save extends \Magento\Backend\App\Action
                 $id = $data['giftcard_template_id'];
                 $model->load($id);
             }
-                $images = $data['arrayImages'];
-                $arrayImg = array();
+            $arrayImg = array();
+            if(isset($data['arrayImages']) && $data['arrayImages']){
+                $images = $data['arrayImages'];                
                 foreach ($images as $image){
                     $imageJson = json_decode($image);
                     $url = $imageJson->url;
@@ -86,12 +87,13 @@ class Save extends \Magento\Backend\App\Action
                     copy($_SERVER['DOCUMENT_ROOT'].'/'.$imagePath, $toPath);
                     $arrayImg[] = $file;
                 }
+            }                    
                 if ($model->getImages()) {
                     $currenImg = explode(',', $model->getImages());
                 }
                 if (isset($currenImg) && count($currenImg)) {
                     $arrayImg = array_merge($arrayImg, $currenImg);
-                }                 
+                }         
                 $data['images'] = implode(',', $arrayImg);
                 $model->setData($data);
             try {
