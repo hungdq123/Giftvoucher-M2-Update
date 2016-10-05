@@ -154,7 +154,11 @@ class Save extends \Magento\Backend\App\Action
 
                         if (count($count)) {
                             $successMessage = __('Imported total %1 Gift Code(s)', count($count));
+                            $this->messageManager->addSuccess(__('The Gift Code Set have been saved.'));
                             $this->messageManager->addSuccess($successMessage);
+                            if ($this->getRequest()->getParam('back')) {
+                                return $resultRedirect->setPath('*/*/edit', array('id' => $model->getId()));
+                            }
                             return $resultRedirect->setPath('*/*/');
                         } else {
                             $this->messageManager->addError(__('No gift code imported'));
@@ -166,7 +170,7 @@ class Save extends \Magento\Backend\App\Action
                     }
 
                 }
-                $this->messageManager->addSuccess(__('The Gift Code Set have been saved.'));
+
                 $this->_getSession()->setFormData(false);
 
                 //return $resultRedirect->setPath('*/*/');

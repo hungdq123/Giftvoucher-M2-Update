@@ -71,7 +71,7 @@ class Addgift extends \Magestore\Giftvoucher\Controller\Action
             foreach ($addCodes as $code) {
                 $giftVoucher = $this->getModel('Magestore\Giftvoucher\Model\Giftvoucher')->loadByCode($code);
 
-                if (!$giftVoucher->getId()) {
+                if (!$giftVoucher->getId()|| $giftVoucher->getSetId()) {
                     $codes[] = $code;
                     $codes = array_unique($codes);
                     $giftvoucherSession->setCodes($codes);
@@ -82,7 +82,12 @@ class Addgift extends \Magestore\Giftvoucher\Controller\Action
                     } else {
                         $result['error'] = '';
                     }
-                    $errorMessage = __('Gift card "%1" is invalid.', $code);
+                    if($giftVoucher->getSetId()){
+                        $errorMessage = __('Gift card is invalid.');
+                    }else{
+                        $errorMessage = __('Gift card "%1" is invalid.', $code);
+                    }
+
                     $maxErrorMessage = '';
 
                     if ($max) {

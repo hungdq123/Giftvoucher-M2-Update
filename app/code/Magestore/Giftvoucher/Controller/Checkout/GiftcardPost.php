@@ -84,13 +84,18 @@ class GiftcardPost extends \Magestore\Giftvoucher\Controller\Action
                                 $giftVoucher = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')
                                                 ->loadByCode($code);
                                 $quote = $session->getQuote();
-                                if (!$giftVoucher->getId()) {
+                                if (!$giftVoucher->getId() || $giftVoucher->getSetId()) {
                                     $codes = $this->_objectManager->get('Magestore\Giftvoucher\Model\Session')
                                                 ->getCodes();
                                     $codes[] = $code;
                                     $this->_objectManager->get('Magestore\Giftvoucher\Model\Session')
                                             ->setCodes(array_unique($codes));
-                                    $this->messageManager->addError(__('Gift card "%1" is invalid.', $code));
+                                    if($giftVoucher->getSetId()){
+                                        $this->messageManager->addError(__('Gift card is invalid.'));
+                                    }else{
+                                        $this->messageManager->addError(__('Gift card "%1" is invalid.', $code));
+                                    }
+
                                     if ($max - count($codes)) {
                                         $this->messageManager->addError(__('You have %1 time(s) remaining to re-enter your Gift Card code.', $max - count($codes)));
                                     }

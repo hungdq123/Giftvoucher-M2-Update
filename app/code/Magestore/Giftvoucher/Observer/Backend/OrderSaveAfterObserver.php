@@ -48,6 +48,7 @@ class OrderSaveAfterObserver extends \Magestore\Giftvoucher\Observer\GiftcardObs
                     ->getCollection()
                     ->addItemFilter($item->getQuoteItemId());
                 $itemQtyInvoice =$req['qty'];
+
                 foreach ($giftVouchers as $giftVoucher) {
                     if ($giftVoucher->getUsed() ==1) {
                         $giftVoucher->addData(array(

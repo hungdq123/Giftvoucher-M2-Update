@@ -46,7 +46,7 @@ class CouponPostActionObserver extends \Magestore\Giftvoucher\Observer\GiftcardO
         }
         $giftVoucher = $this->_objectManager->create('Magestore\Giftvoucher\Model\Giftvoucher')->loadByCode($code);
 
-        if ($giftVoucher->getId() && $giftVoucher->getStatus() == \Magestore\Giftvoucher\Model\Status::STATUS_ACTIVE
+        if ($giftVoucher->getId() && !$giftVoucher->getSetId() && $giftVoucher->getStatus() == \Magestore\Giftvoucher\Model\Status::STATUS_ACTIVE
             && $giftVoucher->getBaseBalance() > 0 && $giftVoucher->validate($quote->setQuote($quote))
         ) {
             if ($quote->getCouponCode() && !$this->_helperData->getGeneralConfig('use_with_coupon')) {
