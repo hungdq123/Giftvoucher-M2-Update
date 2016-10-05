@@ -877,9 +877,11 @@ div.egcSwatch-arrow {
 #giftcard-template-show-images .gift-active{overflow:hidden}
 #giftcard-template-show-images .gift-active img{ display:inline;}
 #giftcard-template-left .giftcard-logo{
-    padding-left: 10px;
-    margin-top: 15px;
+    display: flex;
+    height: 70px;
+    width: 50%;
 }
+.giftcard-template-left img{margin:auto}
 /******************Detail giftcard by Crystal****************/
 #giftcard-template-left .giftcard-template-left {
     background-position: 0;
