@@ -988,7 +988,7 @@ class InstallSchema implements InstallSchemaInterface
         $giftTemplateIds = $catalogAttributeModel->loadByCode('catalog_product', 'gift_template_ids');
         $giftTemplateIds->addData($data)->save();
         
-        
+
         $data['group'] = 'Prices';
         $data['type'] = 'int';
         $data['input'] = 'select';
