@@ -87,26 +87,32 @@ class Item extends Renderer implements IdentityInterface
     
     public function getProductOptions()
     {
+
         $options = parent::getProductOptions();
         $giftvoucherOptions = $this->_objectManager->create('Magestore\Giftvoucher\Helper\Data')
             ->getGiftVoucherOptions();
         $templates = $this->_objectManager->create('Magestore\Giftvoucher\Model\Gifttemplate')
             ->getCollection()
             ->addFieldToFilter('status', '1');
-        
+        $item = parent::getItem();
+        $product = $this->_objectManager->create('Magento\Catalog\Model\Product')->load($item->getProduct()->getId());;
+        $cartType = $product->getGiftCardType();
+        //var_dump($product->getGiftCardType());die('xxx');
         foreach ($giftvoucherOptions as $code => $label) {
             if ($option = $this->getItem()->getOptionByCode($code)) {
-                if ($code == 'giftcard_template_id') {
+                if ($code == 'giftcard_template_id' ) {
                     foreach ($templates as $template) {
                         if ($template->getId() == $option->getValue()) {
                             $valueTemplate = $template;
                         }
                     }
-                    $options[] = array(
-                        'label' => $label,
-                        'value' => $this->escapeHtml($valueTemplate->getTemplateName() ?
-                            $valueTemplate->getTemplateName() : $option->getValue()),
-                    );
+                    if($cartType !=1) {
+                        $options[] = array(
+                            'label' => $label,
+                            'value' => $this->escapeHtml($valueTemplate->getTemplateName() ?
+                                $valueTemplate->getTemplateName() : $option->getValue()),
+                        );
+                    }
                 } elseif ($code == 'amount') {
                     $options[] = array(
                         'label' => $label,

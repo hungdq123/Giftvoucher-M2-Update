@@ -158,6 +158,7 @@ class View extends \Magestore\Giftvoucher\Block\Account
         $confirmText = __('Are you sure?');
         $removeurl = $this->getUrl('giftvoucher/index/remove', array('id' => $row->getId()));
         $redeemurl = $this->getUrl('giftvoucher/index/redeem', array('giftvouchercode' => $row->getGiftCode()));
+        $type = $this->getHelper()->getSetIdOfCode($row->getGiftCode());
 
         $action = '<a href="' . $this->getUrl('*/*/view', array('id' => $row->getId())) . '">' . __('View') . '</a>';
         // can print gift voucher when status is not used
@@ -177,8 +178,8 @@ class View extends \Magestore\Giftvoucher\Block\Account
         $avaiable = $this->getHelper()
             ->canUseCode($this->getModel('Magestore\Giftvoucher\Model\Giftvoucher')->load($row->getVoucherId()));
         if ($this->getHelper()->getGeneralConfig('enablecredit') && $avaiable) {
-            if ($row->getStatus() == \Magestore\Giftvoucher\Model\Status::STATUS_ACTIVE
-                || ($row->getStatus() == \Magestore\Giftvoucher\Model\Status::STATUS_USED && $row->getBalance() > 0)
+            if ($row->getStatus() == \Magestore\Giftvoucher\Model\Status::STATUS_ACTIVE && !$type
+                || ($row->getStatus() == \Magestore\Giftvoucher\Model\Status::STATUS_USED && $row->getBalance() > 0 && !$type)
             ) {
                 $action .= ' | <a href="javascript:void(0);" onclick="redeem' . $row->getId() . '()">' . __('Redeem')
                     . '</a>';
@@ -219,7 +220,7 @@ class View extends \Magestore\Giftvoucher\Block\Account
             . '" readonly type="text" class="input-text" value="' . $row->getGiftCode()
             . '" onblur="hiddencode' . $row->getId() . '(this);">';
         if($type){
-            $aelement = '<a href="javascript:void(0);" onclick="viewgiftscode' . $row->getId() . '()">'
+            $aelement = '<a href="javascript:void(0);" onclick="">'
                 . $this->getHelper()->getHiddenCode($row->getGiftCode()) . '</a>';
         }else{
             $aelement = '<a href="javascript:void(0);" onclick="viewgiftcode' . $row->getId() . '()">'

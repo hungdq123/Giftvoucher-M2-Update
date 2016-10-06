@@ -166,6 +166,7 @@ class Form extends \Magento\Payment\Block\Form
         if (!$session->isLoggedIn()) {
             return array();
         }
+
         $customerId = $session->getCustomerId();
         $collection = $this->_objectManager->get('Magestore\Giftvoucher\Model\ResourceModel\Customervoucher\Collection')
                 ->addFieldToFilter('main_table.customer_id', $customerId);
@@ -182,11 +183,14 @@ class Form extends \Magento\Payment\Block\Form
             if (in_array($item->getGiftCode(), $addedCodes)) {
                 continue;
             }
-            $giftCards[] = array(
-                'gift_code' => $item->getGiftCode(),
-                'hidden_code' => $this->_helperData->getHiddenCode($item->getGiftCode()),
-                'balance' => $this->getGiftCardBalance($item)
-            );
+            $type = $this->_helperData->getSetIdOfCode($item->getGiftCode());
+            if (!$type) {
+                $giftCards[] = array(
+                    'gift_code' => $item->getGiftCode(),
+                    'hidden_code' => $this->_helperData->getHiddenCode($item->getGiftCode()),
+                    'balance' => $this->getGiftCardBalance($item)
+                );
+            }
         }
         
         return $giftCards;

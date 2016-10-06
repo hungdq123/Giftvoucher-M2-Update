@@ -19,6 +19,8 @@
 <?php $_customerGift = $this->getCustomerGift() ?>
 <?php $_giftCard = $this->getGiftVoucher() ?>
 
+<?php $_setId =  $_giftCard['set_id'];?>
+
 <!--h2 class="sub-title"><?php echo __('Gift Card Code Information') ?></h2-->
 <div class="form-group">
     <div class="row">
@@ -26,8 +28,9 @@
             <strong><?php echo __('Gift Card Code') ?></strong>
         </div>
         <div class="col-xs-6 col-sm-4">
-            <a id="hidden_gift_card_code" href="#" onclick="viewFullGiftCode();
-                    return false;" title="<?php echo __('Gift Card Code') ?>"><?php echo $this->getCodeTxt($_giftCard) ?></a>
+
+            <a id="hidden_gift_card_code" href="#" onclick="<?php if($_setId >0){echo '';}else{?>viewFullGiftCode();
+                    return false;<?php }?>" title="<?php echo __('Gift Card Code') ?>"><?php echo $this->getCodeTxt($_giftCard) ?></a>
             <input id="full_gift_card_code" type="text" class="input-text" value="<?php echo $_giftCard->getGiftCode() ?>" title="<?php echo __('Gift Card Code') ?>" style="display: none;" onblur="hideGiftCode();" readonly="true" />
             <script type="text/javascript">
                 require([

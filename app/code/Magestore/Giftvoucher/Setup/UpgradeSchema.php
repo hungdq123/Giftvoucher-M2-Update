@@ -127,7 +127,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 'sort_order' => 100,
                 'apply_to' => 'giftvoucher',
                 'is_global' => \Magento\Catalog\Model\ResourceModel\Eav\Attribute::SCOPE_STORE,
-                'is_required' => 1,
+                'is_required' => 0,
                 'is_configurable' => 1,
                 'is_searchable' => 0,
                 'is_visible_in_advanced_search' => 0,
@@ -140,7 +140,17 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 'used_in_product_listing' => 1,
                 'used_for_sort_by' => 0,
             );
-
+            $installer->removeAttribute(
+                $entityTypeModel->loadByCode('catalog_product')->getData('entity_type_id'),
+                'gift_template_ids'
+            );
+            $installer->addAttribute(
+                $entityTypeModel->loadByCode('catalog_product')->getData('entity_type_id'),
+                'gift_template_ids',
+                $data
+            );
+            $giftTemplateIds = $catalogAttributeModel->loadByCode('catalog_product', 'gift_template_ids');
+            $giftTemplateIds->addData($data)->save();
                 $data['label'] = 'Select The Gift Code Sets';
                 $data['source'] ='Magestore\Giftvoucher\Model\Giftcodesetsoptions';
                 $data['sort_order'] = 110;
