@@ -143,7 +143,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
                 template_id=$('design_pattern').value;
                 $('demo_pattern').down('img').src='" . $this->_storeManager->getStore()
                     ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . '/giftvoucher/template/pattern/GC_'
-                    . "'+template_id+'.jpg';
+                    . "'+template_id+'.png';
                 if(template_id == " . \Magestore\Giftvoucher\Model\Gifttemplate\Type::TYPE_CENTER . ")
                 {
 //                    $('background_img').up('div').up('div').hide();
