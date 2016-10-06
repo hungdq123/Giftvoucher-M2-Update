@@ -73,7 +73,6 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
      */
     public function generateLeftImage($giftcode, $giftcardTemplate)
     {
-
         $storeId = $this->_storeManager->getStore()->getId();
         $images = $this->getImagesInFolder($giftcode['gift_code']);
         if (isset($images[0]) && file_exists($images[0])) {
@@ -113,8 +112,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             imagecopyresampled(
                 $img1,
                 $img3,
-                (200 - $widthLogo) / 2,
-                10,
+                0, 15,
                 0,
                 0,
                 $widthLogo,
@@ -126,17 +124,18 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
 
         /* Print "From:" and "To: " */
 
-        $textbox = imageftbbox($fsize, 0, $font, __('From:'));
-        imagefttext($img1, 8, 0, 15, $y, $textColor, $font, __('From: '));
-        $textboxCustomerName = imageftbbox($fsize, 0, $font, $giftcode['customer_name']);
-        imagefttext($img1, 8, 0, ($textbox[2] - $textbox[0]), $y, $styleColor, $font, $giftcode['customer_name']);
-//        $y -= 1.55 * ($textbox[7] - $textbox[1]);
-        $x = $x + ($textboxCustomerName[2] - $textboxCustomerName[0]) + 20;
-        $textbox = imageftbbox($fsize, 0, $font, __('To:'));
-
-        imagefttext($img1, 8, 0, $x, $y, $textColor, $font, __('To: '));
-        imagefttext($img1, 8, 0, $x+($textbox[2]-$textbox[0]), $y, $styleColor, $font, $giftcode['recipient_name']);
-        $y -= 1.55 * ($textbox[7] - $textbox[1]);
+        if(isset($giftcode['customer_name']) && isset($giftcode['recipient_name'])) {
+            $textbox = imageftbbox($fsize, 0, $font, __('From:'));
+            imagefttext($img1, 8, 0, 15, $y, $textColor, $font, __('From: '));
+            $textboxCustomerName = imageftbbox($fsize, 0, $font, $giftcode['customer_name']);
+            imagefttext($img1, 8, 0, ($textbox[2] - $textbox[0]), $y, $styleColor, $font, $giftcode['customer_name']);
+            //        $y -= 1.55 * ($textbox[7] - $textbox[1]);
+            $x = $x + ($textboxCustomerName[2] - $textboxCustomerName[0])+ 20;
+            $textbox = imageftbbox($fsize, 0, $font, __('To:'));
+            imagefttext($img1, 8, 0, $x, $y, $textColor, $font, __('To: '));
+            imagefttext($img1, 8, 0, $x + ($textbox[2] - $textbox[0]), $y, $styleColor, $font, $giftcode['recipient_name']);
+            $y -= 1.55 * ($textbox[7] - $textbox[1]);
+        }
 
         /* Print Customers' s messages */
         $xMessage = 10;
@@ -163,7 +162,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
                     ->format($giftcode['balance'], array('display' => 2), false);
 
         $textbox = imageftbbox($fsizePrice, 0, $font, $price);
-        imagefttext($img1, $fsizePrice, 0, 15, $valueY + 5, $styleColor, $font, $price);
+        imagefttext($img1, $fsizePrice, 0, 15, $valueY + 5, $textColor, $font, $price);
         $valueY -= 1.55 * ($textbox[7] - $textbox[1]);
 
         /* Print Gift Code */
@@ -175,9 +174,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
         imagefttext(
             $img1,
             15,
-            0,
-            150 - ($textbox[2] - $textbox[0]),
-            $codeY,
+            0, 15, 160,
             $styleColor,
             $fontCode,
             $giftcode['gift_code']
@@ -188,14 +185,14 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
         /* Print Barcode */
         $barcode = $this->getGeneralConfig('barcode_enable');
         if ($barcode) {
-            $newImgBarcode = $this->resizeBarcodeImage($giftcode['gift_code']);
+            $newImgBarcode = $this->resizeBarcodeImage($giftcode['gift_code'], 'left');
             $newImgBarcodeX = imagesx($newImgBarcode);
             $newImgBarcodeY = imagesy($newImgBarcode);
             imagecopyresampled(
                 $img1,
                 $newImgBarcode,
-                335 - $newImgBarcodeX,
-                $codeY - 50,
+                310 - $newImgBarcodeX,
+                $codeY - 80,
                 0,
                 0,
                 $newImgBarcodeX,
@@ -272,15 +269,17 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
         }
 
         /* Print "From:" and "To: " */
-        $textbox = imageftbbox($fsize, 0, $font, __('From:'));
-        imagefttext($img1, 8, 0, 15, $y, $textColor, $font, __('From: '));
-        $textboxCustomerName = imageftbbox($fsize, 0, $font, $giftcode['customer_name']);
-        imagefttext($img1, 8, 0, ($textbox[2] - $textbox[0]), $y, $styleColor, $font, $giftcode['customer_name']);
-        $x = $x + ($textboxCustomerName[2] - $textboxCustomerName[0]) + 20;
-        $textbox = imageftbbox($fsize, 0, $font, __('To:'));
-        imagefttext($img1, 8, 0, $x, $y, $textColor, $font, __('To: '));
-        imagefttext($img1, 8, 0, $x+($textbox[2]-$textbox[0]), $y, $styleColor, $font, $giftcode['recipient_name']);
-        $y -= 1.55 * ($textbox[7] - $textbox[1]);
+        if(isset($giftcode['customer_name']) && isset($giftcode['recipient_name'])) {
+            $textbox = imageftbbox($fsize, 0, $font, __('From:'));
+            imagefttext($img1, 8, 0, 15, $y, $textColor, $font, __('From: '));
+            $textboxCustomerName = imageftbbox($fsize, 0, $font, $giftcode['customer_name']);
+            imagefttext($img1, 8, 0, ($textbox[2] - $textbox[0]), $y, $styleColor, $font, $giftcode['customer_name']);
+            $x = $x + ($textboxCustomerName[2] - $textboxCustomerName[0]) + 20;
+            $textbox = imageftbbox($fsize, 0, $font, __('To:'));
+            imagefttext($img1, 8, 0, $x, $y, $textColor, $font, __('To: '));
+            imagefttext($img1, 8, 0, $x + ($textbox[2] - $textbox[0]), $y, $styleColor, $font, $giftcode['recipient_name']);
+            $y -= 1.55 * ($textbox[7] - $textbox[1]);
+        }
 
         /* Print Customers' s messages */
 
@@ -322,7 +321,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             $img1,
             13,
             0,
-            380 - ($textbox[2] - $textbox[0]),
+            300 - ($textbox[2] - $textbox[0])/2 ,
             $codeY,
             $styleColor,
             $fontCode,
@@ -338,8 +337,8 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             imagecopyresampled(
                 $img1,
                 $newImgBarcode,
-                580 - $newImgBarcodeX,
-                $codeY - 40,
+                530 - $newImgBarcodeX,
+                $codeY - 55,
                 0,
                 0,
                 $newImgBarcodeX,
@@ -348,6 +347,11 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
                 $newImgBarcodeY
             );
         }
+        $img6 = $this->createGMessageBox('top');
+        imagecopyresampled($img1, $img6, 200, -15, 0, 0, 1, 90, 80, 350);
+
+        $img7 = $this->createGMessageBox('top');
+        imagecopyresampled($img1, $img7, 400, -15, 0, 0, 1, 90, 80, 350);
 
         /* Draw Images */
         imagecopyresampled($img, $img2, 0, 0, 0, 0, 600, 529, 600, 300);
@@ -375,7 +379,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
 
         $imgFile = $this->getImgDir($giftcode['gift_code']) . $giftcode['gift_code'] . '-' . $imageSuffix . '.png';
         $w = 600;
-        $h = 529;
+        $h = 500;
 
         $img = imagecreatetruecolor($w, $h);
         $textColor = $this->hexColorAllocate($img, $giftcardTemplate['text_color']);
@@ -391,6 +395,8 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
 
         $img4 = $this->createGMessageBox('top');
 
+        $img5 = $this->createGMessageBox('top');
+
         $x = 0;
         $y = 30;
         $fsize = 15;
@@ -405,7 +411,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
                 $img,
                 $img3,
                 20,
-                40,
+                30,
                 0,
                 0,
                 $widthLogo,
@@ -416,15 +422,17 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
         }
 
         /* Print "From:" and "To: " */
-        $textbox = imageftbbox($fsize, 0, $font, __('From:'));
-        imagefttext($img1, 8, 0, 15, $y, $textColor, $font, __('From: '));
-        $textboxCustomerName = imageftbbox($fsize, 0, $font, $giftcode['customer_name']);
-        imagefttext($img1, 8, 0, ($textbox[2] - $textbox[0]), $y, $styleColor, $font, $giftcode['customer_name']);
-        $x = $x + ($textboxCustomerName[2] - $textboxCustomerName[0]) + 20;
-        $textbox = imageftbbox($fsize, 0, $font, __('To:'));
-        imagefttext($img1, 8, 0, $x, $y, $textColor, $font, __('To: '));
-        imagefttext($img1, 8, 0, $x+($textbox[2]-$textbox[0]), $y, $styleColor, $font, $giftcode['recipient_name']);
-        $y -= 1.55 * ($textbox[7] - $textbox[1]);
+        if(isset($giftcode['customer_name']) && isset($giftcode['recipient_name'])) {
+            $textbox = imageftbbox($fsize, 0, $font, __('From:'));
+            imagefttext($img1, 8, 0, 15, $y, $textColor, $font, __('From: '));
+            $textboxCustomerName = imageftbbox($fsize, 0, $font, $giftcode['customer_name']);
+            imagefttext($img1, 8, 0, ($textbox[2] - $textbox[0]), $y, $styleColor, $font, $giftcode['customer_name']);
+            $x = $x + ($textboxCustomerName[2] - $textboxCustomerName[0]) + 20;
+            $textbox = imageftbbox($fsize, 0, $font, __('To:'));
+            imagefttext($img1, 8, 0, $x, $y, $textColor, $font, __('To: '));
+            imagefttext($img1, 8, 0, $x + ($textbox[2] - $textbox[0]), $y, $styleColor, $font, $giftcode['recipient_name']);
+            $y -= 1.55 * ($textbox[7] - $textbox[1]);
+        }
 
         /* Print Customers' s messages */
 
@@ -445,6 +453,13 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
         }
 
         imagecopyresampled($img1, $img4, 14, 10, 0, 0, 570, 1, 550, 1);
+        imagecopyresampled($img, $img5, 14, 110, 0, 0, 570, 1, 550, 1);
+
+        $img6 = $this->createGMessageBox('top');
+        imagecopyresampled($img, $img6, 200, 1, 0, 0, 1, 100, 100, 450);
+
+        $img7 = $this->createGMessageBox('top');
+        imagecopyresampled($img, $img7, 400, 1, 0, 0, 1, 100, 100, 450);
 
         /* Print Value */
         $valueY = 50 ;
@@ -454,7 +469,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             ->format($giftcode['balance'], array('display' => 2), false);
 
         $textbox = imageftbbox($fsizePrice, 0, $font, $price);
-        imagefttext($img, $fsizePrice, 0,255, $valueY + 5, $styleColor, $font, $price);
+        imagefttext($img, $fsizePrice, 0,255, $valueY , $styleColor, $font, $price);
         $valueY -= 1.55 * ($textbox[7] - $textbox[1]);
 
         /* Print Gift Code */
@@ -466,8 +481,8 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             $img,
             13,
             0,
-            380 - ($textbox[2] - $textbox[0]),
-            $codeY,
+            300 - ($textbox[2] - $textbox[0])/2,
+            $codeY - 5,
             $styleColor,
             $fontCode,
             $giftcode['gift_code']
@@ -482,8 +497,8 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             imagecopyresampled(
                 $img,
                 $newImgBarcode,
-                580 - $newImgBarcodeX,
-                $codeY - 40,
+                530 - $newImgBarcodeX,
+                $codeY - 60,
                 0,
                 0,
                 $newImgBarcodeX,
@@ -494,7 +509,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
         }
 
         /* Draw Images */
-        imagecopyresampled($img, $img2, 0, 140, 0, 0, 600, 529, 600, 390);
+        imagecopyresampled($img, $img2, 0, 120, 0, 0, 600, 509, 600, 350);
 
 
         /* Draw Background */
@@ -678,14 +693,14 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             $newWidth = round(63 * imagesx($imgLogo) / imagesy($imgLogo));
             $resizeLogoUrl = $this->getBaseDirMedia()->getAbsolutePath('giftvoucher/draw/logo/' . $image);
 
-            if (!is_file($resizeLogoUrl)) {
+            if (is_file($resizeLogoUrl)) {
                 $resizeLogoObj = $this->_imageFactory->create();
                 $resizeLogoObj->open($dir);
                 $resizeLogoObj->constrainOnly(true);
                 $resizeLogoObj->keepAspectRatio(true);
                 $resizeLogoObj->keepFrame(false);
                 $resizeLogoObj->keepTransparency(true);
-                $resizeLogoObj->resize($newWidth, 63);
+                $resizeLogoObj->resize($newWidth, 35);
                 $resizeLogoObj->save($resizeLogoUrl);
             }
             return $this->imagecreatefromfile($resizeLogoUrl);
@@ -711,7 +726,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
     /**
      * Resize Barcode image
      */
-    public function resizeBarcodeImage($code)
+    public function resizeBarcodeImage($code, $type = null)
     {
         $barcode = $this->getGeneralConfig('barcode_enable');
         $barcodeType = $this->getGeneralConfig('barcode_type');
@@ -732,6 +747,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             return imagecreatefrompng($resizeBarcodeUrl);
         } else {
             $qr = new \Magestore_Giftvoucher_QRCode($code);
+//            $qr->setDimensions(70, 70);
             $content = file_get_contents($qr->getResult());
             $fileName = $this->getBaseDirMedia()->getAbsolutePath('giftvoucher/draw/' . $code . '/' . 'qrcode.png');
             file_put_contents($fileName, $content);
@@ -741,7 +757,11 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             $resizeBarcodeObj->constrainOnly(true);
             $resizeBarcodeObj->keepAspectRatio(true);
             $resizeBarcodeObj->keepFrame(false);
-            $resizeBarcodeObj->resize(180, 40);
+            if($type == 'left'){
+                $resizeBarcodeObj->resize(180, 90);
+            }else{
+                $resizeBarcodeObj->resize(90, 70);
+            }
             $resizeBarcodeObj->save($fileName);
 
             return imagecreatefrompng($fileName);
