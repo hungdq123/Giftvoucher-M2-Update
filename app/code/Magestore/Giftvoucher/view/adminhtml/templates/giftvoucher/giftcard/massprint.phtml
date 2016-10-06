@@ -88,7 +88,9 @@ foreach ($_giftCards as $_giftCard):
     $image = $this->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/template/images/left/' . $image;
     ?>
     <div id="giftcard-template-top" class="gift-card">
-        <div class="giftcard-template-content-top giftcard-change-image-temp2 giftcard-change-image form-group" style="background-image: url(<?php echo $image ?>); background-position: center; background-repeat: no-repeat;background-size: 585px 274px"></div>
+        <div class="giftcard-template-content-top giftcard-change-image-temp2 giftcard-change-image form-group">
+            <img src="<?php echo $image ?>" style="width: 599px; height: 274px">
+        </div>
         <div class="giftcard-template-content template-top-content ">
             <div class="top-content-top form-group">
                 <div class="<?php if($url_barcode != ''): ?>col-xs-4<?php else: ?>col-xs-6<?php endif;?> top-logo">
@@ -115,6 +117,7 @@ foreach ($_giftCards as $_giftCard):
             </div>
         </div>
         <div class="giftcard-message top-bottom">
+            <?php if($_giftCard->getRecipientName() != ''){ ?>
             <div class="giftcard-from-to">
                 <span class="giftcard-from">
                     <label class="giftcard-text-color" for="giftcard-from"><?php echo __('From') ?>:</label>
@@ -125,6 +128,7 @@ foreach ($_giftCards as $_giftCard):
                     <span class="giftcard-style-color giftcard-send-to"><?php echo $_giftCard->getRecipientName() ?></span>
                 </span>
             </div>
+            <?php } ?>
             <div class="giftcard-text-color giftcard-custom-message">
                 <?php echo $_giftCard->getMessage() ?>
             </div>
@@ -170,8 +174,11 @@ foreach ($_giftCards as $_giftCard):
                 <?php endif; ?>
             </div>
         </div>
-        <div class="giftcard-template-content-top giftcard-change-image-temp2 giftcard-change-image form-group" style="background-image: url(<?php echo $image ?>); background-position: center; background-repeat: no-repeat;background-size: 585px 274px"></div>
+        <div class="giftcard-template-content-top giftcard-change-image-temp2 giftcard-change-image form-group">
+            <img src="<?php echo $image ?>" style="width:599px; height: 274px">
+        </div>
         <div class="giftcard-message top-bottom">
+            <?php if($_giftCard->getRecipientName() != ''){ ?>
             <div class="giftcard-from-to">
                 <span class="giftcard-from">
                     <label class="giftcard-text-color" for="giftcard-from"><?php echo __('From') ?>:</label>
@@ -182,6 +189,7 @@ foreach ($_giftCards as $_giftCard):
                     <span class="giftcard-style-color giftcard-send-to">&nbsp;<?php echo $_giftCard->getRecipientName() ?></span>
                 </span>
             </div>
+            <?php } ?>
             <div class="giftcard-text-color giftcard-custom-message">
                 <?php echo $_giftCard->getMessage() ?>
             </div>
@@ -198,7 +206,8 @@ foreach ($_giftCards as $_giftCard):
     $image = $this->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/template/images/left/' . $image;
     ?>
     <div id="giftcard-template-left">
-        <div class="giftcard-template-content-left giftcard-change-image" style="background-image: url(<?php echo $image ?>); background-position: center; background-repeat: no-repeat;background-size: 275px 400px">
+        <div class="giftcard-template-content-left giftcard-change-image" >
+            <img src="<?php echo $image ?>" style="width: 275px; height: 400px">
         </div>
         <div class="giftcard-template-content">
             <div class = "giftcard-logo"><img src ="<?php echo $logo; ?>" /></div>
@@ -223,6 +232,7 @@ foreach ($_giftCards as $_giftCard):
                 <?php endif; ?>
             </div>
             <div class="giftcard-message left-bottom">
+                <?php if($_giftCard->getRecipientName() != ''){ ?>
                 <div class="giftcard-from-to">
                 <span class="giftcard-from">
                     <label class="giftcard-text-color" for="giftcard-from"><?php echo __('From') ?>:</label>
@@ -233,6 +243,7 @@ foreach ($_giftCards as $_giftCard):
                     <span class="giftcard-style-color giftcard-send-to">&nbsp;<?php echo $_giftCard->getRecipientName() ?></span>
                 </span>
                 </div>
+                <?php } ?>
                 <div class="giftcard-text-color giftcard-custom-message">
                     <?php echo $_giftCard->getMessage() ?>
                 </div>

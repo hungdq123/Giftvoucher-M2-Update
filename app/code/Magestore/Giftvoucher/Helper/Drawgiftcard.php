@@ -124,7 +124,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
 
         /* Print "From:" and "To: " */
 
-        if(isset($giftcode['customer_name']) && isset($giftcode['recipient_name'])) {
+        if($giftcode['recipient_name'] != "") {
             $textbox = imageftbbox($fsize, 0, $font, __('From:'));
             imagefttext($img1, 8, 0, 15, $y, $textColor, $font, __('From: '));
             $textboxCustomerName = imageftbbox($fsize, 0, $font, $giftcode['customer_name']);
@@ -146,9 +146,11 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             $message = '';
         }
         $stringArray = $this->processString($message, $font, 9, 322);
-        for ($i = 0; $i < count($stringArray); $i++) {
-            imagefttext($img1, 9, 0, $xMessage, $yMessage, $textColor, $font, $stringArray[$i]);
-            $yMessage -= 1.25 * ($textbox[7] - $textbox[1]);
+        if(isset($textbox)) {
+            for ($i = 0; $i < count($stringArray); $i++) {
+                imagefttext($img1, 9, 0, $xMessage, $yMessage, $textColor, $font, $stringArray[$i]);
+                $yMessage -= 1.25 * ($textbox[7] - $textbox[1]);
+            }
         }
         imagecopyresampled($img1, $img4, 14, $y - 50, 0, 0, 322, 1, 322, 1);
 
@@ -269,7 +271,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
         }
 
         /* Print "From:" and "To: " */
-        if(isset($giftcode['customer_name']) && isset($giftcode['recipient_name'])) {
+        if($giftcode['recipient_name'] != "") {
             $textbox = imageftbbox($fsize, 0, $font, __('From:'));
             imagefttext($img1, 8, 0, 15, $y, $textColor, $font, __('From: '));
             $textboxCustomerName = imageftbbox($fsize, 0, $font, $giftcode['customer_name']);
@@ -293,10 +295,11 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
         }
 
         $stringArray = $this->processString($message, $font, 9, 322);
-
-        for ($i = 0; $i < count($stringArray); $i++) {
-            imagefttext($img1, 9, 0, $xMessage, $yMessage, $textColor, $font, $stringArray[$i]);
-            $yMessage -= 1.25 * ($textbox[7] - $textbox[1]);
+        if(isset($textbox)) {
+            for ($i = 0; $i < count($stringArray); $i++) {
+                imagefttext($img1, 9, 0, $xMessage, $yMessage, $textColor, $font, $stringArray[$i]);
+                $yMessage -= 1.25 * ($textbox[7] - $textbox[1]);
+            }
         }
 
         imagecopyresampled($img1, $img4, 14, 80, 0, 0, 570, 1, 550, 1);
@@ -422,7 +425,8 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
         }
 
         /* Print "From:" and "To: " */
-        if(isset($giftcode['customer_name']) && isset($giftcode['recipient_name'])) {
+
+        if($giftcode['recipient_name'] != "") {
             $textbox = imageftbbox($fsize, 0, $font, __('From:'));
             imagefttext($img1, 8, 0, 15, $y, $textColor, $font, __('From: '));
             $textboxCustomerName = imageftbbox($fsize, 0, $font, $giftcode['customer_name']);
@@ -446,10 +450,11 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
         }
 
         $stringArray = $this->processString($message, $font, 9, 322);
-
-        for ($i = 0; $i < count($stringArray); $i++) {
-            imagefttext($img1, 9, 0, $xMessage, $yMessage, $textColor, $font, $stringArray[$i]);
-            $yMessage -= 1.25 * ($textbox[7] - $textbox[1]);
+        if(isset($textbox)){
+            for ($i = 0; $i < count($stringArray); $i++) {
+                imagefttext($img1, 9, 0, $xMessage, $yMessage, $textColor, $font, $stringArray[$i]);
+                $yMessage -= 1.25 * ($textbox[7] - $textbox[1]);
+            }
         }
 
         imagecopyresampled($img1, $img4, 14, 10, 0, 0, 570, 1, 550, 1);
