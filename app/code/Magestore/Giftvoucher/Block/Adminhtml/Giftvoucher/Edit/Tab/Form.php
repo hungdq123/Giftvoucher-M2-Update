@@ -90,6 +90,7 @@ class Form extends \Magestore\Giftvoucher\Block\Adminhtml\Giftvoucher\Edit\Tab\A
         );
         
         $template = $this->getGiftTemplate();
+        $sets=$model['set_id'];
         
         if (isset($model['giftcard_custom_image']) && $model['giftcard_custom_image']) {
             $fieldset->addField(
@@ -134,7 +135,7 @@ class Form extends \Magestore\Giftvoucher\Block\Adminhtml\Giftvoucher\Edit\Tab\A
                     'name' => 'giftcard_template_id',
                     'values' => $template,
                     'style' =>  'min-width: 250px',
-                    'required' => true,
+                    'required' => (isset($sets)? false:true)    ,
                     'onchange' => 'loadImageTemplate(this.value)',
                     'after_element_html' => (isset($model['giftcard_template_image'])
                         && isset($model['giftcard_template_id'])) ?
@@ -208,17 +209,20 @@ class Form extends \Magestore\Giftvoucher\Block\Adminhtml\Giftvoucher\Edit\Tab\A
                 'style' => 'height:100px;',
             )
         );
-//        $fieldset->addField(
-//            'used',
-//            'select',
-//            array(
-//                'label' => __('Used'),
-//                'name' => 'giftvoucher_used',
-//                'style' =>  'min-width: 250px',
-//                'values' => \Magestore\Giftvoucher\Model\Used::getOptions(),
-//                'note' => __('Yes:The gift code has been purchased;'<\br>'No:The gift code has not been purchased'<\br>'None:The gift code ')
-//            )
-//        );
+
+        if($model['set_id']) {
+        $fieldset->addField(
+            'used',
+            'select',
+            array(
+                'label' => __('Used'),
+                'name' => 'giftvoucher_used',
+                'style' =>  'min-width: 250px',
+                'values' => \Magestore\Giftvoucher\Model\Used::getOptions(),
+                'note' => __('Yes:The gift code has been purchased;<\br>No:The gift code has not been purchased'),
+            )
+        );
+        }
 
 
         

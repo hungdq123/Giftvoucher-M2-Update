@@ -9,11 +9,12 @@
         var giftcard_type =$$("select[name='product[gift_card_type]']");
         $( document ).ready(function() {
             hidesettingGC();
+
             setTimeout(
                 function()
                 {
                     hideTemplate();
-                }, 5000);
+                }, 3000);
 
         });
         gift_type.change(function(){
@@ -30,7 +31,7 @@
              var giftcard_type =$$("select[name='product[gift_card_type]']")[0];
                 if(giftcard_type && giftcard_type.value==1){
                     $$("select[name='product[gift_template_ids]']")[0].up('div').up('div').hide();
-                    $$("select[name='product[gift_template_ids]']")[0].options[0].selected= true;
+
                 }else{
                     $$("select[name='product[gift_template_ids]']")[0].up('div').up('div').show();
                 }

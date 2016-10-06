@@ -47,17 +47,21 @@ class UpgradeSchema implements UpgradeSchemaInterface
      */
     protected $_eavSetup;
 
+    protected $templateOptions;
+
     /**
      * {@inheritdoc}
      */
     public function __construct(
         \Magento\Eav\Setup\EavSetup $eavSetup,
         \Magento\Eav\Model\Entity\Type $entityType,
-        \Magento\Eav\Model\Entity\Attribute $catalogAttribute
+        \Magento\Eav\Model\Entity\Attribute $catalogAttribute,
+        \Magestore\Giftvoucher\Model\Templateoptions $templateoptions
     ) {
         $this->_eavSetup = $eavSetup;
         $this->_entityTypeModel = $entityType;
         $this->_catalogAttribute = $catalogAttribute;
+        $this->templateOptions = $templateoptions;
     }
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
@@ -107,11 +111,11 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 'set_id',
                 \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER
             );
-
+            $defaultData = $this->templateOptions->getDefaultData();
             $data = array(
                 'group' => 'General',
                 'type' => 'varchar',
-                'input' => 'select',
+                'input' => 'multiselect',
                 'default' => 1,
                 'label' => 'Select Gift Card Templates ',
                 'backend' => 'Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend',
@@ -123,7 +127,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 'used_for_price_rules' => 1,
                 'position' => 2,
                 'unique' => 0,
-                'default' => '',
+                'default' => $defaultData,
                 'sort_order' => 100,
                 'apply_to' => 'giftvoucher',
                 'is_global' => \Magento\Catalog\Model\ResourceModel\Eav\Attribute::SCOPE_STORE,
@@ -144,6 +148,8 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 $entityTypeModel->loadByCode('catalog_product')->getData('entity_type_id'),
                 'gift_template_ids'
             );
+            $data['required'] = 1;
+            $data['is_required'] = 1;
             $installer->addAttribute(
                 $entityTypeModel->loadByCode('catalog_product')->getData('entity_type_id'),
                 'gift_template_ids',
@@ -151,10 +157,13 @@ class UpgradeSchema implements UpgradeSchemaInterface
             );
             $giftTemplateIds = $catalogAttributeModel->loadByCode('catalog_product', 'gift_template_ids');
             $giftTemplateIds->addData($data)->save();
+
+                $data['input'] = 'select';
                 $data['label'] = 'Select The Gift Code Sets';
                 $data['source'] ='Magestore\Giftvoucher\Model\Giftcodesetsoptions';
                 $data['sort_order'] = 110;
-                $data['is_required'] = 0;
+                $data['default'] = '';
+                $data['required'] = 0;
 
                 $installer->addAttribute(
                     $entityTypeModel->loadByCode('catalog_product')->getData('entity_type_id'),
@@ -168,6 +177,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 $data['label'] = 'Select Gift Card Type';
                 $data['source'] = 'Magestore\Giftvoucher\Model\Giftcardtypeoptions';
                 $data['sort_order'] = 14;
+                $data['default'] = '';
                 $data['is_required'] = 1;
 
                 $installer->addAttribute(

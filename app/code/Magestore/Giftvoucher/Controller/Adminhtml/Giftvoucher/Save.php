@@ -93,6 +93,7 @@ class Save extends \Magento\Backend\App\Action
             $data['status'] = $data['giftvoucher_status'];
             $data['comments'] = $data['giftvoucher_comments'];
             $data['amount'] = $data['balance'];
+            $data['used'] = $data['giftvoucher_used'];
             if (isset($data['rule'])) {
                 $rules = $data['rule'];
                 if (isset($rules['conditions'])) {

@@ -83,4 +83,10 @@ class Templateoptions extends \Magento\Eav\Model\Entity\Attribute\Source\Abstrac
         }
         return $options;
     }
+
+    public function getDefaultData() {
+        $templates = $this->getAvailableTemplate();
+        return $templates[0]['value'];
+
+    }
 }
