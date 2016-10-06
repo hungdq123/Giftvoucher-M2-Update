@@ -93,7 +93,7 @@ class Form extends \Magestore\Giftvoucher\Block\Adminhtml\Gifttemplate\Edit\Tab\
                 'text' => '
                     <div id="demo_pattern" style=""><img id="pattern_demo" style="width:100%" src="'
                     . $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA)
-                    . 'giftvoucher/template/pattern/GC_' . $pattern . '.jpg' . '" /> </div>'
+                    . 'giftvoucher/template/pattern/GC_' . $pattern . '.png' . '" /> </div>'
                     . '<script type="text/javascript">
                             function viewdemo() {
                                 value=$("design_pattern").value;
