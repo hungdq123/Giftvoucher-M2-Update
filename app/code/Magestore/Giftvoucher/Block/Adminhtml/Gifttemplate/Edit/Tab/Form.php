@@ -117,17 +117,17 @@ class Form extends \Magestore\Giftvoucher\Block\Adminhtml\Gifttemplate\Edit\Tab\
             )
         );
 
-        $fieldset->addField(
-            'caption',
-            'text',
-            array(
-                'name' => 'caption',
-                'label' => __('Title'),
-                'title' => __('Title'),
-                'required' => true,
-                'disabled' => $isElementDisabled
-            )
-        );
+//        $fieldset->addField(
+//            'caption',
+//            'text',
+//            array(
+//                'name' => 'caption',
+//                'label' => __('Title'),
+//                'title' => __('Title'),
+//                'required' => true,
+//                'disabled' => $isElementDisabled
+//            )
+//        );
         $fieldset->addField(
             'style_color',
             'text',
@@ -140,7 +140,7 @@ class Form extends \Magestore\Giftvoucher\Block\Adminhtml\Gifttemplate\Edit\Tab\
                 'value' =>  '#FFFFFF',
                 'style' =>  'width: 150px',
                 'disabled' => $isElementDisabled,
-                'note' => __('Choose color of texts in Gift Cart title, value and gift code fields.'),
+                'note' => __('Choose color of texts in Gift Cart value and gift code fields.'),
             )
         );
 
@@ -155,7 +155,7 @@ class Form extends \Magestore\Giftvoucher\Block\Adminhtml\Gifttemplate\Edit\Tab\
                 'style' =>  'width: 150px',
                 'class' => 'color {required:false, adjust:false, hash:true}',
                 'disabled' => $isElementDisabled,
-                'note' => __('Choose color of other texts (fields’ title, notes, etc.).')
+                'note' => __('Choose color of other texts (fields’ from, to, notes, etc.).')
             )
         );
 
