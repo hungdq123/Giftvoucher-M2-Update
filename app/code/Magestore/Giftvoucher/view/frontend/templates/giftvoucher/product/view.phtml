@@ -69,7 +69,7 @@ $mageinit = '{"calendar":{'
                 $includeTax = ( $block->getTaxHelper()->getPriceDisplayType() != 1 );
                 $rateTax = $block->getCatalogHelper()->getTaxPrice($_product, 100, $includeTax) / 100;
                 ?>
-                <div class="col-xs-4 text-left">
+                <div class="text-left">
                     <label for="amount_range" style="margin-top: 8px;"><?php echo __('Enter value') ?>
                     </label>
                 </div>
@@ -188,7 +188,8 @@ $mageinit = '{"calendar":{'
         </div>
     <?php elseif ($_giftAmount['type'] == 'static'): ?>
         <div class="form-group">
-            <?php echo __('Gift Card value: <span class="regular-price">%1</span>', $_giftAmount['value_txt']) ?>
+            <label class="label_value"><?php echo __('Gift Card value:') ?> </label>
+            <span class="regular-price"><?php echo $_giftAmount['value_txt'] ?></span>
             <input type="hidden" name="amount" class="giftvoucher_custom_option" value="<?php echo $_giftAmount['value'] ?>" />
             <script>
                 require([
