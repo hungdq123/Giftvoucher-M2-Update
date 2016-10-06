@@ -76,6 +76,19 @@ if (!$_template->getBackgroundImg()) {
         border-radius: 3px;
         padding: 10px;
     }
+    .top-content-left .top-qrcode{
+        height: 90px;
+    }
+    .top-content-left .giftcard-number{
+        text-align: left;
+        margin-bottom: 5px;
+        margin-left: 10px;
+        float: left;
+    }
+    .top-content-left .top-qrcode img{
+        height: 100%;
+        padding-left: 60px;
+    }
     #giftcard-preview-template .giftcard_value-color .giftcard-text-color{
         padding-right: 10px;
         margin-top: 15px;
@@ -126,7 +139,7 @@ if (!$_template->getBackgroundImg()) {
     //color: orange;
         font-weight: 600;
         font-family: 'Open Sans', sans-serif;
-        font-style: italic;
+        /*font-style: italic;*/
     }
     .giftcard-custom-message{
         max-height: 85px;
@@ -204,9 +217,12 @@ if (!$_template->getBackgroundImg()) {
         margin: auto;
     }
     .top-content-left .giftcard-value{
-        text-align: center;
-        font-size: 30px;
+        text-align: left;
+        margin-bottom: 5px;
+        margin-left: 10px;
+        float: left;
     }
+    .giftcard-template-content .giftcard-logo{width: 50%}
     .giftcard-template-content .top-content-left{margin-top: 45px}
     #giftcard-template-left .giftcard-message{
         margin-top: 165px;
@@ -319,10 +335,14 @@ if (!$_template->getBackgroundImg()) {
     }
     .template-top-content .top-content-top .top-logo img, .template-top-content .top-barcode img{
         margin: auto;
+        padding: 0px 5px;
     }
     .top-content-top .two-border{
         border-left: 1px solid #ddd;
         border-right: 1px solid #dddddd;
+    }
+    .top-content-top .top-qrcode img{
+        top: -5px;
     }
     .top-bottom{
         float: left;
@@ -448,7 +468,7 @@ if (!$_template->getBackgroundImg()) {
 
                 </div>
                 <?php if($url_barcode != ''): ?>
-                    <div class="col-xs-4 top-barcode text-center">
+                    <div class="col-xs-4 <?php if($barcode_type == 'code128') {echo 'top-barcode';}else{echo 'top-qrcode';} ?> text-center">
 
                         <img src="<?php echo $url_barcode ?>" />
 
@@ -504,7 +524,7 @@ if (!$_template->getBackgroundImg()) {
 
                 </div>
                 <?php if($url_barcode != ''): ?>
-                    <div class="col-xs-4 top-barcode text-center">
+                    <div class="col-xs-4 <?php if($barcode_type == 'code128') {echo 'top-barcode';}else{echo 'top-qrcode';} ?> text-center">
 
                         <img src="<?php echo $url_barcode ?>" />
 
@@ -531,16 +551,17 @@ if (!$_template->getBackgroundImg()) {
     </div>
 <?php else: ?>
     <?php
-        if ($block->getHelper()->getStoreConfig('giftvoucher/print_voucher/logo')) {
-            $logo = $this->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/pdf/logo/' . $block->getHelper()->getStoreConfig('giftvoucher/print_voucher/logo');
-        } else {
-            $logo = $this->getDefaultPrintLogo();
-        }
-        $image = 'default.png';
-        $image = $this->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/template/images/left/' . $image;
+    if ($block->getHelper()->getStoreConfig('giftvoucher/print_voucher/logo')) {
+        $logo = $this->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/pdf/logo/' . $block->getHelper()->getStoreConfig('giftvoucher/print_voucher/logo');
+    } else {
+        $logo = $this->getDefaultPrintLogo();
+    }
+    $image = 'default.png';
+    $image = $this->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/template/images/left/' . $image;
     ?>
     <div id="giftcard-template-left">
-        <div class="giftcard-template-content-left giftcard-change-image" style="background-image: url(<?php echo $image ?>); background-position: center; background-repeat: no-repeat;background-size: 275px 400px">
+        <div class="giftcard-template-content-left giftcard-change-image" >
+            <img src="<?php echo $image ?>" style="width: 275px; height: 400px">
         </div>
         <div class="giftcard-template-content">
             <div class = "giftcard-logo"><img src ="<?php echo $logo; ?>" /></div>
@@ -559,7 +580,7 @@ if (!$_template->getBackgroundImg()) {
 
                 </div>
                 <?php if($url_barcode != ''): ?>
-                    <div class="top-barcode col-xs-6 text-center">
+                    <div class="<?php if($barcode_type == 'code128') {echo 'top-barcode';}else{echo 'top-qrcode';} ?> col-xs-6 text-center">
                         <img src="<?php echo $url_barcode ?>" />
                     </div>
                 <?php endif; ?>
