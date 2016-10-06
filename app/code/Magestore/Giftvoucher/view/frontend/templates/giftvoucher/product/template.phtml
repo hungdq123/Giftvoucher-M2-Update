@@ -84,15 +84,15 @@
                         }
                         ?>
                         <div class="images-for-slide" id="image-for-<?php echo $template['giftcard_template_id'] ?>" style="display:none;width:<?php echo count($images) * 70 ?>px">
-                            <?php foreach ($images as $image) : ?>
-                                <?php $url = $block->getStoreManager()->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/template/images/' . $image_url_position . $image; ?>
-                                <div class="image-template"  id="div-image-for-<?php echo $template['giftcard_template_id']; ?>-<?php echo $count ?>" style="position:relative; float: left;border: 2px solid transparent; width: 70px; height: 55px; text-align: center;cursor: pointer;" onclick="changeSelectImages('<?php echo $count ?>')">
-                                    <img id="image-for-<?php echo $template['giftcard_template_id'] ?>-<?php echo $count ?>" src="<?php echo $url ?>" width='<?php echo $image_type_show_width ?>' height='<?php echo $image_type_show_height ?>' alt="image giftcard" style="height:<?php echo $image_show_height ?>; display:inline; border: 1px solid transparent; margin-top: <?php echo $image_type_show_padding ?>"/>
-                                    <div class="egcSwatch-arrow" style="display:none"></div>
-                                </div>
-                                <?php $count++; ?>
-                            <?php endforeach ?>
-                        <?php } ?>
+                        <?php foreach ($images as $image) : ?>
+                            <?php $url = $block->getStoreManager()->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'giftvoucher/template/images/' . $image_url_position . $image; ?>
+                            <div class="image-template"  id="div-image-for-<?php echo $template['giftcard_template_id']; ?>-<?php echo $count ?>" style="position:relative; float: left;border: 2px solid transparent; width: 70px; height: 55px; text-align: center;cursor: pointer;" onclick="changeSelectImages('<?php echo $count ?>')">
+                                <img id="image-for-<?php echo $template['giftcard_template_id'] ?>-<?php echo $count ?>" src="<?php echo $url ?>" width='<?php echo $image_type_show_width ?>' height='<?php echo $image_type_show_height ?>' alt="image giftcard" style="height:<?php echo $image_show_height ?>; display:inline; border: 1px solid transparent; margin-top: <?php echo $image_type_show_padding ?>"/>
+                                <div class="egcSwatch-arrow" style="display:none"></div>
+                            </div>
+                            <?php $count++; ?>
+                        <?php endforeach ?>
+                    <?php } ?>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -108,9 +108,9 @@
             var design_top = '<?php echo \Magestore\Giftvoucher\Model\Designpattern::PATTERN_TOP ?>';
             var design_left = '<?php echo \Magestore\Giftvoucher\Model\Designpattern::PATTERN_LEFT ?>';
             var design_back = '<?php echo \Magestore\Giftvoucher\Model\Designpattern::PATTERN_CENTER ?>';
-        <?php if ($_formData->getGiftcardUseCustomImage()): ?>
-                var image_form_data_name = '<?php echo $_formData->getGiftcardTemplateImage() ?>';
-        <?php endif; ?>
+            <?php if ($_formData->getGiftcardUseCustomImage()): ?>
+            var image_form_data_name = '<?php echo $_formData->getGiftcardTemplateImage() ?>';
+            <?php endif; ?>
             require([
                 "jquery",
                 "jquery/ui",
@@ -135,7 +135,8 @@
                         template_show_id = 'giftcard-template-left';
                     else
                         template_show_id = 'giftcard-template-back';
-                    $(template_show_id).show();
+                    if($(template_show_id))
+                        $(template_show_id).show();
 
                     templateShow = templates[template_id];
 
@@ -203,18 +204,18 @@
                                 changeImageDesignAgain($('image-for-custom'));
                                 delete image_form_data_name;
                             } else {
-        <?php if ($block->isInConfigurePage()): ?>
-                                    if ($('giftcard-template-images').value) {
-                                        images_arr = templates[template_id].images.split(',');
-                                        images_arr_id = images_arr.indexOf($('giftcard-template-images').value);
-                                        if (images_arr_id < 0)
-                                            images_arr_id = 0;
-                                    } else {
+                                <?php if ($block->isInConfigurePage()): ?>
+                                if ($('giftcard-template-images').value) {
+                                    images_arr = templates[template_id].images.split(',');
+                                    images_arr_id = images_arr.indexOf($('giftcard-template-images').value);
+                                    if (images_arr_id < 0)
                                         images_arr_id = 0;
-                                    }
-        <?php else: ?>
+                                } else {
                                     images_arr_id = 0;
-        <?php endif; ?>
+                                }
+                                <?php else: ?>
+                                images_arr_id = 0;
+                                <?php endif; ?>
                                 changeSelectImages(images_arr_id);
                             }
                         }
@@ -248,7 +249,7 @@
 
                         $('div-image-for-' + templates[template_id].giftcard_template_id + '-' + image_id).down('.egcSwatch-arrow').show();
                         image = $(image_old).src;
-
+                        if($(template_show_id))
                         $(template_show_id).down('.giftcard-change-image').style.backgroundImage = 'url(' + image + ')';
 
                         images_tmp = templates[template_id].images;
