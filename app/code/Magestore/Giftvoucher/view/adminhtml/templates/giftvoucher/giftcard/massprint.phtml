@@ -106,7 +106,7 @@ foreach ($_giftCards as $_giftCard):
 
                 </div>
                 <?php if($url_barcode != ''): ?>
-                    <div class="col-xs-4 top-barcode text-center">
+                    <div class="col-xs-4 <?php if($barcode_type == 'code128') {echo 'top-barcode';}else{echo 'top-qrcode';} ?> text-center">
 
                         <img src="<?php echo $url_barcode ?>" />
 
@@ -162,7 +162,7 @@ foreach ($_giftCards as $_giftCard):
 
                 </div>
                 <?php if($url_barcode != ''): ?>
-                    <div class="col-xs-4 top-barcode text-center">
+                    <div class="col-xs-4 <?php if($barcode_type == 'code128') {echo 'top-barcode';}else{echo 'top-qrcode';} ?> text-center">
 
                         <img src="<?php echo $url_barcode ?>" />
 
@@ -217,7 +217,7 @@ foreach ($_giftCards as $_giftCard):
 
                 </div>
                 <?php if($url_barcode != ''): ?>
-                    <div class="top-barcode col-xs-6 text-center">
+                    <div class="<?php if($barcode_type == 'code128') {echo 'top-barcode';}else{echo 'top-qrcode';} ?> col-xs-6 text-center">
                         <img src="<?php echo $url_barcode ?>" />
                     </div>
                 <?php endif; ?>
@@ -261,6 +261,20 @@ foreach ($_giftCards as $_giftCard):
         border: 1px solid #ddd;
         border-radius: 3px;
         padding: 10px;
+    }
+    .top-content-left .top-qrcode{
+        height: 115px;
+    }
+    .giftcard-template-content .giftcard-logo{width: 50%}
+    .top-content-left .top-qrcode img{
+        height: 100%;
+        padding-left: 60px;
+    }
+    .top-content-left .giftcard-number{
+        text-align: left;
+        margin-bottom: 5px;
+        margin-left: 10px;
+        float: left;
     }
     #giftcard-preview-template .giftcard_value-color .giftcard-text-color{
         padding-right: 10px;
@@ -312,7 +326,7 @@ foreach ($_giftCards as $_giftCard):
     //color: orange;
         font-weight: 600;
         font-family: 'Open Sans', sans-serif;
-        font-style: italic;
+        /*font-style: italic;*/
     }
     .giftcard-custom-message{
         max-height: 85px;
@@ -376,7 +390,7 @@ foreach ($_giftCards as $_giftCard):
     }
     #giftcard-template-left .giftcard-barcode img {float: right;max-width: 100%;height: 40px;}
     .giftcard-template-content .top-content-left{
-        margin-top: 45px;
+        margin-top: 25px;
     }
     .top-content-left .two-border{
         height: 90px;
@@ -390,7 +404,10 @@ foreach ($_giftCards as $_giftCard):
         margin: auto;
     }
     .top-content-left .giftcard-value{
-        text-align: center;
+        text-align: left;
+        margin-bottom: 5px;
+        margin-left: 10px;
+        float: left;
         font-size: 30px;
     }
     .giftcard-template-content .top-content-left{margin-top: 45px}
@@ -505,6 +522,17 @@ foreach ($_giftCards as $_giftCard):
     }
     .template-top-content .top-content-top .top-logo img, .template-top-content .top-barcode img{
         margin: auto;
+        padding: 0px 5px;
+    }
+    .top-content-top .top-qrcode{
+        height: 90px;
+        top: -5px;
+    }
+    .top-content-top .top-qrcode img{
+        height: 100%;
+    }
+    .template-top-content .top-barcode img{
+        height: 100%;
     }
     .top-content-top .two-border{
         border-left: 1px solid #ddd;
@@ -585,6 +613,7 @@ foreach ($_giftCards as $_giftCard):
     }
     .top-content-back .top-logo img, .top-content-back .top-barcode img{
         margin: auto;
+        padding: 0px 5px;
     }
     .top-content-back .two-border{
         height: 90px;
@@ -596,6 +625,12 @@ foreach ($_giftCards as $_giftCard):
     }
     .gift-card .text-center {
         text-align: center;
+    }
+    .top-content-back .top-qrcode{
+        height: 90px;
+    }
+    .top-content-back .top-qrcode img{
+        height: 100%;
     }
     .top-bottom {
         float: left;
