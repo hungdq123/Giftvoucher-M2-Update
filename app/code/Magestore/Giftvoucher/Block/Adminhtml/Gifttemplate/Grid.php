@@ -111,11 +111,11 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
             'index'     =>  'design_pattern',
             'options'   =>  \Magestore\Giftvoucher\Model\Gifttemplate\Type::getOptionArray()
         ));
-        $this->addColumn('caption', array(
-            'header'    =>  __('Title'),
-            'type'      =>  'text',
-            'index'     =>  'caption'
-        ));
+//         $this->addColumn('caption', array(
+//             'header'    =>  __('Title'),
+//             'type'      =>  'text',
+//             'index'     =>  'caption'
+//         ));
         $this->addColumn('status', array(
             'header'    =>  __('Status'),
             'type'      =>  'options',
