@@ -137,9 +137,9 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
             }
             //window.onload = function(){};
             function changePattern(){
-                $('giftcard-notes-center').hide();
-                $('giftcard-notes-top').hide();
-                $('giftcard-notes-left').hide();
+//                 $('giftcard-notes-center').hide();
+//                 $('giftcard-notes-top').hide();
+//                 $('giftcard-notes-left').hide();
                 template_id=$('design_pattern').value;
                 $('demo_pattern').down('img').src='" . $this->_storeManager->getStore()
                     ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . '/giftvoucher/template/pattern/GC_'
@@ -147,7 +147,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
                 if(template_id == " . \Magestore\Giftvoucher\Model\Gifttemplate\Type::TYPE_CENTER . ")
                 {
 //                    $('background_img').up('div').up('div').hide();
-                    $('giftcard-notes-center').show();
+//                     $('giftcard-notes-center').show();
                     $('style_color-note').innerHTML = '" . __('Choose color of texts in Gift Cart value and gift code fields.') . "';
                     $('text_color-note').innerHTML = '" . __('Choose color of other texts (fields from, to, notes, etc.).') . "';
                 }
@@ -155,13 +155,13 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
 //                    $('background_img').up('div').up('div').show();
                     if (template_id == ".\Magestore\Giftvoucher\Model\Gifttemplate\Type::TYPE_TOP."){
                             //('background_img-note').innerHTML = '600x175. Support jpg, jpeg, gif, png files';
-                            $('giftcard-notes-top').show();
+//                             $('giftcard-notes-top').show();
                             $('style_color-note').innerHTML = '".__('Choose color of texts in Gift Cart value and gift code fields.')."';
                             $('text_color-note').innerHTML = '".__('Choose color of other texts (fields from, to, notes, etc.). ')."';
                     }	
                     if (template_id == ".\Magestore\Giftvoucher\Model\Gifttemplate\Type::TYPE_LEFT."){
                             //$('background_img-note').innerHTML = '350x365. Support jpg, jpeg, gif, png files';
-                            $('giftcard-notes-left').show();
+//                             $('giftcard-notes-left').show();
                             $('style_color-note').innerHTML = '".__('Choose color of texts in Gift Cart value and gift code fields.')."';
                             $('text_color-note').innerHTML = '".__('Choose color of other texts (fields from, to, notes, etc.).')."';	
                     }	
