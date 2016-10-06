@@ -69,7 +69,7 @@ class Magestore_Giftvoucher_QRCode
         $this->setCorrectionLevel();
         $this->setTypeChart();
         $this->isHttp();
-        $this->setDimensions(50, 50);
+        $this->setDimensions(90, 90);
         $this->setData($data);
     }
     
