@@ -11,7 +11,7 @@
 
 .dialog.giftcard-preview-template-dialog{
     left: 50% !important;
-    margin-left: -330px !important;    
+    margin-left: -330px !important;
 }
 /*.input-select.validation-failed
 {
@@ -147,16 +147,16 @@ span#giftvoucher_wait{
 }
 /* End Search */
 .customer-account-giftcard .balance{
-    overflow: hidden; 
-    margin-bottom: 10px; 
+    overflow: hidden;
+    margin-bottom: 10px;
     border-bottom: 1px dotted black;
 }
 .customer-account-giftcard #giftvoucher_grid .gift-voucher-sent-friend{
     background-color: #F6B26B;
 }
 .customer-account-giftcard .account-balance{
-    overflow: hidden; 
-    margin-bottom: 10px; 
+    overflow: hidden;
+    margin-bottom: 10px;
     border-bottom: 1px dotted black;
 }
 /*Hai.Tran*/
@@ -166,7 +166,7 @@ span#giftvoucher_wait{
 }
 .giftcard-preview-template-dialog .dialog_e,
 .giftcard-preview-template-dialog .dialog_w {
-    width: 0;   
+    width: 0;
 }
 .giftcard-preview-template-dialog .dialog_close{
     display: none;
@@ -227,7 +227,7 @@ div.egcSwatch-arrow {
 #popup-giftcard{
     position: fixed;
     z-index: 10000;
-    width: 600px;  
+    width: 600px;
     left: 50%;
     top: 20%;
     margin-left: -300px;
@@ -257,14 +257,14 @@ div.egcSwatch-arrow {
     text-decoration: initial;
 }
 
-#giftvoucher-tooltip{ 
-    margin: 5px; 
-    background-color: #FFFFFF; 
-    border: 1px solid rgb(199, 203, 204); 
-    padding: 10px; 
-    width: 300px; 
-    z-index: 1000; 
-    box-shadow: 2px 4px 17px rgb(179, 184, 183); 
+#giftvoucher-tooltip{
+    margin: 5px;
+    background-color: #FFFFFF;
+    border: 1px solid rgb(199, 203, 204);
+    padding: 10px;
+    width: 300px;
+    z-index: 1000;
+    box-shadow: 2px 4px 17px rgb(179, 184, 183);
     border-radius: 7px;
     position: relative;
 }
@@ -564,7 +564,7 @@ div.egcSwatch-arrow {
 .giftcard-logo-background .giftcard-style-color.giftcard-price-change .price {
     font-family: 'Open Sans', sans-serif;
     font-weight: bold;
-/*    float: right;*/
+    /*    float: right;*/
     line-height: 52px;
 }
 
@@ -1266,7 +1266,7 @@ li.giftvoucher-discount-code strong{float:none;}
     height: 90%;
 }
 button.gc-amount-selected, button.gc-template-selected{border-color: #e77600}
-#amount_dropdown_buttons .gc-amount {float: left; margin-right: 10px;}
+#amount_dropdown_buttons .gc-amount {float: left; margin-right: 10px; margin-bottom: 5px;}
 #amount_dropdown_buttons .gc-amount button{padding: 7px 4px; background: #fff;}
-#template_buttons .template{float: left; margin-right: 10px; }
+#template_buttons .template{float: left; margin-right: 10px; margin-bottom: 5px; }
 #template_buttons .template button{padding: 7px 4px; background: #fff;}
