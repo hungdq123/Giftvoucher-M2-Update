@@ -110,17 +110,19 @@ class Item extends \Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer
         if ($options = $item->getProductOptionByCode('info_buyRequest')) {
             foreach ($this->_helper->getGiftVoucherOptions() as $code => $label) {
                 if (isset($options[$code]) && $options[$code]) {
-                    if ($code == 'giftcard_template_id' && $cartType !=1) {
+                    if ($code == 'giftcard_template_id') {
                         foreach ($templates as $template) {
                             if ($template->getId() == $options[$code]) {
                                 $valueTemplate = $template;
                             }
                         }
-                        $result[] = array(
-                            'label' => $label,
-                            'value' => $this->_escaper->escapeHtml($valueTemplate->getTemplateName()),
-                            'option_value' => $this->_escaper->escapeHtml($valueTemplate->getTemplateName()),
-                        );
+                        if($cartType !=1) {
+                            $result[] = array(
+                                'label' => $label,
+                                'value' => $this->_escaper->escapeHtml($valueTemplate->getTemplateName()),
+                                'option_value' => $this->_escaper->escapeHtml($valueTemplate->getTemplateName()),
+                            );
+                        }
                     } else {
                         $result[] = array(
                             'label' => $label,

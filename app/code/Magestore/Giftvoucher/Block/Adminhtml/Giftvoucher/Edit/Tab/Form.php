@@ -219,7 +219,7 @@ class Form extends \Magestore\Giftvoucher\Block\Adminhtml\Giftvoucher\Edit\Tab\A
                 'name' => 'giftvoucher_used',
                 'style' =>  'min-width: 250px',
                 'values' => \Magestore\Giftvoucher\Model\Used::getOptions(),
-                'note' => __('Yes:The gift code has been purchased;<\br>No:The gift code has not been purchased'),
+                'note' => __('Yes:The gift code has been purchased;<br/>No:The gift code has not been purchased'),
             )
         );
         }
