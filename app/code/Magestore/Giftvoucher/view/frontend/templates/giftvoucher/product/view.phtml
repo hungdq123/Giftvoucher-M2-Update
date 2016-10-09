@@ -264,44 +264,7 @@ $mageinit = '{"calendar":{'
             <textarea maxlength="<?php echo $block->messageMaxLen(); ?>" class="form-control" name="message" id="message" class="giftvoucher_custom_option" onchange="changeRemaining(this);" onkeyup="changeRemaining(this);" ><?php echo $_formData->getMessage() ?></textarea>
             <small><?php echo __('Characters Remaining: ') ?><span id="giftvoucher_char_remaining"><?php echo $block->messageMaxLen() ?></span></small>
         </div>
-        <script>
-            require([
-                "jquery",
-                "jquery/ui",
-                "prototype",
-                "mage/translate",
-                "mage/calendar"
-            ], function () {
-                var remaining_max = <?php echo $this->messageMaxLen() ?>;
-                changeRemaining = function (el) {
-                    if (el.value.length > remaining_max) {
-                        el.value = el.value.substring(0, remaining_max);
-                    }
-                    el.value = el.value.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
-                    $('giftvoucher_char_remaining').innerHTML = remaining_max - el.value.length;
-                    for (i = 0; i < 3; i++)
-                        if ($(giftmedia[i]))
-                            $(giftmedia[i]).down('.giftcard-custom-message').innerHTML = el.value.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
-                }
-                changeSenderName = function (el) {
-                    for (i = 0; i < 3; i++)
-                        if ($(giftmedia[i]))
-                            if (el.value)
-                                $(giftmedia[i]).down('.giftcard-send-from').innerHTML = el.value.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
-                            else
-                                $(giftmedia[i]).down('.giftcard-send-from').innerHTML = '<?php echo $isLogged ?  $customerName : '';
-                                    ?>';
-                }
-                changeReceiverName = function (el) {
-                    for (i = 0; i < 3; i++)
-                        if ($(giftmedia[i]))
-                            $(giftmedia[i]).down('.giftcard-send-to').innerHTML = el.value.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
-                }
-
-                var options = {"dateFormat": "MM\/dd\/yyyy", "showsTime": false, "timeFormat": null, "buttonImage": null, "buttonText": "Select Date", "disabled": null, "changeMonth": true, "changeYear": true};
-                var b = jQuery.mage.calendar(options, $('day_to_send'));
-            })
-        </script>
+        
         <div class="form-group">
             <div class="checkbox">
                 <?php
@@ -428,8 +391,11 @@ $mageinit = '{"calendar":{'
         Event.observe(window, 'load', function () {
             changeTemplate($$('.gc-template-button')[0]);
             changePriceMediaGiftcard($('giftcard-product-amount-media').innerHTML);
-            changeSenderName($('customer_name'));
-            changeReceiverName($('recipient_name'));
+            card_type = '<?php echo $card_type ?>';
+            if(card_type != 1 ){ 
+                changeSenderName($('customer_name'));
+                changeReceiverName($('recipient_name'));
+            }
 //            changeRemaining($('message'));
             if ($('amount_dropdown'))
                 changePriceByInputDropdown($$('.gc-amount-dropdown')[0]);
@@ -486,3 +452,41 @@ $mageinit = '{"calendar":{'
     });
 
 </script>
+<script>
+            require([
+                "jquery",
+                "jquery/ui",
+                "prototype",
+                "mage/translate",
+                "mage/calendar"
+            ], function () {
+                var remaining_max = <?php echo $this->messageMaxLen() ?>;
+                changeRemaining = function (el) {
+                    if (el.value.length > remaining_max) {
+                        el.value = el.value.substring(0, remaining_max);
+                    }
+                    el.value = el.value.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+                    $('giftvoucher_char_remaining').innerHTML = remaining_max - el.value.length;
+                    for (i = 0; i < 3; i++)
+                        if ($(giftmedia[i]))
+                            $(giftmedia[i]).down('.giftcard-custom-message').innerHTML = el.value.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+                }
+                changeSenderName = function (el) {
+                    for (i = 0; i < 3; i++)
+                        if ($(giftmedia[i]))
+                            if (el.value)
+                                $(giftmedia[i]).down('.giftcard-send-from').innerHTML = el.value.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+                            else
+                                $(giftmedia[i]).down('.giftcard-send-from').innerHTML = '<?php echo $isLogged ?  $customerName : '';
+                                    ?>';
+                }
+                changeReceiverName = function (el) {
+                    for (i = 0; i < 3; i++)
+                        if ($(giftmedia[i]))
+                            $(giftmedia[i]).down('.giftcard-send-to').innerHTML = el.value.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+                }
+
+                var options = {"dateFormat": "MM\/dd\/yyyy", "showsTime": false, "timeFormat": null, "buttonImage": null, "buttonText": "Select Date", "disabled": null, "changeMonth": true, "changeYear": true};
+                var b = jQuery.mage.calendar(options, $('day_to_send'));
+            })
+        </script>
