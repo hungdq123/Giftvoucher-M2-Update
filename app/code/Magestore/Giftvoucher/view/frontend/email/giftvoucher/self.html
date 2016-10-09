@@ -35,15 +35,25 @@ body,td { color:#2f2f2f; font:13px/1.35em Verdana, Arial, Helvetica, sans-serif;
                             <p>
                                 <strong>Dear {{var giftvoucher.getCustomerName()}}</strong>,<br/>
                                 This email is to notify that you have successfully bought Gift Card(s) at {{var store.getFrontendName()}}.<br/>
-                                You can use Gift Card(s) to purchase other products <a href="{{var store.getBaseUrl()}}">here</a> or <a href="{{var store.getBaseUrl()}}/giftvoucher/index/printemail/k/{{var secure_key}}">print now</a>.<br/>
+                                You can use Gift Card(s) to purchase other products <a href="{{var store.getBaseUrl()}}">here</a> {{if giftvoucher.getGiftcodeTemplateId()}} or  <a href="{{var store.getBaseUrl()}}/giftvoucher/index/printemail/k/{{var secure_key}}">print now</a>{{/if}}.<br/>
                                 
                             </p>							                            
                         </td>
                     </tr>
                     <tr>
+                        {{if giftvoucher.getGiftcodeTemplateId()}}
                         <td style="padding: 15px 0px 15px 0px" align="center" width="600">
                             <img src="{{var url}}" height="365" style="margin-left: 15px; float: left;border-radius: 0 0 5px 5px;"/>
                         </td>
+                        {{else}}
+                        <td>
+                            <br/>
+                                <p>Your Gift code: {{var giftvoucher.getGiftCode()}}
+                                <br/>
+                                Your Gift code value: {{var giftvoucher.getGiftcodeBalance()}}</p>
+                            <br/>
+                        </td>
+                        {{/if}}
                     </tr>
                     <tr>
                         <td>
