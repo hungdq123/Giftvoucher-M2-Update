@@ -116,6 +116,7 @@ class Giftvoucher extends \Magento\Rule\Model\AbstractModel
         \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
         \Magento\Framework\UrlInterface $urlBuilder,
         \Magento\Email\Model\Template $emailTemplate,
+        \Magento\Framework\Locale\CurrencyInterface $localeCurrency,
         \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
@@ -129,6 +130,7 @@ class Giftvoucher extends \Magento\Rule\Model\AbstractModel
         $this->_transportBuilder = $transportBuilder;
         $this->_urlBuilder = $urlBuilder;
         $this->_emailTemplate = $emailTemplate;
+        $this->_localeCurrency = $localeCurrency;        
         parent::__construct(
             $context,
             $registry,
@@ -776,5 +778,18 @@ class Giftvoucher extends \Magento\Rule\Model\AbstractModel
             $customerIds[] = $item->getData('order_customer_id');
         }
         return $customerIds;
+    }
+
+    public function getGiftcodeBalance(){
+        $balance = $this->_localeCurrency->getCurrency($this->getCurrency())
+                    ->toCurrency($this->getBalance(), array());
+        return $balance;
+    }
+
+    public function getGiftcodeTemplateId(){
+        if($this->getGiftcardTemplateId() == 0){
+            $this->setGiftcardTemplateId(null);
+        }
+        return $this->getGiftcardTemplateId();
     }
 }
