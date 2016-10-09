@@ -45,7 +45,7 @@ class Form extends \Magestore\Giftvoucher\Block\Adminhtml\Giftvoucher\Edit\Tab\A
         } else {
             $model = $this->_giftvoucher;
         }
-         
+        
         if (isset($model) && $model->getId()) {
             $fieldset->addField('giftvoucher_id', 'hidden', array('name' => 'giftvoucher_id'));
         }
@@ -91,75 +91,76 @@ class Form extends \Magestore\Giftvoucher\Block\Adminhtml\Giftvoucher\Edit\Tab\A
         
         $template = $this->getGiftTemplate();
         $sets=$model['set_id'];
-        
-        if (isset($model['giftcard_custom_image']) && $model['giftcard_custom_image']) {
-            $fieldset->addField(
-                'giftcard_template_id',
-                'hidden',
-                array(
-                    'label' => __('Template'),
-                    'name' => 'giftcard_template_id',
-                    'style' =>  'min-width: 250px',
-                    'values' => (isset($model['giftcard_template_id'])) ? $model['giftcard_template_id'] : '',
-                    'after_element_html' => (isset($model['giftcard_template_image'])
-                        && isset($model['giftcard_template_id'])) ?
-                        '<script> window.onload = function(){loadImageTemplate(\'' . $model['giftcard_template_id']
-                        . '\',\'' . $model['giftcard_template_image'] . '\',true);}</script>' : '',
-                )
-            );
+        if($model->getGiftcardTemplateId()){
+            if (isset($model['giftcard_custom_image']) && $model['giftcard_custom_image']) {
+                $fieldset->addField(
+                    'giftcard_template_id',
+                    'hidden',
+                    array(
+                        'label' => __('Template'),
+                        'name' => 'giftcard_template_id',
+                        'style' =>  'min-width: 250px',
+                        'values' => (isset($model['giftcard_template_id'])) ? $model['giftcard_template_id'] : '',
+                        'after_element_html' => (isset($model['giftcard_template_image'])
+                            && isset($model['giftcard_template_id'])) ?
+                            '<script> window.onload = function(){loadImageTemplate(\'' . $model['giftcard_template_id']
+                            . '\',\'' . $model['giftcard_template_image'] . '\',true);}</script>' : '',
+                    )
+                );
 
-            $fieldset->addField(
-                'list_images',
-                'note',
-                array(
-                    'label' => __('Customer\'s Image'),
-                    'name' => 'list_images',
-                    'text' => sprintf(''),
-                )
-            );
+                $fieldset->addField(
+                    'list_images',
+                    'note',
+                    array(
+                        'label' => __('Customer\'s Image'),
+                        'name' => 'list_images',
+                        'text' => sprintf(''),
+                    )
+                );
 
-            $fieldset->addField(
-                'giftcard_template_image',
-                'hidden',
-                array(
-                    'name' => 'giftcard_template_image',
-                    'value' => $model['giftcard_template_image'],
-                )
-            );
-        } elseif ($template && count($template)) {
-            $fieldset->addField(
-                'giftcard_template_id',
-                'select',
-                array(
-                    'label' => __('Template'),
-                    'name' => 'giftcard_template_id',
-                    'values' => $template,
-                    'style' =>  'min-width: 250px',
-                    'required' => (isset($sets)? false:true)    ,
-                    'onchange' => 'loadImageTemplate(this.value)',
-                    'after_element_html' => (isset($model['giftcard_template_image'])
-                        && isset($model['giftcard_template_id'])) ?
-                        '<script>  window.onload = function(){loadImageTemplate(\'' . $model['giftcard_template_id']
-                    . '\',\'' . $model['giftcard_template_image'] . '\',false);}</script>' : '',
-                )
-            );
+                $fieldset->addField(
+                    'giftcard_template_image',
+                    'hidden',
+                    array(
+                        'name' => 'giftcard_template_image',
+                        'value' => $model['giftcard_template_image'],
+                    )
+                );
+            } elseif ($template && count($template)) {
+                $fieldset->addField(
+                    'giftcard_template_id',
+                    'select',
+                    array(
+                        'label' => __('Template'),
+                        'name' => 'giftcard_template_id',
+                        'values' => $template,
+                        'style' =>  'min-width: 250px',
+                        'required' => (isset($sets)? false:true)    ,
+                        'onchange' => 'loadImageTemplate(this.value)',
+                        'after_element_html' => (isset($model['giftcard_template_image'])
+                            && isset($model['giftcard_template_id'])) ?
+                            '<script>  window.onload = function(){loadImageTemplate(\'' . $model['giftcard_template_id']
+                        . '\',\'' . $model['giftcard_template_image'] . '\',false);}</script>' : '',
+                    )
+                );
 
-            $fieldset->addField(
-                'list_images',
-                'note',
-                array(
-                    'label' => __('Template image'),
-                    'name' => 'list_images',
-                    'text' => sprintf(''),
-                )
-            );
-            $fieldset->addField(
-                'giftcard_template_image',
-                'hidden',
-                array(
-                    'name' => 'giftcard_template_image',
-                )
-            );
+                $fieldset->addField(
+                    'list_images',
+                    'note',
+                    array(
+                        'label' => __('Template image'),
+                        'name' => 'list_images',
+                        'text' => sprintf(''),
+                    )
+                );
+                $fieldset->addField(
+                    'giftcard_template_image',
+                    'hidden',
+                    array(
+                        'name' => 'giftcard_template_image',
+                    )
+                );
+            }
         }
         
         $fieldset->addField(
