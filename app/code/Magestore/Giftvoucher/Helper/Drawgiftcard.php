@@ -698,7 +698,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             $newWidth = round(63 * imagesx($imgLogo) / imagesy($imgLogo));
             $resizeLogoUrl = $this->getBaseDirMedia()->getAbsolutePath('giftvoucher/draw/logo/' . $image);
 
-            if (is_file($resizeLogoUrl)) {
+            if (!is_file($resizeLogoUrl)) {
                 $resizeLogoObj = $this->_imageFactory->create();
                 $resizeLogoObj->open($dir);
                 $resizeLogoObj->constrainOnly(true);
@@ -752,7 +752,6 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             return imagecreatefrompng($resizeBarcodeUrl);
         } else {
             $qr = new \Magestore_Giftvoucher_QRCode($code);
-//            $qr->setDimensions(70, 70);
             $content = file_get_contents($qr->getResult());
             $fileName = $this->getBaseDirMedia()->getAbsolutePath('giftvoucher/draw/' . $code . '/' . 'qrcode.png');
             file_put_contents($fileName, $content);
