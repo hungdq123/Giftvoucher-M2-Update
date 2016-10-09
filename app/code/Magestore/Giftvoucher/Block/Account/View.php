@@ -162,7 +162,8 @@ class View extends \Magestore\Giftvoucher\Block\Account
 
         $action = '<a href="' . $this->getUrl('*/*/view', array('id' => $row->getId())) . '">' . __('View') . '</a>';
         // can print gift voucher when status is not used
-        if ($row->getStatus() < \Magestore\Giftvoucher\Model\Status::STATUS_DISABLED) {
+        $template = $this->getModel('Magestore\Giftvoucher\Model\Giftvoucher')->load($row->getVoucherId())->getGiftcardTemplateId();
+        if ($row->getStatus() < \Magestore\Giftvoucher\Model\Status::STATUS_DISABLED && $template) {
             $action .= ' | <a href="javascript:void(0);" onclick="window.open(\''
                 . $this->getUrl('*/*/print', array('id' => $row->getId()))
                 . '\',\'newWindow\', \'width=1000,height=700,resizable=yes,scrollbars=yes\')" >' . __('Print') . '</a>';
