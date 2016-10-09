@@ -105,7 +105,8 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
         );
         
         if ($this->_coreRegistry->registry('giftvoucher_data')
-            && $this->_coreRegistry->registry('giftvoucher_data')->getId()) {
+            && $this->_coreRegistry->registry('giftvoucher_data')->getId()
+            && $this->_coreRegistry->registry('giftvoucher_data')->getGiftcardTemplateId()) {
             $this->buttonList->add(
                 'print',
                 array(
