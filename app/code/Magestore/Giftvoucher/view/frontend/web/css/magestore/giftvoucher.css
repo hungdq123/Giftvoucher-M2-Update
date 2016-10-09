@@ -684,7 +684,10 @@ div.egcSwatch-arrow {
     border: 1px solid #ddd
 }
 #giftcard-template-back .top-content-back{
-    margin-top: 25px;
+    margin-top: 10px;
+}
+#giftcard-template-back .giftcard-change-image{
+    height: 270px;
 }
 .top-content-back .top-logo, .top-content-back .top-barcode {
     display: flex;
@@ -738,9 +741,9 @@ div.egcSwatch-arrow {
 
 
 .giftcard-product-media{
-    /*float:Left;*/
+    float:Left;
     width:600px;
-    /*height: 365px;*/
+    height:500px;
     transform-origin: top left;
     -webkit-transform-origin: top left;
 }
