@@ -225,6 +225,9 @@ class Giftvoucher extends \Magento\Catalog\Model\Product\Type\AbstractType
         if (is_null($product)) {
             $product = $this->getProduct();
         }
+        if($product->getGiftCardType() == 1){
+            $buyRequest->unsetData('giftcard_template_id');
+        }
         if (!$buyRequest->getData('send_friend')) {
             $fields = array(
                 'recipient_name',
