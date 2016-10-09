@@ -134,7 +134,11 @@ endif;
             var widthImageMedia = productImgBox[0].getLayout().get('width');
             $$('.product-img-box')[0].setStyle({'height': 'auto', 'overflow': 'visible'});
         } else {
-            var widthImageMedia = $('giftcard-product-media').parentNode.getWidth();
+            if(window.innerWidth <= 764){
+                var widthImageMedia = $('giftcard-product-media').up('.columns').getWidth();
+            }else{
+                var widthImageMedia = $('giftcard-product-media').parentNode.getWidth();
+            }
         }
 
         var widthImageGC = 600;
@@ -169,7 +173,11 @@ endif;
             if (productImgBox.length > 0) {
                 var productImgBox_Width = $$('.product-img-box')[0].getLayout().get('width');
             } else {
-                productImgBox_Width = $('giftcard-product-media').parentNode.getWidth();
+                if(window.innerWidth <= 764){
+                    productImgBox_Width = $('giftcard-product-media').up('.columns').getWidth();
+                }else{
+                    productImgBox_Width = $('giftcard-product-media').parentNode.getWidth();
+                }                
             }
             zoomStyle(productImgBox_Width, widthImageGC);
             calculationPosition();
