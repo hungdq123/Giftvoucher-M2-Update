@@ -302,7 +302,7 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             }
         }
 
-        imagecopyresampled($img1, $img4, 14, 80, 0, 0, 570, 1, 550, 1);
+        imagecopyresampled($img1, $img4, 14, 80, 0, 0, 570, 1, 300, 1);
 
         /* Print Value */
         $valueY = 30 ;
@@ -457,8 +457,8 @@ class Drawgiftcard extends \Magestore\Giftvoucher\Helper\Data
             }
         }
 
-        imagecopyresampled($img1, $img4, 14, 10, 0, 0, 570, 1, 550, 1);
-        imagecopyresampled($img, $img5, 14, 110, 0, 0, 570, 1, 550, 1);
+        imagecopyresampled($img1, $img4, 14, 10, 0, 0, 570, 1, 300, 1);
+        imagecopyresampled($img, $img5, 14, 110, 0, 0, 570, 1, 300, 1);
 
         $img6 = $this->createGMessageBox('top');
         imagecopyresampled($img, $img6, 200, 1, 0, 0, 1, 100, 100, 450);
