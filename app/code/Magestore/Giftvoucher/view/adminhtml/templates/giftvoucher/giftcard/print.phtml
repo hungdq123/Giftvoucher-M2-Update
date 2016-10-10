@@ -344,6 +344,7 @@ if (!$_template->getBackgroundImg()) {
     .top-content-top .top-qrcode img{
         top: -5px;
     }
+    .top-content-top .top-qrcode img{ height: 93%}
     .top-bottom{
         float: left;
         width: 100%;
@@ -413,6 +414,7 @@ if (!$_template->getBackgroundImg()) {
     .top-content-back .top-logo, .top-content-back .top-barcode{
         display: flex;
         height: 90px;
+        padding: 0 5px;
     }
     .top-content-back{
         margin-top: 10px;
@@ -438,6 +440,8 @@ if (!$_template->getBackgroundImg()) {
         border-top: 1px solid #ddd;
         min-height: 90px;
     }
+    .top-content-back .top-qrcode, .top-content-top .top-qrcode{ height: 90px}
+    .top-content-back .top-qrcode img { height: 100%}
 </style>
 <?php if ($_template->getDesignPattern() == \Magestore\Giftvoucher\Model\Designpattern::PATTERN_TOP):; ?>
     <?php
